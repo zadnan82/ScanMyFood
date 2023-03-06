@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyList extends StatefulWidget {
@@ -13,13 +11,16 @@ class MyList extends StatefulWidget {
   MyListState createState() => MyListState();
 }
 
-class MyListState extends State<MyList> {
- 
+String selectList = "";
+String warning1 = "";
+String warning2 = "";
 
+class MyListState extends State<MyList> {
   @override
   void initState() {
     super.initState();
     loadOptions();
+    _loadSelectedLanguage();
   }
 
   XFile? imageFile;
@@ -33,9 +34,8 @@ class MyListState extends State<MyList> {
   List<String> mylist = [];
   List<String> words = [];
   String dangerousItemsDetected = "";
-  
   final _dropdownFormKey = GlobalKey<FormState>();
-String? selectedValue = null;
+  String? selectedValue = null;
 
   Future<void> loadOptions() async {
     final prefs = await SharedPreferences.getInstance();
@@ -45,18 +45,45 @@ String? selectedValue = null;
     });
   }
 
+  void _loadSelectedLanguage() async {
+    String selectedLanguage = "";
+    final prefs = await SharedPreferences.getInstance();
+    final language = prefs.getString('language');
+    if (language != null) {
+      setState(() {
+        selectedLanguage = language;
+      });
+    }
+    String warning1En = "Warning!! there are ";
+    String warning2En = " harmful items in this product!";
+    String warning1Se = "Varning!! det finns ";
+    String warning2Se = " skadliga föremål i denna produkt!";
+    String warning1Es = "¡¡Advertencia!! hay ";
+    String warning2Es = " artículos dañinos en este producto!";
+    String selectListEn = "Select a List";
+    String selectListSe = "Välj en lista";
+    String selectListEs = "Seleccione una lista";
+
+    if (language == null || language == 'English') {
+      warning1 = warning1En;
+      warning2 = warning2En;
+      selectList = selectListEn;
+    } else if (language == 'Swedish') {
+      warning1 = warning1Se;
+      warning2 = warning2Se;
+      selectList = selectListSe;
+    } else if (language == 'Spanish') {
+      warning1 = warning1Es;
+      warning2 = warning2Es;
+      selectList = selectListEs;
+    }
+  }
+
   void getRecognisedText(XFile image) async {
     final prefs = await SharedPreferences.getInstance();
-     
-    mylist =  prefs.getStringList(chosenlist) ?? [];
+    mylist = prefs.getStringList(chosenlist) ?? [];
 
-    if (mylist == []) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("You have to chose a list"),
-      ));
-      return;
-    }
-
+    
     words = [];
     dangerousItemsDetected = "";
     counter = 0;
@@ -81,7 +108,6 @@ String? selectedValue = null;
 
           if (mylist.contains(processedWord)) {
             warning = true;
-            message = "warning";
             counter++;
             //wordsText = processedWord;
             //wordsText = wordsText + line.text + "\n";
@@ -97,7 +123,14 @@ String? selectedValue = null;
   }
 
   void getImage(ImageSource source) async {
- 
+
+   if (chosenlist == "") {
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+        content: Text(selectList),
+      ));
+      return;
+    }
+
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage != null) {
@@ -117,16 +150,16 @@ String? selectedValue = null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-           iconTheme: IconThemeData(
-    color: Colors.black, //change your color here
-  ),
-          backgroundColor: Colors.white,
-        // ignore: prefer_const_constructors
-        title: Text('Your Own Lists' , style: TextStyle(color: Color.fromARGB(255, 11, 12, 12)), //<-- SEE HERE),
-         )
-        
-      ),
+      //       appBar: AppBar(
+      //          iconTheme: IconThemeData(
+      //   color: Colors.black, //change your color here
+      // ),
+      //         backgroundColor: Colors.white,
+      //       // ignore: prefer_const_constructors
+      //       title: Text('Your Own Lists' , style: TextStyle(color: Color.fromARGB(255, 11, 12, 12)), //<-- SEE HERE),
+      //        )
+
+      //     ),
       body: Center(
           child: SingleChildScrollView(
         child: Container(
@@ -135,57 +168,61 @@ String? selectedValue = null;
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Form(
-        key: _dropdownFormKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButtonFormField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    //borderSide: BorderSide(color:  Colors.green, width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  border: OutlineInputBorder(
-                    //borderSide: BorderSide(color:   Colors.green, width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  filled: false,
-                 // fillColor:  Colors.green,
-                ),
-                validator: (value) => value == null ? "Select a country" : null,
-                //dropdownColor:  Colors.green,
-                value: selectedValue,
-                 hint:  Text("Select a List"),
-                onChanged: (String? newValue) {
-                   setState(() {
-                      chosenlist = newValue!;
-                    });
-                },
-                items: _allLists.map<DropdownMenuItem<String>>((String value) {
-                    loadOptions();
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value , 
+                    key: _dropdownFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              //borderSide: BorderSide(color:  Colors.green, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            border: OutlineInputBorder(
+                              //borderSide: BorderSide(color:   Colors.green, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            filled: false,
+                            // fillColor:  Colors.green,
+                          ),
+                          validator: (value) =>
+                              value == null ? "Select a list" : null,
+                          //dropdownColor:  Colors.green,
+                          value: selectedValue,
+                          hint: Text(selectList),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              chosenlist = newValue!;
+                            });
+                          },
+                          items: _allLists
+                              .map<DropdownMenuItem<String>>((String value) {
+                            loadOptions();
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
                                 textAlign: TextAlign.right,
                                 style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 41, 41, 41),
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 41, 41, 41),
+                                ),
                               ),
-                            ),
-                    );
-                  }).toList(),),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       if (_dropdownFormKey.currentState!.validate()) {
-            //          setState(() {
-            //           chosenlist = selectedValue!;
-            //         });
-            //       }
-            //     },
-            //     child: Text("Submit"))
-          ],
-        )), 
+                            );
+                          }).toList(),
+                        ),
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       if (_dropdownFormKey.currentState!.validate()) {
+                        //          setState(() {
+                        //           chosenlist = selectedValue!;
+                        //         });
+                        //       }
+                        //     },
+                        //     child: Text("Submit"))
+                      ],
+                    )),
                 // DropdownButton<String>(
                 //   value: _allLists.isEmpty
                 //       ? null
@@ -202,7 +239,7 @@ String? selectedValue = null;
                 //     loadOptions();
                 //     return DropdownMenuItem<String>(
                 //       value: value,
-                //       child: Text(value , 
+                //       child: Text(value ,
                 //                 textAlign: TextAlign.center,
                 //                 style: const TextStyle(
                 //                 fontSize: 20.0,
@@ -213,10 +250,10 @@ String? selectedValue = null;
                 //     );
                 //   }).toList(),
                 // ),
-                
-                 const Padding(padding: EdgeInsets.only(bottom: 30)),
-                 
-                 if (textScanning) const CircularProgressIndicator(),
+
+                const Padding(padding: EdgeInsets.only(bottom: 30)),
+
+                if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
                   Container(
                     width: 300,
@@ -230,29 +267,27 @@ String? selectedValue = null;
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child:  IconButton(
-                              icon: Image.asset('assets/images/gallery.png'),
-                              iconSize: 50,
-                              onPressed: () {
-                                          getImage(ImageSource.gallery);
-                                        },
-                            ), 
-
-                        ),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.only(top: 10),
+                      child: IconButton(
+                        icon: Image.asset('assets/images/gallery.png'),
+                        iconSize: 50,
+                        onPressed: () {
+                          getImage(ImageSource.gallery);
+                        },
+                      ),
+                    ),
                     Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child:  IconButton(
-                              icon: Image.asset('assets/images/camera.png'),
-                              iconSize: 50,
-                              onPressed: () {
-                            getImage(ImageSource.camera);
-                          },
-                            ), 
-                           
-                          ),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.only(top: 10),
+                      child: IconButton(
+                        icon: Image.asset('assets/images/camera.png'),
+                        iconSize: 50,
+                        onPressed: () {
+                          getImage(ImageSource.camera);
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 Column(
@@ -262,7 +297,7 @@ String? selectedValue = null;
                     ),
                     warning
                         ? Text(
-                            "${message}, be careful!! there are ${counter.toString()} dangerous substances in this item",
+                            "$warning1 ${counter.toString()} $warning2",
                             style: const TextStyle(fontSize: 20),
                           )
                         : Text(""),

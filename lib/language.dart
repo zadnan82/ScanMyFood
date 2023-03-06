@@ -1,40 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
-import 'package:scanmyfood/home_page.dart';
-import 'package:scanmyfood/main.dart';
-import 'package:scanmyfood/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(const Language());
+class Language extends StatefulWidget {
+
+
+  @override
+  State<Language> createState() => _LanguageState();
 }
 
-class Language extends StatelessWidget {
-  const Language({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
+class _LanguageState extends State<Language> {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(),
-    );
+  void initState() {
+    super.initState();
+     _loadSelectedLanguage();
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   String _selectedLanguage = "";
 
   void _selectLanguage(String language) async {
@@ -67,12 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //     ),
   //   );
   // }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSelectedLanguage();
-  }
 
   void _loadSelectedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -132,36 +107,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       )
     );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Next Page'),
-      ),
-      body: Center(
-        child: FutureBuilder<String>(
-          future: _getLanguage(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(
-                'You selected ${snapshot.data}',
-                style: TextStyle(fontSize: 24),
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Future<String> _getLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('language')!;
   }
 }
