@@ -1,48 +1,25 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:scanmyfood/mylist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(const Food());
-}
-
-class Food extends StatelessWidget {
-  const Food({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class FoodPage extends StatefulWidget {
+  const FoodPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FoodPage> createState() => _FoodPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-
+class _FoodPageState extends State<FoodPage> {
   @override
   void initState() {
     super.initState();
     _loadSelectedLanguage();
+  }
+
+  void reloadPage() {
+    setState(() {});
   }
 
   XFile? imageFile;
@@ -56,11 +33,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String dangerousItemsDetected = "";
   String textEn =
-      "Here you will use our standard list of dangerous items! Click on the camera icon to scan the ingridents text of the product or on the gallery icon to access your device album. To create your own list click on the pen in the bottom and then the little man icon up there to use your own list of items!";
-  String textSe = "Här kommer du att använda vår standardlista över farliga föremål! Klicka på kameraikonen för att skanna produktens innehållstext eller på galleriikonen för att komma åt ditt enhetsalbum. För att skapa din egen lista klicka på pennan i botten och sedan den lilla man-ikonen där uppe för att använda din egen lista med föremål!";
-  String textEs = "¡Aquí usará nuestra lista estándar de elementos peligrosos! Haga clic en el ícono de la cámara para escanear el texto de los componentes del producto o en el ícono de la galería para acceder al álbum de su dispositivo. Para crear su propia lista, haga clic en el bolígrafo en la parte inferior y luego ¡el ícono del hombrecito allí arriba para usar tu propia lista de elementos!";
+      "Here you will use our standard list of dangerous items! Click on the camera icon to scan the ingridents text of the product or on the gallery icon to access your device album. To create your own list click on the pen in the bottom and then the little man icon down there to use your own list of items!";
+  String textSe =
+      "Här kommer du att använda vår standardlista över farliga föremål! Klicka på kameraikonen för att skanna produktens innehållstext eller på galleriikonen för att komma åt ditt enhetsalbum. För att skapa din egen lista klicka på pennan i botten och sedan den lilla man-ikonen där nere för att använda din egen lista med föremål!";
+  String textEs =
+      "¡Aquí usará nuestra lista estándar de elementos peligrosos! Haga clic en el ícono de la cámara para escanear el texto de los componentes del producto o en el ícono de la galería para acceder al álbum de su dispositivo. Para crear su propia lista, haga clic en el bolígrafo en la parte inferior y luego ¡el ícono del hombrecito ahí abajo para usar tu propia lista de elementos!";
+  String warning1 = "";
+  String warning2 = "";
 
-void _loadSelectedLanguage() async {
+  void _loadSelectedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final language = prefs.getString('language');
     if (language != null) {
@@ -69,7 +50,6 @@ void _loadSelectedLanguage() async {
       });
     }
   }
-
 
   List<String> chemicalsFoodEn = [
     "1,3-dichloro-2-propanol",
@@ -696,21 +676,27 @@ void _loadSelectedLanguage() async {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                IconButton(
-                  icon: Image.asset('assets/images/person.png'),
-                  iconSize: 50,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyList(),
-                      ),
-                    );
-                  },
-                ),
+                // IconButton(
+                //   icon: Image.asset('assets/images/person.png'),
+                //   iconSize: 50,
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => MyList(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
-                  _selectedLanguage == 'English' ? Text(textEn) :  _selectedLanguage == 'Swedish' ? Text(textSe) : _selectedLanguage == 'Spanish' ?   Text(textEs) : Text(textEn),
+                  _selectedLanguage == 'English'
+                      ? Text(textEn)
+                      : _selectedLanguage == 'Swedish'
+                          ? Text(textSe)
+                          : _selectedLanguage == 'Spanish'
+                              ? Text(textEs)
+                              : Text(textEn),
                 if (imageFile != null)
                   Image.file(File(imageFile!.path),
                       height: 200, fit: BoxFit.fill),
@@ -748,14 +734,13 @@ void _loadSelectedLanguage() async {
                     ),
                     warning
                         ? Text(
-                            "${message} Be careful, there are ${counter.toString()} dangerous substances in this item",
+                            "$warning1  ${counter.toString()} $warning2",
                             style: const TextStyle(fontSize: 20),
                           )
                         : Text(""),
                     const SizedBox(
                       height: 20,
                     ),
-
                     Text(
                       dangerousItemsDetected,
                       style: const TextStyle(fontSize: 20),
@@ -763,10 +748,6 @@ void _loadSelectedLanguage() async {
                     const SizedBox(
                       height: 20,
                     ),
-                    // Text(
-                    //   "Be careful, there are ${counter.toString()} dangerous substances in this item",
-                    //   style: const TextStyle(fontSize: 20),
-                    // ),
                   ],
                 )
               ],
@@ -797,12 +778,25 @@ void _loadSelectedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     language = prefs.getString('language');
 
+    String warning1En = "Warning!! there are ";
+    String warning2En = " harmful items in this product!";
+    String warning1Se = "Varning!! det finns ";
+    String warning2Se = " skadliga föremål i denna produkt!";
+    String warning1Es = "¡¡Advertencia!! hay ";
+    String warning2Es = " artículos dañinos en este producto!";
+
     if (language == null || language == 'English') {
       foodList = chemicalsFoodEn;
+      warning1 = warning1En;
+      warning2 = warning2En;
     } else if (language == 'Swedish') {
       foodList = chemicalsFoodSe;
+       warning1 = warning1Se;
+      warning2 = warning2Se;
     } else if (language == 'Spanish') {
       foodList = chemicalsFoodEs;
+       warning1 = warning1Es;
+      warning2 = warning2Es;
     }
 
     words = [];
@@ -828,8 +822,7 @@ void _loadSelectedLanguage() async {
           processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
 
           if (foodList.contains(processedWord)) {
-            warning = true;
-            message = "warning";
+            warning = true; 
             counter++;
             //wordsText = processedWord;
             //wordsText = wordsText + line.text + "\n";
@@ -843,5 +836,4 @@ void _loadSelectedLanguage() async {
     textScanning = false;
     setState(() {});
   }
-
 }

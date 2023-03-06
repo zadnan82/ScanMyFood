@@ -1,22 +1,53 @@
  
 import 'package:flutter/material.dart';
-import 'custom_router.dart';
-import 'route_paths.dart';
+import 'package:scanmyfood/home_page.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Bottom Nav Example',
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: CustomRouter.onGenerateRoute,
-      initialRoute: RoutePaths.Splash,
+    return FutureBuilder(
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            title: 'CheckMe',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.green,
+              primaryColor: Colors.white,
+            ),
+            home: HomePage(),
+          );
+        } else if (snapshot.hasError) {
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: Text(
+                  "An error ",
+                  style: TextStyle(
+                      color: Colors.cyan,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          );
+        }
+
+        return MaterialApp(
+          title: 'CheckMe',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+            primaryColor: Colors.white,
+          ),
+          home: HomePage(),
+        );
+      },
     );
   }
 }
