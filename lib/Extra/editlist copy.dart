@@ -7,14 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ffi';
 import 'package:flutter/services.dart';
 
-class EditList extends StatefulWidget {
-  const EditList({Key? key}) : super(key: key);
+class EditList2 extends StatefulWidget {
+  const EditList2({Key? key}) : super(key: key);
 
   @override
-  _EditListState createState() => _EditListState();
+  _EditList2State createState() => _EditList2State();
 }
 
-class _EditListState extends State<EditList> {
+class _EditList2State extends State<EditList2> {
   @override
   void initState() {
     super.initState();

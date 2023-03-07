@@ -1,41 +1,26 @@
-import 'dart:developer';
+ import 'package:flutter/material.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; 
+import '../editlist.dart';
 
-import 'package:flutter/material.dart';
-import 'package:scanmyfood/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'editlist.dart';
-
-class CreateList extends StatefulWidget {
-  const CreateList({Key? key}) : super(key: key);
+class CreateList2 extends StatefulWidget {
+  const CreateList2({Key? key}) : super(key: key);
 
   @override
-  _CreateListState createState() => _CreateListState();
+  _CreateList2State createState() => _CreateList2State();
 }
 
-List<String> _allLists = [];
 String instruction = "";
+String listName = "";
 String ingridientText = "";
 String listSaved = "";
 String nameExist = "";
 String fillAll = "";
 
-class _CreateListState extends State<CreateList> {
+class _CreateList2State extends State<CreateList2> {
   @override
   void initState() {
     super.initState();
     _loadSelectedLanguage();
-    loadOptions();
-  }
-
-  final _dropdownFormKey = GlobalKey<FormState>();
-  String? selectedValue = null;
-
-  Future<void> loadOptions() async {
-    final prefs = await SharedPreferences.getInstance();
-    final all = prefs.getStringList('mylist') ?? [];
-    setState(() {
-      _allLists = all;
-    });
   }
 
   void _loadSelectedLanguage() async {
@@ -54,7 +39,9 @@ class _CreateListState extends State<CreateList> {
         "Skapa din egen lista genom att välja ett namn för den och lägg sedan till objekten en efter en. När du har skrivit ett objekt klicka på plusikonen för att lägga till det i listan och klicka sedan på sparaikonen när du är klar. Om du vill rensa listan klicka på papperskorgen.";
     String instructionEs =
         "Cree su propia lista eligiendo un nombre para ella y luego agregue los elementos uno por uno. Una vez que escriba un elemento, haga clic en el ícono más para agregarlo a la lista y luego, cuando haya terminado, haga clic en el ícono Guardar. Si desea borrar la lista, haga clic en el icono de la papelera.";
-
+    String listNameEn = "List Name";
+    String listNameSe = "Namnlista";
+    String listNameEs = "Lista de nombres";
     String ingridientTextEn = "Ingredients i.e. chloride, sugar..";
     String ingridientTextSe = "Ingredienser som klorid, socker..";
     String ingridientTextEs = "Ingredientes, es decir, cloruro, azúcar...";
@@ -70,18 +57,21 @@ class _CreateListState extends State<CreateList> {
 
     if (language == null || selectedLanguage == 'English') {
       instruction = instructionEn;
+      listName = listNameEn;
       ingridientText = ingridientTextEn;
       listSaved = listSavedEn;
       nameExist = nameExistEn;
       fillAll = fillAllEn;
     } else if (language == 'Swedish') {
       instruction = instructionSe;
+      listName = listNameSe;
       ingridientText = ingridientTextSe;
       listSaved = listSavedSe;
       nameExist = nameExistSe;
       fillAll = fillAllSe;
     } else if (language == 'Spanish') {
       instruction = instructionEs;
+      listName = listNameEs;
       ingridientText = ingridientTextEs;
       listSaved = listSavedEs;
       nameExist = nameExistEs;
@@ -89,6 +79,7 @@ class _CreateListState extends State<CreateList> {
     }
   }
 
+  final _nameController = TextEditingController();
   final _ingredientsController = TextEditingController();
 
   List<String> ingredients = [];
@@ -105,35 +96,41 @@ class _CreateListState extends State<CreateList> {
   }
 
   checkInputs() {
+    final listName = _nameController.text;
     final myIngredients = ingredients;
 
-    if (myIngredients.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    if (listName == "" || myIngredients.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
         content: Text(fillAll),
       ));
       return;
     }
 
-    loadList();
+    loadList(listName);
   }
 
-  Future<void> loadList() async {
+  Future<void> loadList(String listName) async {
     final prefs = await SharedPreferences.getInstance();
-    final mylist = prefs.getStringList('mylist') ?? [];
+    final totalListsOld = prefs.getStringList("all") ?? [];
 
-    // if (mylist != []) {
-    //   // ignore: use_build_context_synchronously
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text(nameExist)),
-    //   );
-    //   return;
-    // }
-    await prefs.setStringList('mylist', ingredients);
+    if (totalListsOld.contains(listName)) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(nameExist)),
+      );
+      return;
+    }
+
+    totalListsOld.add(listName);
+    await prefs.setStringList("all", totalListsOld);
+
+    await prefs.setStringList(listName, ingredients);
 
     clearInputFields();
   }
 
   void clearInputFields() {
+    _nameController.clear();
     _ingredientsController.clear();
 
     setState(() {
@@ -146,6 +143,7 @@ class _CreateListState extends State<CreateList> {
   }
 
   void clearListtFields() {
+    _nameController.clear();
     _ingredientsController.clear();
 
     setState(() {
@@ -155,12 +153,8 @@ class _CreateListState extends State<CreateList> {
 
   void deleteAllLists() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('mylist');
-    FocusManager.instance.primaryFocus?.unfocus();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("List is deleted"),
-    ));
-    //clearInputFields();
+    await prefs.clear();
+    clearInputFields();
   }
 
   @override
@@ -180,6 +174,18 @@ class _CreateListState extends State<CreateList> {
               Text(
                 instruction,
                 style: const TextStyle(fontSize: 15),
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 30)),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          _nameController.clear();
+                        },
+                        icon: const Icon(Icons.clear)),
+                    hintText: listName),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Row(
@@ -248,91 +254,26 @@ class _CreateListState extends State<CreateList> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(
-                      icon: Image.asset('assets/images/eraser.png'),
-                      iconSize: 50,
-                      onPressed: () => clearListtFields(),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
                       icon: Image.asset('assets/images/trash.png'),
                       iconSize: 50,
-                      onPressed: () => deleteAllLists(),
+                      onPressed: () => clearListtFields(),
                     ),
                   ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 30)),
-
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => EditList(),
-              //       ),
-              //     );
-              //   },
-              //   child: const Text('Edit Your Lists'),
-              // ),
-              // const Padding(padding: EdgeInsets.only(right: 50)),
-              // Form(
-              //     key: _dropdownFormKey,
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         DropdownButtonFormField(
-              //           decoration: InputDecoration(
-              //             enabledBorder: OutlineInputBorder(
-              //               //borderSide: BorderSide(color:  Colors.green, width: 2),
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //             border: OutlineInputBorder(
-              //               //borderSide: BorderSide(color:   Colors.green, width: 2),
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //             filled: false,
-              //             // fillColor:  Colors.green,
-              //           ),
-              //           validator: (value) =>
-              //               value == null ? "Select a list" : null,
-              //           //dropdownColor:  Colors.green,
-              //           value: selectedValue,
-              //           hint: Text("selectList"),
-              //           onChanged: (String? newValue) {
-              //             setState(() {});
-              //           },
-              //           items: _allLists
-              //               .map<DropdownMenuItem<String>>((String value) {
-              //             loadOptions();
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(
-              //                 value,
-              //                 textAlign: TextAlign.right,
-              //                 style: const TextStyle(
-              //                   fontSize: 20.0,
-              //                   fontWeight: FontWeight.bold,
-              //                   color: Color.fromARGB(255, 41, 41, 41),
-              //                 ),
-              //               ),
-              //             );
-              //           }).toList(),
-              //         ),
-              //         // ElevatedButton(
-              //         //     onPressed: () {
-              //         //       if (_dropdownFormKey.currentState!.validate()) {
-              //         //          setState(() {
-              //         //           chosenlist = selectedValue!;
-              //         //         });
-              //         //       }
-              //         //     },
-              //         //     child: Text("Submit"))
-              //       ],
-              //     )),
-            
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditList(),
+                    ),
+                  );
+                },
+                child: const Text('Edit Your Lists'),
+              ),
+              const Padding(padding: EdgeInsets.only(right: 50)),
             ],
           ),
         ),
