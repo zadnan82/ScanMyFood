@@ -7,7 +7,7 @@ import 'mylist.dart';
 import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,11 +23,11 @@ class _HomePageState extends State<HomePage> {
   String? language = "";
   String flag = "";
   int index = 0;
-  final switchScreens = [Language(), FoodPage(), CreateList(), MyList()];
+  final switchScreens = [const Language(), const FoodPage(), const CreateList(), const MyList()];
 
   Future getLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    language = await prefs.getString('language');
+    language =  prefs.getString('language');
 
     if (language == null || language == 'English') {
       setState(() {
@@ -46,32 +46,17 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    getLanguage();
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  //   getLanguage();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: const [
-      //       Image(
-      //         image: AssetImage("assets/images/search.png"),
-      //         height: 50,
-      //         width: 50,
-      //       ),
-      //       SizedBox(
-      //         width: 10,
-      //       ),
-      //       Text('CheckMe')
-      //     ],
-      //   ),
-      // ),
+       
       body: _getPage(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -89,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const BottomNavigationBarItem(
             icon: Image(
-              image: AssetImage("assets/images/food.png"),
+              image: AssetImage("assets/images/foodcan.png"),
               width: 50,
               height: 50,
             ),
@@ -126,14 +111,14 @@ class _HomePageState extends State<HomePage> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return Language();
+        return const Language();
       case 1:
-        return FoodPage();
+        return const FoodPage();
       case 2:
-        return CreateList();
+        return const CreateList();
 
          case 3:
-        return MyList();
+        return const MyList();
 
       default:
         return Container();

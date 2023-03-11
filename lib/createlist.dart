@@ -1,42 +1,30 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:scanmyfood/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'editlist.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CreateListState createState() => _CreateListState();
 }
-
-List<String> _allLists = [];
-String instruction = "";
-String ingridientText = "";
-String listSaved = "";
-String nameExist = "";
-String fillAll = "";
 
 class _CreateListState extends State<CreateList> {
   @override
   void initState() {
     super.initState();
     _loadSelectedLanguage();
-    loadOptions();
   }
 
-  final _dropdownFormKey = GlobalKey<FormState>();
-  String? selectedValue = null;
-
-  Future<void> loadOptions() async {
-    final prefs = await SharedPreferences.getInstance();
-    final all = prefs.getStringList('mylist') ?? [];
-    setState(() {
-      _allLists = all;
-    });
-  }
+  String instruction = "";
+  String ingridientText = "";
+  String listSaved = "";
+  String nameExist = "";
+  String fillAll = "";
+  String listDeleted = "";
+  final _ingredientsController = TextEditingController();
+  List<String> ingredients = [];
+  String litToShow = "";
 
   void _loadSelectedLanguage() async {
     String selectedLanguage = "";
@@ -67,6 +55,9 @@ class _CreateListState extends State<CreateList> {
     String fillAllEn = "Fill all the forms";
     String fillAllSe = "Fyll i alla formulär";
     String fillAllEs = "Rellena todos los formularios";
+    String listDeletedEn = "Your list is deleted!";
+    String listDeletedSe = "Din lista är borttagen!";
+    String listDeletedEs = "¡Tu lista ha sido eliminada!";
 
     if (language == null || selectedLanguage == 'English') {
       instruction = instructionEn;
@@ -74,68 +65,55 @@ class _CreateListState extends State<CreateList> {
       listSaved = listSavedEn;
       nameExist = nameExistEn;
       fillAll = fillAllEn;
+      listDeleted = listDeletedEn;
     } else if (language == 'Swedish') {
       instruction = instructionSe;
       ingridientText = ingridientTextSe;
       listSaved = listSavedSe;
       nameExist = nameExistSe;
       fillAll = fillAllSe;
+      listDeleted = listDeletedSe;
     } else if (language == 'Spanish') {
       instruction = instructionEs;
       ingridientText = ingridientTextEs;
       listSaved = listSavedEs;
       nameExist = nameExistEs;
       fillAll = fillAllEs;
+      listDeleted = listDeletedEs;
     }
   }
-
-  final _ingredientsController = TextEditingController();
-
-  List<String> ingredients = [];
 
   void addIngredient() {
     final ingredient = _ingredientsController.text;
     if (ingredient.isNotEmpty) {
       setState(() {
         ingredients.add(ingredient.toLowerCase().trim());
+         litToShow = 
+              litToShow + ingredient + ", ";
       });
-
       _ingredientsController.clear();
     }
   }
 
   checkInputs() {
     final myIngredients = ingredients;
-
     if (myIngredients.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(fillAll),
       ));
       return;
     }
-
     loadList();
   }
 
   Future<void> loadList() async {
     final prefs = await SharedPreferences.getInstance();
-    final mylist = prefs.getStringList('mylist') ?? [];
-
-    // if (mylist != []) {
-    //   // ignore: use_build_context_synchronously
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text(nameExist)),
-    //   );
-    //   return;
-    // }
     await prefs.setStringList('mylist', ingredients);
-
     clearInputFields();
   }
 
   void clearInputFields() {
     _ingredientsController.clear();
-
     setState(() {
       ingredients = [];
     });
@@ -157,8 +135,9 @@ class _CreateListState extends State<CreateList> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('mylist');
     FocusManager.instance.primaryFocus?.unfocus();
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("List is deleted"),
+      content: Text(listDeleted),
     ));
     //clearInputFields();
   }
@@ -209,28 +188,38 @@ class _CreateListState extends State<CreateList> {
                   ),
                 ],
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: ingredients.length,
-                  itemBuilder: (_, i) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment
-                            .center, // Align however you like (i.e .centerRight, centerLeft)
-                        child: Text(
-                          ingredients[i],
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            color: Color.fromARGB(255, 41, 41, 41),
-                          ),
+                 const Padding(padding: EdgeInsets.all(30.0)),
+
+                 Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Text(
+                          litToShow,
+                          style: const TextStyle(fontSize: 15),
                         ),
-                      ),
-                    );
-                  }),
-              const Padding(padding: EdgeInsets.only(bottom: 30)),
+                    ),
+
+               const Padding(padding: EdgeInsets.all(30.0)),
+              // ListView.builder(
+              //     shrinkWrap: true,
+              //     padding: EdgeInsets.zero,
+              //     itemCount: ingredients.length,
+              //     itemBuilder: (_, i) {
+              //       return Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Align(
+              //           alignment: Alignment.center,
+              //           child: Text(
+              //             ingredients[i],
+              //             textAlign: TextAlign.start,
+              //             style: const TextStyle(
+              //               fontSize: 14.0,
+              //               color: Color.fromARGB(255, 41, 41, 41),
+              //             ),
+              //           ),
+              //         ),
+              //       );
+              //     }),
+              
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -265,74 +254,6 @@ class _CreateListState extends State<CreateList> {
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 30)),
-
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => EditList(),
-              //       ),
-              //     );
-              //   },
-              //   child: const Text('Edit Your Lists'),
-              // ),
-              // const Padding(padding: EdgeInsets.only(right: 50)),
-              // Form(
-              //     key: _dropdownFormKey,
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         DropdownButtonFormField(
-              //           decoration: InputDecoration(
-              //             enabledBorder: OutlineInputBorder(
-              //               //borderSide: BorderSide(color:  Colors.green, width: 2),
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //             border: OutlineInputBorder(
-              //               //borderSide: BorderSide(color:   Colors.green, width: 2),
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //             filled: false,
-              //             // fillColor:  Colors.green,
-              //           ),
-              //           validator: (value) =>
-              //               value == null ? "Select a list" : null,
-              //           //dropdownColor:  Colors.green,
-              //           value: selectedValue,
-              //           hint: Text("selectList"),
-              //           onChanged: (String? newValue) {
-              //             setState(() {});
-              //           },
-              //           items: _allLists
-              //               .map<DropdownMenuItem<String>>((String value) {
-              //             loadOptions();
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(
-              //                 value,
-              //                 textAlign: TextAlign.right,
-              //                 style: const TextStyle(
-              //                   fontSize: 20.0,
-              //                   fontWeight: FontWeight.bold,
-              //                   color: Color.fromARGB(255, 41, 41, 41),
-              //                 ),
-              //               ),
-              //             );
-              //           }).toList(),
-              //         ),
-              //         // ElevatedButton(
-              //         //     onPressed: () {
-              //         //       if (_dropdownFormKey.currentState!.validate()) {
-              //         //          setState(() {
-              //         //           chosenlist = selectedValue!;
-              //         //         });
-              //         //       }
-              //         //     },
-              //         //     child: Text("Submit"))
-              //       ],
-              //     )),
-            
             ],
           ),
         ),

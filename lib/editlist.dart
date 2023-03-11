@@ -1,16 +1,11 @@
-import 'dart:developer';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ffi';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class EditList extends StatefulWidget {
   const EditList({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditListState createState() => _EditListState();
 }
 

@@ -30,7 +30,7 @@ class _FoodPageState extends State<FoodPage> {
   String? language = "";
   List<String> words = [];
   String _selectedLanguage = "";
-
+  List<String> foodList = [];
   String dangerousItemsDetected = "";
   String textEn =
       "Here you will use our standard list of dangerous items! Click on the camera icon to scan the ingridents text of the product or on the gallery icon to access your device album. To create your own list click on the pen in the bottom and then the little man icon down there to use your own list of items!";
@@ -40,16 +40,7 @@ class _FoodPageState extends State<FoodPage> {
       "¡Aquí usará nuestra lista estándar de elementos peligrosos! Haga clic en el ícono de la cámara para escanear el texto de los componentes del producto o en el ícono de la galería para acceder al álbum de su dispositivo. Para crear su propia lista, haga clic en el bolígrafo en la parte inferior y luego ¡el ícono del hombrecito ahí abajo para usar tu propia lista de elementos!";
   String warning1 = "";
   String warning2 = "";
-
-  void _loadSelectedLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('language');
-    if (language != null) {
-      setState(() {
-        _selectedLanguage = language;
-      });
-    }
-  }
+  String ourList = "";
 
   List<String> chemicalsFoodEn = [
     "1,3-dichloro-2-propanol",
@@ -666,6 +657,92 @@ class _FoodPageState extends State<FoodPage> {
     "β-mirceno"
   ];
 
+  void _loadSelectedLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final language = prefs.getString('language');
+    if (language != null) {
+      setState(() {
+        _selectedLanguage = language;
+      });
+    }
+
+    String warning1En = "Items found: ";
+    String warning1Se = "Hittade ämnen:";
+    String warning1Es = "Artículos encontrados: ";
+    String ourListEn = "Our List";
+    String ourListSe = "Vår Lista";
+    String ourListEs = "Nuestra Lista";
+
+    if (language == null || language == 'English') {
+      foodList = chemicalsFoodEn;
+      warning1 = warning1En;
+      ourList = ourListEn;
+    } else if (language == 'Swedish') {
+      foodList = chemicalsFoodSe;
+      warning1 = warning1Se;
+      ourList = ourListSe;
+    } else if (language == 'Spanish') {
+      foodList = chemicalsFoodEs;
+      warning1 = warning1Es;
+      ourList = ourListEs;
+    }
+  }
+
+  void getRecognisedText(XFile image) async {
+    words = [];
+    dangerousItemsDetected = "";
+    counter = 0;
+    textScanning = false;
+    message = "";
+    warning = false;
+
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textDetector = GoogleMlKit.vision.textRecognizer();
+    RecognizedText recognisedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        String lineText = line.text;
+        List<String> words = lineText.split(',');
+
+        for (String word in words) {
+          String processedWord = word.toLowerCase().trim();
+
+          processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
+
+          if (foodList.contains(processedWord)) {
+            warning = true;
+            counter++;
+            dangerousItemsDetected =
+               // " * " + dangerousItemsDetected + processedWord + "\n";
+                 " * $dangerousItemsDetected$processedWord\n";
+          }
+        }
+      }
+    }
+
+    textScanning = false;
+    setState(() {});
+  }
+
+  void getImage(ImageSource source) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+        textScanning = true;
+        imageFile = pickedImage;
+        setState(() {});
+        getRecognisedText(pickedImage);
+      }
+    } catch (e) {
+      textScanning = false;
+      imageFile = null;
+      message = "Error occured while scanning";
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -676,18 +753,62 @@ class _FoodPageState extends State<FoodPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // IconButton(
-                //   icon: Image.asset('assets/images/person.png'),
-                //   iconSize: 50,
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => MyList(),
-                //       ),
-                //     );
-                //   },
-                // ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: Colors
+                          .lightGreen, //background color of dropdown button
+                      border: Border.all(
+                          color: Colors.black38,
+                          width: 3), //border of dropdown button
+                      borderRadius: BorderRadius.circular(
+                          50), //border raiuds of dropdown button
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.57), blurRadius: 5)
+                      ]),
+                  child: PhysicalModel(
+                    elevation: 8,
+                    borderRadius: BorderRadius.circular(20),
+                    shadowColor: Colors.black,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: DropdownButton<String>(
+                        hint: Text(ourList),
+                        onChanged: (String? value) {
+                          setState(() {});
+                        },
+                        items: foodList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 50, right: 45),
+                              child: Text(
+                                value,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color.fromARGB(255, 41, 41, 41),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                        underline: Container(),
+                        icon: const Padding(
+                            padding: EdgeInsets.only(left: 20, right: 20),
+                            child: Icon(Icons.arrow_drop_down)),
+                        iconEnabledColor: Colors.black, //Icon color
+                        iconSize: 30,
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
                 if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
                   _selectedLanguage == 'English'
@@ -734,10 +855,10 @@ class _FoodPageState extends State<FoodPage> {
                     ),
                     warning
                         ? Text(
-                            "$warning1  ${counter.toString()} $warning2",
+                            "$warning1 ",
                             style: const TextStyle(fontSize: 20),
                           )
-                        : Text(""),
+                        : const Text(""),
                     const SizedBox(
                       height: 20,
                     ),
@@ -754,86 +875,5 @@ class _FoodPageState extends State<FoodPage> {
             )),
       )),
     );
-  }
-
-  void getImage(ImageSource source) async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(source: source);
-      if (pickedImage != null) {
-        textScanning = true;
-        imageFile = pickedImage;
-        setState(() {});
-        getRecognisedText(pickedImage);
-      }
-    } catch (e) {
-      textScanning = false;
-      imageFile = null;
-      message = "Error occured while scanning";
-      setState(() {});
-    }
-  }
-
-  void getRecognisedText(XFile image) async {
-    List<String> foodList = [];
-    final prefs = await SharedPreferences.getInstance();
-    language = prefs.getString('language');
-
-    String warning1En = "Warning!! there are ";
-    String warning2En = " harmful items in this product!";
-    String warning1Se = "Varning!! det finns ";
-    String warning2Se = " skadliga föremål i denna produkt!";
-    String warning1Es = "¡¡Advertencia!! hay ";
-    String warning2Es = " artículos dañinos en este producto!";
-
-    if (language == null || language == 'English') {
-      foodList = chemicalsFoodEn;
-      warning1 = warning1En;
-      warning2 = warning2En;
-    } else if (language == 'Swedish') {
-      foodList = chemicalsFoodSe;
-       warning1 = warning1Se;
-      warning2 = warning2Se;
-    } else if (language == 'Spanish') {
-      foodList = chemicalsFoodEs;
-       warning1 = warning1Es;
-      warning2 = warning2Es;
-    }
-
-    words = [];
-    dangerousItemsDetected = "";
-    counter = 0;
-    textScanning = false;
-    message = "";
-    warning = false;
-
-    final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = GoogleMlKit.vision.textRecognizer();
-    RecognizedText recognisedText = await textDetector.processImage(inputImage);
-    await textDetector.close();
-
-    for (TextBlock block in recognisedText.blocks) {
-      for (TextLine line in block.lines) {
-        String lineText = line.text;
-        List<String> words = lineText.split(',');
-
-        for (String word in words) {
-          String processedWord = word.toLowerCase().trim();
-
-          processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
-
-          if (foodList.contains(processedWord)) {
-            warning = true; 
-            counter++;
-            //wordsText = processedWord;
-            //wordsText = wordsText + line.text + "\n";
-            dangerousItemsDetected =
-                dangerousItemsDetected + processedWord + "\n";
-          }
-        }
-      }
-    }
-
-    textScanning = false;
-    setState(() {});
   }
 }
