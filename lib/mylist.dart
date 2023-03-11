@@ -11,10 +11,6 @@ class MyList extends StatefulWidget {
   MyListState createState() => MyListState();
 }
 
-String selectList = "";
-String warning1 = "";
-String warning2 = "";
-
 class MyListState extends State<MyList> {
   @override
   void initState() {
@@ -23,6 +19,7 @@ class MyListState extends State<MyList> {
     _loadSelectedLanguage();
   }
 
+  String selectedLanguage = "";
   XFile? imageFile;
   int counter = 0;
   bool textScanning = false;
@@ -30,23 +27,31 @@ class MyListState extends State<MyList> {
   String message = "";
   String? language = "";
   String chosenlist = "";
-  List<String> _allLists = [];
+  List<String> _mylist = [];
   List<String> mylist = [];
   List<String> words = [];
   String dangerousItemsDetected = "";
-  final _dropdownFormKey = GlobalKey<FormState>();
-  String? selectedValue = null;
+  String? selectedValue;
+  String textEn =
+      "Here you can use you own list that you have created and saved on your device! if you haen't yet then click on the pen in the bottom of the page and start creating you own list of unwanted items!";
+  String textSe =
+      "Här kan du använda din egen lista som du har skapat och sparat på din enhet! om du inte har gjort det ännu, klicka på pennan längst ner på sidan och börja skapa din egen lista över oönskade föremål!";
+  String textEs =
+      "¡Aquí puede usar su propia lista que ha creado y guardado en su dispositivo! Si aún no lo ha hecho, haga clic en el bolígrafo en la parte inferior de la página y comience a crear su propia lista de elementos no deseados";
+  String warning1 = "";
+  String warning2 = "";
+  String yourList = "";
+  String selectList = "";
 
   Future<void> loadOptions() async {
     final prefs = await SharedPreferences.getInstance();
-    final all = prefs.getStringList('all') ?? [];
+    final mylist = prefs.getStringList('mylist') ?? [];
     setState(() {
-      _allLists = all;
+      _mylist = mylist;
     });
   }
 
   void _loadSelectedLanguage() async {
-    String selectedLanguage = "";
     final prefs = await SharedPreferences.getInstance();
     final language = prefs.getString('language');
     if (language != null) {
@@ -54,83 +59,60 @@ class MyListState extends State<MyList> {
         selectedLanguage = language;
       });
     }
-    String warning1En = "Warning!! there are ";
-    String warning2En = " harmful items in this product!";
-    String warning1Se = "Varning!! det finns ";
-    String warning2Se = " skadliga föremål i denna produkt!";
-    String warning1Es = "¡¡Advertencia!! hay ";
-    String warning2Es = " artículos dañinos en este producto!";
-    String selectListEn = "Select a List";
-    String selectListSe = "Välj en lista";
-    String selectListEs = "Seleccione una lista";
-
+    String warning1En = "Items found: ";
+    String warning1Se = "Hittade ämnen:";
+    String warning1Es = "Artículos encontrados: ";
+    String yourListEn = "Your List";
+    String yourListSe = "Din Lista";
+    String yourListEs = "Tu Lista";
     if (language == null || language == 'English') {
       warning1 = warning1En;
-      warning2 = warning2En;
-      selectList = selectListEn;
+      yourList = yourListEn;
     } else if (language == 'Swedish') {
       warning1 = warning1Se;
-      warning2 = warning2Se;
-      selectList = selectListSe;
+      yourList = yourListSe;
     } else if (language == 'Spanish') {
       warning1 = warning1Es;
-      warning2 = warning2Es;
-      selectList = selectListEs;
+      yourList = yourListEs;
     }
   }
 
   void getRecognisedText(XFile image) async {
     final prefs = await SharedPreferences.getInstance();
-    mylist = prefs.getStringList(chosenlist) ?? [];
-
-    
+    mylist = prefs.getStringList('mylist') ?? [];
     words = [];
     dangerousItemsDetected = "";
     counter = 0;
     textScanning = false;
     message = "";
     warning = false;
-
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognisedText = await textDetector.processImage(inputImage);
     await textDetector.close();
-
     for (TextBlock block in recognisedText.blocks) {
       for (TextLine line in block.lines) {
         String lineText = line.text;
         List<String> words = lineText.split(',');
-
         for (String word in words) {
           String processedWord = word.toLowerCase().trim();
-
           processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
 
           if (mylist.contains(processedWord)) {
             warning = true;
             counter++;
-            //wordsText = processedWord;
-            //wordsText = wordsText + line.text + "\n";
             dangerousItemsDetected =
-                dangerousItemsDetected + processedWord + "\n";
+                // " * " + dangerousItemsDetected + processedWord + "\n";
+                 " * $dangerousItemsDetected$processedWord\n";
           }
         }
       }
     }
-
     textScanning = false;
     setState(() {});
   }
 
   void getImage(ImageSource source) async {
-
-   if (chosenlist == "") {
-      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-        content: Text(selectList),
-      ));
-      return;
-    }
-
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage != null) {
@@ -150,16 +132,6 @@ class MyListState extends State<MyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //       appBar: AppBar(
-      //          iconTheme: IconThemeData(
-      //   color: Colors.black, //change your color here
-      // ),
-      //         backgroundColor: Colors.white,
-      //       // ignore: prefer_const_constructors
-      //       title: Text('Your Own Lists' , style: TextStyle(color: Color.fromARGB(255, 11, 12, 12)), //<-- SEE HERE),
-      //        )
-
-      //     ),
       body: Center(
           child: SingleChildScrollView(
         child: Container(
@@ -167,99 +139,69 @@ class MyListState extends State<MyList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Form(
-                    key: _dropdownFormKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DropdownButtonFormField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              //borderSide: BorderSide(color:  Colors.green, width: 2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            border: OutlineInputBorder(
-                              //borderSide: BorderSide(color:   Colors.green, width: 2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            filled: false,
-                            // fillColor:  Colors.green,
-                          ),
-                          validator: (value) =>
-                              value == null ? "Select a list" : null,
-                          //dropdownColor:  Colors.green,
-                          value: selectedValue,
-                          hint: Text(selectList),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              chosenlist = newValue!;
-                            });
-                          },
-                          items: _allLists
-                              .map<DropdownMenuItem<String>>((String value) {
-                            loadOptions();
-                            return DropdownMenuItem<String>(
-                              value: value,
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: Colors.lightGreen,
+                      border: Border.all(color: Colors.black38, width: 3),
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.57), blurRadius: 5)
+                      ]),
+                  child: PhysicalModel(
+                    elevation: 8,
+                    borderRadius: BorderRadius.circular(20),
+                    shadowColor: Colors.black,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: DropdownButton<String>(
+                        hint: Text(yourList),
+                        onChanged: (String? value) {
+                          setState(() {});
+                        },
+                        items: _mylist
+                            .map<DropdownMenuItem<String>>((String value) {
+                          loadOptions();
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 50, right: 45),
                               child: Text(
                                 value,
-                                textAlign: TextAlign.right,
+                                textAlign: TextAlign.center,
                                 style: const TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
                                   color: Color.fromARGB(255, 41, 41, 41),
                                 ),
                               ),
-                            );
-                          }).toList(),
-                        ),
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       if (_dropdownFormKey.currentState!.validate()) {
-                        //          setState(() {
-                        //           chosenlist = selectedValue!;
-                        //         });
-                        //       }
-                        //     },
-                        //     child: Text("Submit"))
-                      ],
-                    )),
-                // DropdownButton<String>(
-                //   value: _allLists.isEmpty
-                //       ? null
-                //       : chosenlist == ""
-                //           ? _allLists.first
-                //           : chosenlist,
-                //   onChanged: (String? value) {
-                //     setState(() {
-                //       chosenlist = value!;
-                //     });
-                //   },
-                //   items:
-                //       _allLists.map<DropdownMenuItem<String>>((String value) {
-                //     loadOptions();
-                //     return DropdownMenuItem<String>(
-                //       value: value,
-                //       child: Text(value ,
-                //                 textAlign: TextAlign.center,
-                //                 style: const TextStyle(
-                //                 fontSize: 20.0,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Color.fromARGB(255, 41, 41, 41),
-                //               ),
-                //             ),
-                //     );
-                //   }).toList(),
-                // ),
-
-                const Padding(padding: EdgeInsets.only(bottom: 30)),
-
+                            ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                        underline: Container(),
+                        icon: const Padding(
+                            //Icon at tail, arrow bottom is default icon
+                            padding: EdgeInsets.only(left: 20, right: 20),
+                            child: Icon(Icons.arrow_drop_down)),
+                        iconEnabledColor: Colors.black, //Icon color
+                        iconSize: 30,
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 100)),
                 if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
-                  Container(
-                    width: 300,
-                    height: 300,
-                    color: Colors.grey[300]!,
-                  ),
+                  selectedLanguage == 'English'
+                      ? Text(textEn)
+                      : selectedLanguage == 'Swedish'
+                          ? Text(textSe)
+                          : selectedLanguage == 'Spanish'
+                              ? Text(textEs)
+                              : Text(textEn),
                 if (imageFile != null)
                   Image.file(File(imageFile!.path),
                       height: 200, fit: BoxFit.fill),
@@ -297,14 +239,13 @@ class MyListState extends State<MyList> {
                     ),
                     warning
                         ? Text(
-                            "$warning1 ${counter.toString()} $warning2",
+                            "$warning1 ",
                             style: const TextStyle(fontSize: 20),
                           )
-                        : Text(""),
+                        : const Text(""),
                     const SizedBox(
                       height: 20,
                     ),
-
                     Text(
                       dangerousItemsDetected,
                       style: const TextStyle(fontSize: 20),
@@ -312,10 +253,6 @@ class MyListState extends State<MyList> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // Text(
-                    //   "Be careful, there are ${counter.toString()} dangerous substances in this item",
-                    //   style: const TextStyle(fontSize: 20),
-                    // ),
                   ],
                 )
               ],

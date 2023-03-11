@@ -1,30 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+ import 'package:flutter/material.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; 
+import '../editlist.dart';
 
-class CreateList extends StatefulWidget {
-  const CreateList({Key? key}) : super(key: key);
+class CreateList2 extends StatefulWidget {
+  const CreateList2({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CreateListState createState() => _CreateListState();
+  _CreateList2State createState() => _CreateList2State();
 }
 
-class _CreateListState extends State<CreateList> {
+String instruction = "";
+String listName = "";
+String ingridientText = "";
+String listSaved = "";
+String nameExist = "";
+String fillAll = "";
+
+class _CreateList2State extends State<CreateList2> {
   @override
   void initState() {
     super.initState();
     _loadSelectedLanguage();
   }
-
-  String instruction = "";
-  String ingridientText = "";
-  String listSaved = "";
-  String nameExist = "";
-  String fillAll = "";
-  String listDeleted = "";
-  final _ingredientsController = TextEditingController();
-  List<String> ingredients = [];
-  String litToShow = "";
 
   void _loadSelectedLanguage() async {
     String selectedLanguage = "";
@@ -42,7 +39,9 @@ class _CreateListState extends State<CreateList> {
         "Skapa din egen lista genom att välja ett namn för den och lägg sedan till objekten en efter en. När du har skrivit ett objekt klicka på plusikonen för att lägga till det i listan och klicka sedan på sparaikonen när du är klar. Om du vill rensa listan klicka på papperskorgen.";
     String instructionEs =
         "Cree su propia lista eligiendo un nombre para ella y luego agregue los elementos uno por uno. Una vez que escriba un elemento, haga clic en el ícono más para agregarlo a la lista y luego, cuando haya terminado, haga clic en el ícono Guardar. Si desea borrar la lista, haga clic en el icono de la papelera.";
-
+    String listNameEn = "List Name";
+    String listNameSe = "Namnlista";
+    String listNameEs = "Lista de nombres";
     String ingridientTextEn = "Ingredients i.e. chloride, sugar..";
     String ingridientTextSe = "Ingredienser som klorid, socker..";
     String ingridientTextEs = "Ingredientes, es decir, cloruro, azúcar...";
@@ -55,65 +54,85 @@ class _CreateListState extends State<CreateList> {
     String fillAllEn = "Fill all the forms";
     String fillAllSe = "Fyll i alla formulär";
     String fillAllEs = "Rellena todos los formularios";
-    String listDeletedEn = "Your list is deleted!";
-    String listDeletedSe = "Din lista är borttagen!";
-    String listDeletedEs = "¡Tu lista ha sido eliminada!";
 
     if (language == null || selectedLanguage == 'English') {
       instruction = instructionEn;
+      listName = listNameEn;
       ingridientText = ingridientTextEn;
       listSaved = listSavedEn;
       nameExist = nameExistEn;
       fillAll = fillAllEn;
-      listDeleted = listDeletedEn;
     } else if (language == 'Swedish') {
       instruction = instructionSe;
+      listName = listNameSe;
       ingridientText = ingridientTextSe;
       listSaved = listSavedSe;
       nameExist = nameExistSe;
       fillAll = fillAllSe;
-      listDeleted = listDeletedSe;
     } else if (language == 'Spanish') {
       instruction = instructionEs;
+      listName = listNameEs;
       ingridientText = ingridientTextEs;
       listSaved = listSavedEs;
       nameExist = nameExistEs;
       fillAll = fillAllEs;
-      listDeleted = listDeletedEs;
     }
   }
+
+  final _nameController = TextEditingController();
+  final _ingredientsController = TextEditingController();
+
+  List<String> ingredients = [];
 
   void addIngredient() {
     final ingredient = _ingredientsController.text;
     if (ingredient.isNotEmpty) {
       setState(() {
         ingredients.add(ingredient.toLowerCase().trim());
-         litToShow = 
-              litToShow + ingredient + ", ";
       });
+
       _ingredientsController.clear();
     }
   }
 
   checkInputs() {
+    final listName = _nameController.text;
     final myIngredients = ingredients;
-    if (myIngredients.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+
+    if (listName == "" || myIngredients.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
         content: Text(fillAll),
       ));
       return;
     }
-    loadList();
+
+    loadList(listName);
   }
 
-  Future<void> loadList() async {
+  Future<void> loadList(String listName) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('mylist', ingredients);
+    final totalListsOld = prefs.getStringList("all") ?? [];
+
+    if (totalListsOld.contains(listName)) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(nameExist)),
+      );
+      return;
+    }
+
+    totalListsOld.add(listName);
+    await prefs.setStringList("all", totalListsOld);
+
+    await prefs.setStringList(listName, ingredients);
+
     clearInputFields();
   }
 
   void clearInputFields() {
+    _nameController.clear();
     _ingredientsController.clear();
+
     setState(() {
       ingredients = [];
     });
@@ -124,6 +143,7 @@ class _CreateListState extends State<CreateList> {
   }
 
   void clearListtFields() {
+    _nameController.clear();
     _ingredientsController.clear();
 
     setState(() {
@@ -133,13 +153,8 @@ class _CreateListState extends State<CreateList> {
 
   void deleteAllLists() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('mylist');
-    FocusManager.instance.primaryFocus?.unfocus();
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(listDeleted),
-    ));
-    //clearInputFields();
+    await prefs.clear();
+    clearInputFields();
   }
 
   @override
@@ -159,6 +174,18 @@ class _CreateListState extends State<CreateList> {
               Text(
                 instruction,
                 style: const TextStyle(fontSize: 15),
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 30)),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          _nameController.clear();
+                        },
+                        icon: const Icon(Icons.clear)),
+                    hintText: listName),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Row(
@@ -188,38 +215,28 @@ class _CreateListState extends State<CreateList> {
                   ),
                 ],
               ),
-                 const Padding(padding: EdgeInsets.all(30.0)),
-
-                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:Text(
-                          litToShow,
-                          style: const TextStyle(fontSize: 15),
+              ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: ingredients.length,
+                  itemBuilder: (_, i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment
+                            .center, // Align however you like (i.e .centerRight, centerLeft)
+                        child: Text(
+                          ingredients[i],
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Color.fromARGB(255, 41, 41, 41),
+                          ),
                         ),
-                    ),
-
-               const Padding(padding: EdgeInsets.all(30.0)),
-              // ListView.builder(
-              //     shrinkWrap: true,
-              //     padding: EdgeInsets.zero,
-              //     itemCount: ingredients.length,
-              //     itemBuilder: (_, i) {
-              //       return Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Align(
-              //           alignment: Alignment.center,
-              //           child: Text(
-              //             ingredients[i],
-              //             textAlign: TextAlign.start,
-              //             style: const TextStyle(
-              //               fontSize: 14.0,
-              //               color: Color.fromARGB(255, 41, 41, 41),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     }),
-              
+                      ),
+                    );
+                  }),
+              const Padding(padding: EdgeInsets.only(bottom: 30)),
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -237,23 +254,26 @@ class _CreateListState extends State<CreateList> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(
-                      icon: Image.asset('assets/images/eraser.png'),
-                      iconSize: 50,
-                      onPressed: () => clearListtFields(),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
                       icon: Image.asset('assets/images/trash.png'),
                       iconSize: 50,
-                      onPressed: () => deleteAllLists(),
+                      onPressed: () => clearListtFields(),
                     ),
                   ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 30)),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditList(),
+                    ),
+                  );
+                },
+                child: const Text('Edit Your Lists'),
+              ),
+              const Padding(padding: EdgeInsets.only(right: 50)),
             ],
           ),
         ),

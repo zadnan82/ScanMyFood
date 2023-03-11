@@ -3,6 +3,8 @@ import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Language extends StatefulWidget {
+  const Language({super.key});
+
 
 
   @override
@@ -12,20 +14,16 @@ class Language extends StatefulWidget {
 class _LanguageState extends State<Language> {
   @override
   void initState() {
-    super.initState();
-     _loadSelectedLanguage();
+    super.initState(); 
   }
-
-  String _selectedLanguage = "";
+ 
 
   void _selectLanguage(String language) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', language);
+ 
 
-    setState(() {
-      _selectedLanguage = language;
-    });
-
+  // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Language is changed, klick on the hamburger to start scanning"),
       ));
@@ -49,15 +47,7 @@ class _LanguageState extends State<Language> {
   //   );
   // }
 
-  void _loadSelectedLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('language');
-    if (language != null) {
-      setState(() {
-        _selectedLanguage = language;
-      });
-    }
-  }
+   
 
   @override
   Widget build(BuildContext context) {

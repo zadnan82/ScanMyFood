@@ -4,10 +4,12 @@ import 'package:scanmyfood/home_page.dart';
 
 
 void main() {
-  runApp( MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.green,
               primaryColor: Colors.white,
             ),
-            home: HomePage(),
+            home: const HomePage(),
           );
         } else if (snapshot.hasError) {
           return const MaterialApp(
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.grey,
             primaryColor: Colors.white,
           ),
-          home: HomePage(),
+          home: const HomePage(),
         );
       },
     );
