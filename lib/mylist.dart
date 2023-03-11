@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scanmyfood/shared_prefs.dart'; 
 
 class MyList extends StatefulWidget {
   const MyList({super.key});
@@ -14,24 +14,17 @@ class MyList extends StatefulWidget {
 class MyListState extends State<MyList> {
   @override
   void initState() {
-    super.initState();
-    loadOptions();
+    super.initState(); 
     _loadSelectedLanguage();
   }
-
-  String selectedLanguage = "";
+ 
   XFile? imageFile;
   int counter = 0;
   bool textScanning = false;
   bool warning = false;
   String message = "";
-  String? language = "";
-  String chosenlist = "";
-  List<String> _mylist = [];
-  List<String> mylist = [];
   List<String> words = [];
   String dangerousItemsDetected = "";
-  String? selectedValue;
   String textEn =
       "Here you can use you own list that you have created and saved on your device! if you haen't yet then click on the pen in the bottom of the page and start creating you own list of unwanted items!";
   String textSe =
@@ -40,46 +33,34 @@ class MyListState extends State<MyList> {
       "¡Aquí puede usar su propia lista que ha creado y guardado en su dispositivo! Si aún no lo ha hecho, haga clic en el bolígrafo en la parte inferior de la página y comience a crear su propia lista de elementos no deseados";
   String warning1 = "";
   String warning2 = "";
-  String yourList = "";
-  String selectList = "";
-
-  Future<void> loadOptions() async {
-    final prefs = await SharedPreferences.getInstance();
-    final mylist = prefs.getStringList('mylist') ?? [];
-    setState(() {
-      _mylist = mylist;
-    });
-  }
+  String yourList = ""; 
+  String textExplain = "";
+ 
 
   void _loadSelectedLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('language');
-    if (language != null) {
-      setState(() {
-        selectedLanguage = language;
-      });
-    }
+    
     String warning1En = "Items found: ";
     String warning1Se = "Hittade ämnen:";
     String warning1Es = "Artículos encontrados: ";
     String yourListEn = "Your List";
     String yourListSe = "Din Lista";
     String yourListEs = "Tu Lista";
-    if (language == null || language == 'English') {
+    if (SharedPrefs().mylanguage == 'English') {
       warning1 = warning1En;
       yourList = yourListEn;
-    } else if (language == 'Swedish') {
+      textExplain = textEn;
+    } else if (SharedPrefs().mylanguage == 'Swedish') {
       warning1 = warning1Se;
       yourList = yourListSe;
-    } else if (language == 'Spanish') {
+       textExplain = textSe;
+    } else if (SharedPrefs().mylanguage == 'Spanish') {
       warning1 = warning1Es;
       yourList = yourListEs;
+       textExplain = textEs;
     }
   }
 
-  void getRecognisedText(XFile image) async {
-    final prefs = await SharedPreferences.getInstance();
-    mylist = prefs.getStringList('mylist') ?? [];
+  void getRecognisedText(XFile image) async { 
     words = [];
     dangerousItemsDetected = "";
     counter = 0;
@@ -98,7 +79,7 @@ class MyListState extends State<MyList> {
           String processedWord = word.toLowerCase().trim();
           processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
 
-          if (mylist.contains(processedWord)) {
+          if (SharedPrefs().mylist.contains(processedWord)) {
             warning = true;
             counter++;
             dangerousItemsDetected =
@@ -160,9 +141,9 @@ class MyListState extends State<MyList> {
                         onChanged: (String? value) {
                           setState(() {});
                         },
-                        items: _mylist
+                        items: SharedPrefs().mylist
                             .map<DropdownMenuItem<String>>((String value) {
-                          loadOptions();
+                          
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Padding(
@@ -192,16 +173,10 @@ class MyListState extends State<MyList> {
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 100)),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
                 if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
-                  selectedLanguage == 'English'
-                      ? Text(textEn)
-                      : selectedLanguage == 'Swedish'
-                          ? Text(textSe)
-                          : selectedLanguage == 'Spanish'
-                              ? Text(textEs)
-                              : Text(textEn),
+                          Text(textExplain),
                 if (imageFile != null)
                   Image.file(File(imageFile!.path),
                       height: 200, fit: BoxFit.fill),

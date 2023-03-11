@@ -24,7 +24,7 @@ class _CreateListState extends State<CreateList> {
   String listDeleted = "";
   final _ingredientsController = TextEditingController();
   List<String> ingredients = [];
-  String litToShow = "";
+  String listToShow = "";
 
   void _loadSelectedLanguage() async {
     String selectedLanguage = "";
@@ -37,11 +37,11 @@ class _CreateListState extends State<CreateList> {
     }
 
     String instructionEn =
-        "Create your own list by choosing a name for it and then add the items one by one. Once you write an item click on the plus icon to add it to the list and then when you are done click on the save icon.  If you want to clear the list click on the trash icon.";
+        "Create your own list by choosing a name for it and then add the items one by one. Once you write an item click on the plus icon to add it to the list and then when you are done click on the save icon.  If you want to clear the list click on the eraser and to delete it click on the trash icon.";
     String instructionSe =
-        "Skapa din egen lista genom att välja ett namn för den och lägg sedan till objekten en efter en. När du har skrivit ett objekt klicka på plusikonen för att lägga till det i listan och klicka sedan på sparaikonen när du är klar. Om du vill rensa listan klicka på papperskorgen.";
+       "Skapa din egen lista genom att välja ett namn för den och lägg sedan till objekten en efter en. När du har skrivit ett objekt klickar du på plusikonen för att lägga till det i listan och sedan när du är klar klickar du på spara-ikonen. Om du vill rensa listan klicka på radergummit och för att ta bort det klicka på papperskorgen.";
     String instructionEs =
-        "Cree su propia lista eligiendo un nombre para ella y luego agregue los elementos uno por uno. Una vez que escriba un elemento, haga clic en el ícono más para agregarlo a la lista y luego, cuando haya terminado, haga clic en el ícono Guardar. Si desea borrar la lista, haga clic en el icono de la papelera.";
+       "Cree su propia lista eligiendo un nombre para ella y luego agregue los elementos uno por uno. Una vez que escriba un elemento, haga clic en el icono más para agregarlo a la lista y luego, cuando haya terminado, haga clic en el icono de guardar. Si desea borrar la lista, haga clic en el borrador y para eliminarla, haga clic en el icono de la papelera.";
 
     String ingridientTextEn = "Ingredients i.e. chloride, sugar..";
     String ingridientTextSe = "Ingredienser som klorid, socker..";
@@ -88,8 +88,8 @@ class _CreateListState extends State<CreateList> {
     if (ingredient.isNotEmpty) {
       setState(() {
         ingredients.add(ingredient.toLowerCase().trim());
-         litToShow = 
-              litToShow + ingredient + ", ";
+         listToShow = 
+              listToShow + ingredient + ", ";
       });
       _ingredientsController.clear();
     }
@@ -156,15 +156,21 @@ class _CreateListState extends State<CreateList> {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.all(30.0)),
-              Text(
+              Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
                 instruction,
                 style: const TextStyle(fontSize: 15),
-              ),
+              ),),
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
+                    child: 
+                    Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                    TextField(
                       controller: _ingredientsController,
                       decoration: InputDecoration(
                           border: const OutlineInputBorder(),
@@ -175,7 +181,7 @@ class _CreateListState extends State<CreateList> {
                               icon: const Icon(Icons.clear)),
                           hintText: ingridientText),
                     ),
-                  ),
+                  ),),
                   const Padding(padding: EdgeInsets.only(bottom: 20)),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -193,7 +199,7 @@ class _CreateListState extends State<CreateList> {
                  Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:Text(
-                          litToShow,
+                          listToShow,
                           style: const TextStyle(fontSize: 15),
                         ),
                     ),
