@@ -6,7 +6,6 @@ class Language extends StatefulWidget {
   const Language({super.key});
 
 
-
   @override
   State<Language> createState() => _LanguageState();
 }
@@ -25,7 +24,7 @@ class _LanguageState extends State<Language> {
 
   // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Language is changed, klick on the hamburger to start scanning"),
+        content: Text("Language is changed, click on the food can to start scanning"),
       ));
 
   //  Navigator.pushAndRemoveUntil(
