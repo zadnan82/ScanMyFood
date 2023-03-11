@@ -29,12 +29,12 @@ class _CreateListState extends State<CreateList> {
   void _loadSelectedLanguage() async {
     String selectedLanguage = "";
     final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('language');
-    if (language != null) {
+    final language = prefs.getString('language') ?? "English";
+ 
       setState(() {
         selectedLanguage = language;
       });
-    }
+    
 
     String instructionEn =
         "Create your own list by choosing a name for it and then add the items one by one. Once you write an item click on the plus icon to add it to the list and then when you are done click on the save icon.  If you want to clear the list click on the eraser and to delete it click on the trash icon.";
