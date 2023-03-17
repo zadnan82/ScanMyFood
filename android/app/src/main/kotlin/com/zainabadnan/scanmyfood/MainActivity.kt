@@ -1,4 +1,4 @@
-package com.example.scanmyfood
+package com.zainabadnan.scanmyfood
 
 import io.flutter.embedding.android.FlutterActivity
 
