@@ -27,11 +27,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Access to pick a photo</string>
+	<string>Pick a photo from your album to scan its ingredients</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Access to take a photo by camera</string>
+	<string>Take a photo of ingredients text to scan it</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to pick a photo</string>
+	<string>Pick a photo from your album to scan its ingredients</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
