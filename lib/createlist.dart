@@ -37,11 +37,11 @@ class _CreateListState extends State<CreateList> {
     
 
     String instructionEn =
-        "Create your own list by choosing a name for it and then add the items one by one. Once you write an item click on the plus icon to add it to the list and then when you are done click on the save icon.  If you want to clear the list click on the eraser and to delete it click on the trash icon.";
+        "Create your own list by choosing a name for it and then add your unwanted additives one by one. Once you write an item click on the plus icon to add it to the list and then when you are done with all of the additives click on the save icon. The list will be saved in your device.  If you want to clear the list click on the eraser and to delete it from your device click on the trash icon.";
     String instructionSe =
-       "Skapa din egen lista genom att välja ett namn för den och lägg sedan till objekten en efter en. När du har skrivit ett objekt klickar du på plusikonen för att lägga till det i listan och sedan när du är klar klickar du på spara-ikonen. Om du vill rensa listan klicka på radergummit och för att ta bort det klicka på papperskorgen.";
+       "Skapa din egen lista genom att välja ett namn för den och lägg sedan till dina oönskade tillsatser en efter en. När du har skrivit ett objekt tryck på plusikonen för att lägga till det i listan och sedan när du är klar med alla tillsatser tryck på spara-ikonen. Listan kommer att sparas i din enhet. Om du vill rensa listan tryck på suddgummit och för att ta bort den från din enhet tryck på papperskorgen.";
     String instructionEs =
-       "Cree su propia lista eligiendo un nombre para ella y luego agregue los elementos uno por uno. Una vez que escriba un elemento, haga clic en el icono más para agregarlo a la lista y luego, cuando haya terminado, haga clic en el icono de guardar. Si desea borrar la lista, haga clic en el borrador y para eliminarla, haga clic en el icono de la papelera.";
+       "Cree su propia lista eligiendo un nombre para ella y luego agregue los aditivos no deseados uno por uno. Una vez que escriba un elemento, haga clic en el ícono más para agregarlo a la lista y luego, cuando haya terminado con todos los aditivos, haga clic en el icono de guardar. La lista se guardará en su dispositivo. Si desea borrar la lista, haga clic en el borrador y para eliminarla de su dispositivo, haga clic en el icono de la papelera.";
 
     String ingridientTextEn = "Ingredients i.e. chloride, sugar..";
     String ingridientTextSe = "Ingredienser som klorid, socker..";

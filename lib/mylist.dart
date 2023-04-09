@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scanmyfood/shared_prefs.dart'; 
+import 'package:scanmyfood/shared_prefs.dart';
 
 class MyList extends StatefulWidget {
   const MyList({super.key});
@@ -14,10 +14,10 @@ class MyList extends StatefulWidget {
 class MyListState extends State<MyList> {
   @override
   void initState() {
-    super.initState(); 
+    super.initState();
     _loadSelectedLanguage();
   }
- 
+
   XFile? imageFile;
   int counter = 0;
   bool textScanning = false;
@@ -26,19 +26,18 @@ class MyListState extends State<MyList> {
   List<String> words = [];
   String dangerousItemsDetected = "";
   String textEn =
-      "Here you can use you own list that you have created and saved on your device! if you haen't yet then click on the pen in the bottom of the page and start creating you own list of unwanted items!";
+      "Here you can use your own list that you have created and saved on your device! If you haven't done that yet then click on the pen in the bottom of the page and start creating your own list of unwanted additives!";
   String textSe =
-      "Här kan du använda din egen lista som du har skapat och sparat på din enhet! om du inte har gjort det ännu, klicka på pennan längst ner på sidan och börja skapa din egen lista över oönskade föremål!";
+      "Här kan du använda din egen lista som du har skapat och sparat på din enhet! Om du inte har gjort det än tryck på pennan längst ner på sidan och börja skapa din egen lista av oönskade tillsatser!";
   String textEs =
-      "¡Aquí puede usar su propia lista que ha creado y guardado en su dispositivo! Si aún no lo ha hecho, haga clic en el bolígrafo en la parte inferior de la página y comience a crear su propia lista de elementos no deseados";
+      "¡Aquí puede usar su propia lista que ha creado y guardado en su dispositivo! Si aún no lo ha hecho, haga clic en el bolígrafo en la parte inferior de la página y comience a crear su propia lista de aditivos no deseados";
+
   String warning1 = "";
   String warning2 = "";
-  String yourList = ""; 
+  String yourList = "";
   String textExplain = "";
- 
 
   void _loadSelectedLanguage() async {
-    
     String warning1En = "Items found: ";
     String warning1Se = "Hittade ämnen:";
     String warning1Es = "Artículos encontrados: ";
@@ -52,15 +51,15 @@ class MyListState extends State<MyList> {
     } else if (SharedPrefs().mylanguage == 'Swedish') {
       warning1 = warning1Se;
       yourList = yourListSe;
-       textExplain = textSe;
+      textExplain = textSe;
     } else if (SharedPrefs().mylanguage == 'Spanish') {
       warning1 = warning1Es;
       yourList = yourListEs;
-       textExplain = textEs;
+      textExplain = textEs;
     }
   }
 
-  void getRecognisedText(XFile image) async { 
+  void getRecognisedText(XFile image) async {
     words = [];
     dangerousItemsDetected = "";
     counter = 0;
@@ -84,7 +83,7 @@ class MyListState extends State<MyList> {
             counter++;
             dangerousItemsDetected =
                 // " * " + dangerousItemsDetected + processedWord + "\n";
-                 " * $dangerousItemsDetected$processedWord\n";
+                " * $dangerousItemsDetected$processedWord\n";
           }
         }
       }
@@ -141,9 +140,9 @@ class MyListState extends State<MyList> {
                         onChanged: (String? value) {
                           setState(() {});
                         },
-                        items: SharedPrefs().mylist
+                        items: SharedPrefs()
+                            .mylist
                             .map<DropdownMenuItem<String>>((String value) {
-                          
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Padding(
@@ -175,8 +174,7 @@ class MyListState extends State<MyList> {
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 if (textScanning) const CircularProgressIndicator(),
-                if (!textScanning && imageFile == null)
-                          Text(textExplain),
+                if (!textScanning && imageFile == null) Text(textExplain),
                 if (imageFile != null)
                   Image.file(File(imageFile!.path),
                       height: 200, fit: BoxFit.fill),

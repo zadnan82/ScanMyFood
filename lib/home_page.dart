@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const BottomNavigationBarItem(
             icon: Image(
-              image: AssetImage("assets/images/createlist.png"),
+              image: AssetImage("assets/images/edit.png"),
               width: 50,
               height: 50,
             ),
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const BottomNavigationBarItem(
             icon: Image(
-              image: AssetImage("assets/images/person.png"),
+              image: AssetImage("assets/images/profile.png"),
               width: 50,
               height: 50,
             ),
