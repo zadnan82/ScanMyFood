@@ -17,22 +17,27 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     _loadSelectedLanguage();
   }
- 
+
+  String resultEn = "Nothing has been found!";
+  String resultSe = "Inget har hittats!";
+  String resultES = "¡No se ha encontrado nada!";
+  String result = "";
+  bool starting = false;
 
   XFile? imageFile;
   int counter = 0;
   bool textScanning = false;
   bool warning = false;
-  String message = ""; 
-  List<String> words = []; 
+  String message = "";
+  List<String> words = [];
   List<String> foodList = [];
   String dangerousItemsDetected = "";
   String textEn =
-      "Here you will use our standard list of dangerous items! Click on the camera icon to scan the ingridents text of the product or on the gallery icon to access your device album. To create your own list click on the pen in the bottom and then the little man icon down there to use your own list of items!";
+      "Here you will use our standard list of harmful food additives! Click on the camera icon to take a picture of the ingredients text of the product or on the gallery icon to access your device album if you already have a picture taken of the ingredients. To create your own list click on the pen in the bottom and then the little man icon down there to use your own list of unwanted additives!";
   String textSe =
-      "Här kommer du att använda vår standardlista över farliga föremål! Klicka på kameraikonen för att skanna produktens innehållstext eller på galleriikonen för att komma åt ditt enhetsalbum. För att skapa din egen lista klicka på pennan i botten och sedan den lilla man-ikonen där nere för att använda din egen lista med föremål!";
+      "Här kommer du att använda vår standardlista över skadliga livsmedelstillsatser! Tryck på kameraikonen för att ta en bild av ingredienstexten för produkten eller på galleriikonen för att komma åt ditt enhetsalbum om du redan har en bild tagen av ingredienserna. För att skapa din egen lista tryck på pennan i botten och sedan på lilla man-ikonen där nere för att använda din egen lista av oönskade tillsatser!";
   String textEs =
-      "¡Aquí usará nuestra lista estándar de elementos peligrosos! Haga clic en el ícono de la cámara para escanear el texto de los componentes del producto o en el ícono de la galería para acceder al álbum de su dispositivo. Para crear su propia lista, haga clic en el bolígrafo en la parte inferior y luego ¡el ícono del hombrecito ahí abajo para usar tu propia lista de elementos!";
+      "¡Aquí usará nuestra lista estándar de aditivos alimentarios nocivos! Haga clic en el ícono de la cámara para tomar una fotografía del texto de los ingredientes del producto o en el ícono de la galería para acceder al álbum de su dispositivo si ya tomó una fotografía de los ingredientes. ¡Para crear su propia lista, haga clic en el bolígrafo en la parte inferior y luego en el icono del hombrecito que está abajo para usar su propia lista de aditivos no deseados!";
   String warning1 = "";
   String warning2 = "";
   String ourList = "";
@@ -51,16 +56,19 @@ class _FoodPageState extends State<FoodPage> {
       warning1 = warning1En;
       ourList = ourListEn;
       textExplain = textEn;
+      result = resultEn;
     } else if (SharedPrefs().mylanguage == 'Swedish') {
       foodList = SharedPrefs().foodSe;
       warning1 = warning1Se;
       ourList = ourListSe;
       textExplain = textSe;
+      result = resultSe;
     } else if (SharedPrefs().mylanguage == 'Spanish') {
       foodList = SharedPrefs().foodEs;
       warning1 = warning1Es;
       ourList = ourListEs;
       textExplain = textEs;
+      result = resultES;
     }
   }
 
@@ -86,7 +94,7 @@ class _FoodPageState extends State<FoodPage> {
           String processedWord = word.toLowerCase().trim();
 
           processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
-
+          starting = true;
           if (foodList.contains(processedWord)) {
             warning = true;
             counter++;
@@ -186,10 +194,7 @@ class _FoodPageState extends State<FoodPage> {
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 if (textScanning) const CircularProgressIndicator(),
-                if (!textScanning && imageFile == null)
-                  
-                       Text(textExplain)
-                      ,
+                if (!textScanning && imageFile == null) Text(textExplain),
                 if (imageFile != null)
                   Image.file(File(imageFile!.path),
                       height: 200, fit: BoxFit.fill),
@@ -241,6 +246,20 @@ class _FoodPageState extends State<FoodPage> {
                     const SizedBox(
                       height: 20,
                     ),
+                    starting
+                        ? !warning
+                            ? Text(
+                                result,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                "",
+                                style: const TextStyle(fontSize: 20),
+                              )
+                        : Text(
+                            "",
+                            style: const TextStyle(fontSize: 20),
+                          ),
                   ],
                 )
               ],
