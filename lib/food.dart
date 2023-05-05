@@ -79,32 +79,37 @@ class _FoodPageState extends State<FoodPage> {
     textScanning = false;
     message = "";
     warning = false;
-
+    var totalText = "";
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognisedText = await textDetector.processImage(inputImage);
     await textDetector.close();
 
+    RegExp splitter = RegExp(r'[,\.\;\-/[\](){}<>!@#$%^&*+=|\~`/?\d]');
+
     for (TextBlock block in recognisedText.blocks) {
       for (TextLine line in block.lines) {
         String lineText = line.text;
-        List<String> words = lineText.split(',');
 
-        for (String word in words) {
-          String processedWord = word.toLowerCase().trim();
-
-          processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
-          starting = true;
-          if (foodList.contains(processedWord)) {
-            warning = true;
-            counter++;
-            dangerousItemsDetected =
-                // " * " + dangerousItemsDetected + processedWord + "\n";
-                " * $dangerousItemsDetected$processedWord\n";
-          }
-        }
+        totalText = totalText + " " + lineText;
       }
     }
+    words = totalText.split(splitter);
+
+    for (String word in words) {
+      String processedWord = word.toLowerCase().trim();
+
+      processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
+      starting = true;
+      if (foodList.contains(processedWord)) {
+        warning = true;
+        counter++;
+        dangerousItemsDetected =
+            dangerousItemsDetected + " * " + processedWord + "\n";
+        //  "  $dangerousItemsDetected$processedWord\n";
+      }
+    }
+    totalText = "";
 
     textScanning = false;
     setState(() {});
