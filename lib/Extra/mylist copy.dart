@@ -46,12 +46,10 @@ class MyList2State extends State<MyList2> {
   }
 
   void _loadSelectedLanguage() async {
-    String selectedLanguage = "";
     final prefs = await SharedPreferences.getInstance();
     final language = prefs.getString('language');
     if (language != null) {
       setState(() {
-        selectedLanguage = language;
       });
     }
     String warning1En = "Warning!! there are ";

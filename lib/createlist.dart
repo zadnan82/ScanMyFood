@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class _CreateListState extends State<CreateList> {
     String listDeletedSe = "Din lista är borttagen!";
     String listDeletedEs = "¡Tu lista ha sido eliminada!";
 
-    if (language == null || selectedLanguage == 'English') {
+    if (selectedLanguage == 'English') {
       instruction = instructionEn;
       ingridientText = ingridientTextEn;
       listSaved = listSavedEn;

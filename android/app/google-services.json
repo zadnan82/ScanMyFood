@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "560431703388",
+    "project_id": "zainabscanner-42d2f",
+    "storage_bucket": "zainabscanner-42d2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560431703388:android:27a3f6f39ef23ea70d4d99",
+        "android_client_info": {
+          "package_name": "com.zainabadnan.scanmyfoodandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmDQUXs2zoQMUJGWUHrN5plqqcUfNNacs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -22,6 +22,12 @@ class MyListState extends State<MyList> {
   int counter = 0;
   bool textScanning = false;
   bool warning = false;
+
+  String resultEn = "Nothing has been found!";
+  String resultSe = "Inget har hittats!";
+  String resultES = "¡No se ha encontrado nada!";
+  String result = "";
+  bool starting = false; 
   String message = "";
   List<String> words = [];
   String dangerousItemsDetected = "";
@@ -48,17 +54,21 @@ class MyListState extends State<MyList> {
       warning1 = warning1En;
       yourList = yourListEn;
       textExplain = textEn;
+       result = resultEn;
     } else if (SharedPrefs().mylanguage == 'Swedish') {
       warning1 = warning1Se;
       yourList = yourListSe;
       textExplain = textSe;
+      result = resultSe;
     } else if (SharedPrefs().mylanguage == 'Spanish') {
       warning1 = warning1Es;
       yourList = yourListEs;
       textExplain = textEs;
+      result = resultES;
     }
   }
 
+ 
   void getRecognisedText(XFile image) async {
     words = [];
     dangerousItemsDetected = "";
@@ -66,31 +76,42 @@ class MyListState extends State<MyList> {
     textScanning = false;
     message = "";
     warning = false;
+    var totalText = "";
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognisedText = await textDetector.processImage(inputImage);
     await textDetector.close();
+
+    RegExp splitter = RegExp(r'[,\.\;\-/[\](){}<>!@#$%^&*+=|\~`/?\d]');
+
     for (TextBlock block in recognisedText.blocks) {
       for (TextLine line in block.lines) {
         String lineText = line.text;
-        List<String> words = lineText.split(',');
-        for (String word in words) {
-          String processedWord = word.toLowerCase().trim();
-          processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
 
-          if (SharedPrefs().mylist.contains(processedWord)) {
-            warning = true;
-            counter++;
-            dangerousItemsDetected =
-                // " * " + dangerousItemsDetected + processedWord + "\n";
-                " * $dangerousItemsDetected$processedWord\n";
-          }
-        }
+        totalText = totalText + " " + lineText;
       }
     }
+    words = totalText.split(splitter);
+
+    for (String word in words) {
+      String processedWord = word.toLowerCase().trim();
+
+      processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
+      starting = true;
+      if (SharedPrefs().mylist.contains(processedWord)) {
+        warning = true;
+        counter++;
+        dangerousItemsDetected =
+            dangerousItemsDetected + " * " + processedWord + "\n";
+        //  "  $dangerousItemsDetected$processedWord\n";
+      }
+    }
+    totalText = "";
+
     textScanning = false;
     setState(() {});
   }
+ 
 
   void getImage(ImageSource source) async {
     try {
@@ -121,9 +142,13 @@ class MyListState extends State<MyList> {
               children: [
                 DecoratedBox(
                   decoration: BoxDecoration(
-                      color: Colors.lightGreen,
-                      border: Border.all(color: Colors.black38, width: 3),
-                      borderRadius: BorderRadius.circular(50),
+                      color: Colors
+                          .lightGreen, //background color of dropdown button
+                      border: Border.all(
+                          color: Colors.black38,
+                          width: 3), //border of dropdown button
+                      borderRadius: BorderRadius.circular(
+                          50), //border raiuds of dropdown button
                       boxShadow: const <BoxShadow>[
                         BoxShadow(
                             color: Color.fromRGBO(0, 0, 0, 0.57), blurRadius: 5)
@@ -140,8 +165,7 @@ class MyListState extends State<MyList> {
                         onChanged: (String? value) {
                           setState(() {});
                         },
-                        items: SharedPrefs()
-                            .mylist
+                        items: SharedPrefs().mylist
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -163,7 +187,6 @@ class MyListState extends State<MyList> {
                         isExpanded: true,
                         underline: Container(),
                         icon: const Padding(
-                            //Icon at tail, arrow bottom is default icon
                             padding: EdgeInsets.only(left: 20, right: 20),
                             child: Icon(Icons.arrow_drop_down)),
                         iconEnabledColor: Colors.black, //Icon color
@@ -226,6 +249,20 @@ class MyListState extends State<MyList> {
                     const SizedBox(
                       height: 20,
                     ),
+                    starting
+                        ? !warning
+                            ? Text(
+                                result,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                "",
+                                style: const TextStyle(fontSize: 20),
+                              )
+                        : Text(
+                            "",
+                            style: const TextStyle(fontSize: 20),
+                          ),
                   ],
                 )
               ],
