@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'dbHelper/mongodb.dart';
+import '../dbHelper/mongodb.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -116,7 +116,7 @@ class _SignUpState extends State<SignUp> {
               const Text(
                 'Sign Up',
                 style: TextStyle(
-                    fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold),
+                    fontSize: 16.0,   fontWeight: FontWeight.bold),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               TextField(
@@ -202,7 +202,7 @@ class _SignUpState extends State<SignUp> {
                   onPressed: createUserEmailAndPAssword,
                   child: const Text(
                     'Register',
-                    style: TextStyle(fontSize: 16.0, color: Colors.black),
+                     style: TextStyle(fontSize: 16.0, color: Colors.black),
                   ),
                 ),
               ),

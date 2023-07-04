@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:scanmyfood/signup.dart';
+import 'package:scanmyfood/Joining/signup.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignIn extends StatefulWidget {
@@ -17,20 +17,19 @@ class _SignInState extends State<SignIn> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
   bool _passwordVisible = false;
- 
 
   Future<void> signInEmailAndPassword(BuildContext context) async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       Fluttertoast.showToast(
-        msg:  "Fill in your email and password please!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white);  
+          msg: "Fill in your email and password please!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black,
+          textColor: Colors.white);
       return;
     }
 
@@ -44,19 +43,19 @@ class _SignInState extends State<SignIn> {
           .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-         Fluttertoast.showToast(
-        msg:  "Email address not found!!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white);    
+        Fluttertoast.showToast(
+            msg: "Email address not found!!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black,
+            textColor: Colors.white);
       } else if (e.code == 'wrong-password') {
-          Fluttertoast.showToast(
-        msg:  "Wrong password provided for this email!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white);   
+        Fluttertoast.showToast(
+            msg: "Wrong password provided for this email!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black,
+            textColor: Colors.white);
       }
     }
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -76,7 +75,7 @@ class _SignInState extends State<SignIn> {
 
     await FirebaseAuth.instance.sendPasswordResetEmail(
       email: _emailController.text.toLowerCase().trim(),
-    ); 
+    );
     Fluttertoast.showToast(
         msg: "An email has been sent to you!",
         toastLength: Toast.LENGTH_SHORT,
@@ -87,8 +86,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -98,7 +97,8 @@ class _SignInState extends State<SignIn> {
               const Text(
                 'Check My Food Ingredients',
                 style: TextStyle(
-                    fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold),
+                    fontSize: 16.0, 
+                    fontWeight: FontWeight.bold),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Container(
@@ -108,8 +108,15 @@ class _SignInState extends State<SignIn> {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/giggli-df121.appspot.com/o/private%2Fone--orange---with-white-background-with-good-padding-around-it%20(2).png?alt=media&token=9167da9e-a8f2-47d7-89ca-1b95d40a52b5'),
+                          'https://firebasestorage.googleapis.com/v0/b/giggli-df121.appspot.com/o/private%2F2091.jpg?alt=media&token=7456e79c-79b1-4c00-b539-43dee72f76c3'),
                       fit: BoxFit.fill),
+                       boxShadow: [
+                            BoxShadow(
+                              color: Colors.orange,
+                              blurRadius: 4,
+                              offset: Offset(4, 8), // Shadow position
+                            ),
+                          ],
                 ),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -144,12 +151,13 @@ class _SignInState extends State<SignIn> {
                     children: [
                       const Text(
                         'If you have an account in our Cosmetics Checker app',
-                        style: TextStyle(fontSize: 12.0, color: Colors.black),
+                        style: TextStyle(fontSize: 12.0),
                       ),
                       const Text(
                         'You don\'t need to create one, sign in directly!',
-                        style: TextStyle(fontSize: 12.0, color: Colors.black),
+                        style: TextStyle(fontSize: 12.0),
                       ),
+                      const Padding(padding: EdgeInsets.only(bottom: 10)),
                       Container(
                         width: 40,
                         height: 40,
@@ -162,9 +170,13 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
+                      const Padding(padding: EdgeInsets.only(bottom: 7)),
                       const Text(
                         'Cosmetics Checker',
-                        style: TextStyle(fontSize: 12.0, color: Colors.black),
+                          style: TextStyle(
+                    fontSize: 12.0,
+                    // color: Colors.black,
+                    fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -207,32 +219,30 @@ class _SignInState extends State<SignIn> {
                       color: Theme.of(context).primaryColorDark,
                     ),
                     onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
-                  setState(() {
-                    _passwordVisible = !_passwordVisible;
-                  });
-                },
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
                   ),
                 ),
               ),
-              
-              
-              const Padding(padding: EdgeInsets.only(bottom: 5)),
-              MaterialButton( 
+              const Padding(padding: EdgeInsets.only(bottom: 1)),
+              MaterialButton(
                 minWidth: 150.0,
                 height: 50,
                 onPressed: () => resetPassword(context),
                 child: const Text(
                   'Forgot Password?',
-                  style: TextStyle(fontSize: 12.0, color: Colors.black),
+                  style: TextStyle(fontSize: 12.0 , fontWeight: FontWeight.bold),
                 ),
               ),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton( 
-                    onPressed: () => signInEmailAndPassword(context),               
+                  ElevatedButton(
+                    onPressed: () => signInEmailAndPassword(context),
                     child: const Text(
                       'Sign in',
                       style: TextStyle(fontSize: 16.0, color: Colors.black),
@@ -240,7 +250,10 @@ class _SignInState extends State<SignIn> {
                   ),
                   const SizedBox(width: 20),
                   ElevatedButton(
-                    child: Text('Register'),
+                    child: Text(
+                      'Register',
+                      style: TextStyle(fontSize: 16.0, color: Colors.black),
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scanmyfood/shared_prefs.dart';
+import 'package:scanmyfood/dbHelper/shared_prefs.dart';
 
 class MyList extends StatefulWidget {
   const MyList({super.key});

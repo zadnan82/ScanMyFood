@@ -1,9 +1,9 @@
  import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart'; 
-import 'package:scanmyfood/landingpage.dart';
-import 'package:scanmyfood/shared_prefs.dart'; 
+import 'package:scanmyfood/Home/landingpage.dart';
+import 'package:scanmyfood/dbHelper/shared_prefs.dart'; 
 import 'dbHelper/mongodb.dart';
-import 'firebase_options.dart';
+import 'dbHelper/firebase_options.dart';
  
 Future<void> main() async {
    WidgetsFlutterBinding.ensureInitialized();
@@ -52,9 +52,18 @@ class MyApp extends StatelessWidget {
           title: 'CheckMe',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+               
+    textTheme:
+        TextTheme(
+      displayLarge: TextStyle(color: Colors.orange), 
+      bodyMedium: TextStyle(color: Colors.orange), 
+    ),
+
+            scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0),
             primarySwatch: Colors.orange,
-            primaryColor: const Color.fromARGB(255, 4, 4, 4),
+            primaryColor: Color.fromARGB(255, 249, 247, 247),
           ),
+          
           home: LandingPage(),
         );
     //   },

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
- 
+import 'package:scanmyfood/dbHelper/mongodb.dart';
 
 class SignOut extends StatefulWidget {
   @override
@@ -9,8 +9,7 @@ class SignOut extends StatefulWidget {
 }
 
 class _SignOutState extends State<SignOut> {
-   
-   Future<void> signOut() async {
+  Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     Fluttertoast.showToast(
         msg: "Logged out successfully!",
@@ -18,11 +17,19 @@ class _SignOutState extends State<SignOut> {
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black,
         textColor: Colors.white);
-     Navigator.of(context)
-            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
- 
+
+  Future<void> DeleteAccount() async { 
+    var user = FirebaseAuth.instance.currentUser;
+     MongoDatabase.deleteAccount(user!.email.toString());
+     await user.delete();
+    signOut();
+    
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +49,7 @@ class _SignOutState extends State<SignOut> {
             SizedBox(height: 20),
             Text(
               'Are you sure you want to sign out?',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 40),
@@ -50,25 +57,39 @@ class _SignOutState extends State<SignOut> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  child: Text('Cancel'),
-                  onPressed: () { 
-                     Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+                  child: Text('Cancel' , style: TextStyle(fontSize: 16.0, color: Colors.black),),
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/', (Route<dynamic> route) => false);
                   },
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  child: Text('Sign Out'),
+                  child: Text(
+                    'Sign Out',
+                    style: TextStyle(fontSize: 16.0, color: Colors.black),
+                  ),
                   onPressed: () {
                     signOut();
                   },
                 ),
               ],
             ),
+
+                     const Padding(padding: EdgeInsets.only(bottom: 20)),
+                     
+            ElevatedButton(
+              child: Text(
+                'Delete Your account',
+                style: TextStyle(fontSize: 16.0, color: Colors.black),
+              ),
+              onPressed: () {
+                DeleteAccount();
+              },
+            ),
           ],
         ),
       ),
     );
- 
- 
   }
 }

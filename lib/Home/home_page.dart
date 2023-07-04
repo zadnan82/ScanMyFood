@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scanmyfood/food.dart';
-import 'package:scanmyfood/signout.dart';
+import 'package:scanmyfood/Joining/signout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'createlist.dart';
+import '../List/createlist.dart';
 import 'language.dart';
-import 'mylist.dart';
+import '../List/mylist.dart';
 import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 
 class HomePage extends StatefulWidget {
