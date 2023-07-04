@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scanmyfood/food.dart';
+import 'package:scanmyfood/Joining/signout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'createlist.dart';
+import '../List/createlist.dart';
 import 'language.dart';
-import 'mylist.dart';
+import '../List/mylist.dart';
 import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   String? language = "";
   String flag = "";
   int index = 0;
-  final switchScreens = [const Language(), const FoodPage(), const CreateList(), const MyList()];
+  final switchScreens = [const Language(), const FoodPage(), const CreateList(), const MyList(), SignOut()];
 
   Future getLanguage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -96,6 +97,14 @@ class _HomePageState extends State<HomePage> {
             ),
             label: "My List",
           ),
+           const BottomNavigationBarItem(
+            icon: Image(
+              image: AssetImage("assets/images/signout.png"),
+              width: 50,
+              height: 50,
+            ),
+            label: "My List",
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -119,6 +128,9 @@ class _HomePageState extends State<HomePage> {
 
          case 3:
         return const MyList();
+
+         case 4:
+        return SignOut();
 
       default:
         return Container();

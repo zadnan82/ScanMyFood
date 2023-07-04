@@ -33,11 +33,19 @@ dependencies:
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.6+1
   google_ml_kit: ^0.14.0
-  cloud_firestore: ^4.3.2
-  firebase_core: ^2.5.0
+  cloud_firestore: ^4.8.2
+  firebase_core: ^2.14.0
   flutter_circle_flags_svg: ^1.0.4
   shared_preferences: ^2.0.17
-  flutter_launcher_icons: ^0.12.0
+  
+  firebase_auth: ^4.6.3
+  mongo_dart: ^0.9.1
+  fluttertoast: ^8.2.2
+  realm: ^1.2.0
+  url_launcher: ^6.1.11
+  device_apps: ^2.2.0
+  external_app_launcher: ^3.1.0 
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -47,11 +55,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.12.0
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/app_logo.png"
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,7 +79,7 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+  uses-material-design: true 
 
   # To add assets to your application, add an assets section, like this:
   assets:

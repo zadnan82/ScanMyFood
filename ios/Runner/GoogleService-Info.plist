@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDNre1kEJg7A7-_Wywzgfv1F5gDWajPwBE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>560431703388</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.zainabadnan.scanmyfoodNewApple</string>
+	<key>PROJECT_ID</key>
+	<string>zainabscanner-42d2f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zainabscanner-42d2f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:560431703388:ios:6f8343a3d38ae6810d4d99</string>
+</dict>
+</plist>
