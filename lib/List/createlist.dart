@@ -36,12 +36,11 @@ class _CreateListState extends State<CreateList> {
     });
 
     String instructionEn =
-        "Create your own list by choosing a name for it and then add your unwanted additives one by one. Once you write an item click on the plus icon to add it to the list and then when you are done with all of the additives click on the save icon. The list will be saved in your device.  If you want to clear the list click on the eraser and to delete it from your device click on the trash icon.";
+        "Create your own list by adding your unwanted additives one by one. Once you write an item click on the plus icon to add it to the list and then when you are done with all of the additives click on the save icon. The list will be saved in your device.  If you want to clear the list click on the eraser and to delete it from your device click on the trash icon.";
     String instructionSe =
-        "Skapa din egen lista genom att välja ett namn för den och lägg sedan till dina oönskade tillsatser en efter en. När du har skrivit ett objekt tryck på plusikonen för att lägga till det i listan och sedan när du är klar med alla tillsatser tryck på spara-ikonen. Listan kommer att sparas i din enhet. Om du vill rensa listan tryck på suddgummit och för att ta bort den från din enhet tryck på papperskorgen.";
+       "Skapa din egen lista genom att lägga till dina oönskade tillsatser en efter en. När du har skrivit ett objekt klickar du på plusikonen för att lägga till det i listan och sedan när du är klar med alla tillsatser klickar du på spara-ikonen. Listan kommer att sparas i din enhet. Om du vill rensa listan klicka på radergummit och för att ta bort det från din enhet klicka på papperskorgen.";
     String instructionEs =
-        "Cree su propia lista eligiendo un nombre para ella y luego agregue los aditivos no deseados uno por uno. Una vez que escriba un elemento, haga clic en el ícono más para agregarlo a la lista y luego, cuando haya terminado con todos los aditivos, haga clic en el icono de guardar. La lista se guardará en su dispositivo. Si desea borrar la lista, haga clic en el borrador y para eliminarla de su dispositivo, haga clic en el icono de la papelera.";
-
+       "Cree su propia lista agregando los aditivos no deseados uno por uno. Una vez que escriba un elemento, haga clic en el icono más para agregarlo a la lista y luego, cuando haya terminado con todos los aditivos, haga clic en el icono de guardar. La lista se guardará en su dispositivo. Si desea borrar la lista, haga clic en el borrador y para eliminarla de su dispositivo, haga clic en el icono de la papelera.";
     String ingridientTextEn = "Ingredients i.e. chloride, sugar..";
     String ingridientTextSe = "Ingredienser som klorid, socker..";
     String ingridientTextEs = "Ingredientes, es decir, cloruro, azúcar...";
@@ -100,8 +99,8 @@ class _CreateListState extends State<CreateList> {
           msg: fillAll,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.black,
-          textColor: Colors.white);
+           backgroundColor: Colors.orange,
+          textColor: Colors.black,);
       // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       //   content: Text(fillAll),
       // ));
@@ -126,8 +125,8 @@ class _CreateListState extends State<CreateList> {
         msg: listSaved,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white);
+         backgroundColor: Colors.orange,
+          textColor: Colors.black);
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     //   content: Text(listSaved),
     // ));
@@ -149,8 +148,8 @@ class _CreateListState extends State<CreateList> {
         msg: listDeleted,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white);
+         backgroundColor: Colors.orange,
+          textColor: Colors.black);
 
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     //   content: Text(listDeleted),
@@ -159,130 +158,131 @@ class _CreateListState extends State<CreateList> {
     //clearInputFields();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Padding(padding: EdgeInsets.all(30.0)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  instruction,
-                  style: const TextStyle(fontSize: 15),
+@override
+Widget build(BuildContext context) {
+  final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width; 
+    final textScaleFactor = screenWidth > 600
+        ? 1.4
+        : screenWidth < 500
+            ? 0.8
+            : 1.2; 
+
+
+  return Scaffold(
+    extendBodyBehindAppBar: true,
+    appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ),
+    body: SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
+        child: Column(
+          children: [
+            SizedBox(height: screenSize.height * 0.05),
+            Padding(
+              padding: EdgeInsets.all(8.0 * textScaleFactor),
+              child: Text(
+                instruction,
+                style: TextStyle(fontSize:  20.0 * textScaleFactor,),
+              ),
+            ),
+            SizedBox(height: screenSize.height * 0.02),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0 * textScaleFactor),
+                    child: TextField(
+                      controller: _ingredientsController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0 * textScaleFactor),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _ingredientsController.clear();
+                          },
+                          icon: Icon(
+                            Icons.clear,
+                            size: 20.0 * textScaleFactor,
+                          ),
+                        ),
+                        hintText: ingridientText,
+                        hintStyle: TextStyle(
+                          fontSize: 24.0 * textScaleFactor,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 20)),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: _ingredientsController,
-                        decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),),
-                       suffixIcon: IconButton(
-                                onPressed: () {
-                                  _ingredientsController.clear();
-                                },
-                                icon: const Icon(Icons.clear)),
-                            hintText: ingridientText), 
-                            ),
-                    ),
+                SizedBox(height: screenSize.height * 0.0),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                  padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/add.png'),
+                    iconSize: screenSize.width * 0.1,
+                    onPressed: () => addIngredient(),
                   ),
-                  const Padding(padding: EdgeInsets.only(bottom: 0)),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/add.png'),
-                      iconSize: 50,
-                      onPressed: () => addIngredient(),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.all(5.0)),
-
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Text(
-                  listToShow,
-                  style: const TextStyle(fontSize: 15),
                 ),
-              ),
+              ],
+            ),
+            SizedBox(height: screenSize.height * 0.01),
 
-              const Padding(padding: EdgeInsets.all(2.0)),
-              // ListView.builder(
-              //     shrinkWrap: true,
-              //     padding: EdgeInsets.zero,
-              //     itemCount: ingredients.length,
-              //     itemBuilder: (_, i) {
-              //       return Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Align(
-              //           alignment: Alignment.center,
-              //           child: Text(
-              //             ingredients[i],
-              //             textAlign: TextAlign.start,
-              //             style: const TextStyle(
-              //               fontSize: 14.0,
-              //               color: Color.fromARGB(255, 41, 41, 41),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     }),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/save.png'),
-                      iconSize: 50,
-                      onPressed: () => checkInputs(),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/eraser.png'),
-                      iconSize: 50,
-                      onPressed: () => clearListtFields(),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/trash.png'),
-                      iconSize: 50,
-                      onPressed: () => deleteAllLists(),
-                    ),
-                  ),
-                ],
+            Padding(
+              padding: EdgeInsets.all(2.0 * textScaleFactor),
+              child: Text(
+                listToShow,
+                style: TextStyle(fontSize: 24.0 * textScaleFactor),
               ),
-              const Padding(padding: EdgeInsets.only(top: 30)),
-            ],
-          ),
+            ),
+
+            SizedBox(height: screenSize.height * 0.01),
+           
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                  padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/save.png'),
+                    iconSize: screenSize.width * 0.1,
+                    onPressed: () => checkInputs(),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                  padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/eraser.png'),
+                    iconSize: screenSize.width * 0.1,
+                    onPressed: () => clearListtFields(),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                  padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/trash.png'),
+                    iconSize: screenSize.width * 0.1,
+                    onPressed: () => deleteAllLists(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: screenSize.height * 0.03),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 }

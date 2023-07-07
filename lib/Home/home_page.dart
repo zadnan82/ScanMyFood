@@ -47,72 +47,75 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  //   getLanguage();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width; 
+    final double iconSize = screenWidth * 0.1; 
+
     return Scaffold(
-       
       body: _getPage(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: flag == 'gb'
-                ? CircleFlag(
-                    flag,
-                    size: 50,
-                  )
-                : CircleFlag(
-                    flag,
-                    size: 50,
-                  ),
-            label: "Language",
-          ),
-          const BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("assets/images/foodcan.png"),
-              width: 50,
-              height: 50,
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: flag == 'gb'
+                  ? CircleFlag(
+                      flag,
+                      size: iconSize,
+                    )
+                  : CircleFlag(
+                      flag,
+                      size: iconSize,
+                    ),
+              label: "Language",
+              backgroundColor: Colors.black,
             ),
-            label: "Food",
-          ),
-          const BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("assets/images/edit.png"),
-              width: 50,
-              height: 50,
+            BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage("assets/images/foodcan.png"),
+                width: iconSize,
+                height: iconSize,
+              ),
+              label: "Food",
+              backgroundColor: Colors.black,
             ),
-            label: "Create List",
-          ),
-          const BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("assets/images/profile.png"),
-              width: 50,
-              height: 50,
+            BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage("assets/images/edit.png"),
+                width: iconSize,
+                height: iconSize,
+              ),
+              label: "Create List",
+              backgroundColor: Colors.black,
             ),
-            label: "My List",
-          ),
-           const BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("assets/images/signout.png"),
-              width: 50,
-              height: 50,
+            BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage("assets/images/profile.png"),
+                width: iconSize,
+                height: iconSize,
+              ),
+              label: "My List",
+              backgroundColor: Colors.black,
             ),
-            label: "My List",
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          getLanguage();
-        },
+            BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage("assets/images/signout.png"),
+                width: iconSize,
+                height: iconSize,
+              ),
+              label: "Sign Out",
+              backgroundColor: Colors.black,
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            getLanguage();
+          },
+        ),
       ),
     );
   }
@@ -125,13 +128,10 @@ class _HomePageState extends State<HomePage> {
         return const FoodPage();
       case 2:
         return const CreateList();
-
-         case 3:
+      case 3:
         return const MyList();
-
-         case 4:
+      case 4:
         return SignOut();
-
       default:
         return Container();
     }

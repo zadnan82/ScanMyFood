@@ -19,55 +19,23 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // return FutureBuilder(
-    //   builder: (context, snapshot) {
-        // if (snapshot.connectionState == ConnectionState.waiting) {
-        //   return MaterialApp(
-        //     title: 'CheckMe',
-        //     debugShowCheckedModeBanner: false,
-        //     theme: ThemeData(
-        //       primarySwatch: Colors.green,
-        //       primaryColor: Color.fromARGB(255, 0, 0, 0),
-        //     ),
-        //     home: SignIn(),
-        //   );
-        // } else if (snapshot.hasError) {
-        //   return const MaterialApp(
-        //     home: Scaffold(
-        //       body: Center(
-        //         child: Text(
-        //           "An error ",
-        //           style: TextStyle(
-        //               color: Colors.cyan,
-        //               fontSize: 40,
-        //               fontWeight: FontWeight.bold),
-        //         ),
-        //       ),
-        //     ),
-        //   );
-        // }
-
+  Widget build(BuildContext context) { 
         return MaterialApp(
           title: 'CheckMe',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-               
-    textTheme:
-        TextTheme(
-      displayLarge: TextStyle(color: Colors.orange), 
-      bodyMedium: TextStyle(color: Colors.orange), 
-    ),
-
+          theme: ThemeData( 
+                  textTheme:
+                      TextTheme(
+                    displayLarge: TextStyle(color: Colors.orange), 
+                    bodyMedium: TextStyle(color: Colors.orange), 
+                  ), 
             scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0),
             primarySwatch: Colors.orange,
             primaryColor: Color.fromARGB(255, 249, 247, 247),
-          ),
-          
+          ), 
           home: LandingPage(),
         );
-    //   },
-    // );
+   
   }
 }
 

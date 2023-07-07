@@ -13,6 +13,7 @@ class MyList extends StatefulWidget {
 
 class MyListState extends State<MyList> {
   @override
+
   void initState() {
     super.initState();
     _loadSelectedLanguage();
@@ -130,144 +131,170 @@ class MyListState extends State<MyList> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: SingleChildScrollView(
+ @override
+Widget build(BuildContext context) {
+  final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width; 
+  final textScaleFactor = screenWidth > 600
+        ? 1.4
+        : screenWidth < 500
+            ? 0.8
+            : 1.2; 
+    final iconSize = screenSize.width * 0.12 * textScaleFactor;
+
+
+  return Scaffold(
+    body: Center(
+      child: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                      color: Colors
-                          .lightGreen, //background color of dropdown button
-                      border: Border.all(
-                          color: Colors.black38,
-                          width: 3), //border of dropdown button
-                      borderRadius: BorderRadius.circular(
-                          50), //border raiuds of dropdown button
-                      boxShadow: const <BoxShadow>[
-                        BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.57), blurRadius: 5)
-                      ]),
-                  child: PhysicalModel(
-                    elevation: 8,
-                    borderRadius: BorderRadius.circular(20),
-                    shadowColor: Colors.black,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 30),
-                      child: DropdownButton<String>(
-                        hint: Text(yourList),
-                        onChanged: (String? value) {
-                          setState(() {});
-                        },
-                        items: SharedPrefs().mylist
-                            .map<DropdownMenuItem<String>>((String value) {
+          margin: EdgeInsets.all(20.0 * textScaleFactor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.lightGreen,
+                  border: Border.all(
+                    color: Colors.black38,
+                    width: 3.0 * textScaleFactor,
+                  ),
+                  borderRadius: BorderRadius.circular(50.0 * textScaleFactor),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.57),
+                      blurRadius: 5.0 * textScaleFactor,
+                    ),
+                  ],
+                ),
+                child: PhysicalModel(
+                  elevation: 8.0 * textScaleFactor,
+                  borderRadius: BorderRadius.circular(20.0 * textScaleFactor),
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 30.0 * textScaleFactor,
+                      right: 30.0 * textScaleFactor,
+                    ),
+                    child: DropdownButton<String>(
+                      hint: Text(
+                        yourList,
+                        style: TextStyle(fontSize: 24.0 * textScaleFactor),
+                      ),
+                      onChanged: (String? value) {
+                        setState(() {});
+                      },
+                      items: SharedPrefs().mylist.map<DropdownMenuItem<String>>(
+                        (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 50, right: 45),
+                              padding: EdgeInsets.only(
+                                left: 50.0 * textScaleFactor,
+                                right: 45.0 * textScaleFactor,
+                              ),
                               child: Text(
                                 value,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 15.0,
+                                style: TextStyle(
+                                  fontSize: 20.0 * textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: Color.fromARGB(255, 41, 41, 41),
                                 ),
                               ),
                             ),
                           );
-                        }).toList(),
-                        isExpanded: true,
-                        underline: Container(),
-                        icon: const Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            child: Icon(Icons.arrow_drop_down)),
-                        iconEnabledColor: Colors.black, //Icon color
-                        iconSize: 30,
+                        },
+                      ).toList(),
+                      isExpanded: true,
+                      underline: Container(),
+                      icon: Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.0 * textScaleFactor,
+                          right: 20.0 * textScaleFactor,
+                        ),
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          size: 30.0 * textScaleFactor,
+                        ),
                       ),
+                      iconEnabledColor: Colors.black,
+                      iconSize: 30.0 * textScaleFactor,
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-                if (textScanning) const CircularProgressIndicator(),
-                if (!textScanning && imageFile == null) Text(textExplain),
-                if (imageFile != null)
-                  Image.file(File(imageFile!.path),
-                      height: 200, fit: BoxFit.fill),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.only(top: 10),
-                      child: IconButton(
-                        icon: Image.asset('assets/images/gallery.png'),
-                        iconSize: 50,
-                        onPressed: () {
-                          getImage(ImageSource.gallery);
-                        },
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.only(top: 10),
-                      child: IconButton(
-                        icon: Image.asset('assets/images/camera.png'),
-                        iconSize: 50,
-                        onPressed: () {
-                          getImage(ImageSource.camera);
-                        },
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 20.0 * textScaleFactor),
+              if (textScanning) CircularProgressIndicator(),
+              if (!textScanning && imageFile == null)
+                Text(
+                  textExplain,
+                  style: TextStyle(fontSize: 20.0 * textScaleFactor),
                 ),
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
+              if (imageFile != null)
+                Image.file(
+                  File(imageFile!.path),
+                  height: 200.0 * textScaleFactor,
+                  fit: BoxFit.fill,
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                    padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                    child: IconButton(
+                      icon: Image.asset('assets/images/gallery.png'),
+                      iconSize: iconSize,
+                      onPressed: () {
+                        getImage(ImageSource.gallery);
+                      },
                     ),
-                    warning
-                        ? Text(
-                            "$warning1 ",
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        : const Text(""),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  Container(
+                   margin:
+                        EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
+                    padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                    child: IconButton(
+                      icon: Image.asset('assets/images/camera.png'),
+                      iconSize: iconSize,
+                      onPressed: () {
+                        getImage(ImageSource.camera);
+                      },
                     ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(height: 20.0 * textScaleFactor),
+                  if (warning)
                     Text(
-                      dangerousItemsDetected,
-                      style: const TextStyle(fontSize: 20),
+                      "$warning1 ",
+                      style: TextStyle(fontSize: 20.0 * textScaleFactor),
+                    )
+                  else
+                    const Text(""),
+                  SizedBox(height: 20.0 * textScaleFactor),
+                  Text(
+                    dangerousItemsDetected,
+                    style: TextStyle(fontSize: 20.0 * textScaleFactor),
+                  ),
+                  SizedBox(height: 20.0 * textScaleFactor),
+                  if (starting && !warning)
+                    Text(
+                      result,
+                      style: TextStyle(fontSize: 20.0 * textScaleFactor),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    starting
-                        ? !warning
-                            ? Text(
-                                result,
-                                style: const TextStyle(fontSize: 20),
-                              )
-                            : Text(
-                                "",
-                                style: const TextStyle(fontSize: 20),
-                              )
-                        : Text(
-                            "",
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                  ],
-                )
-              ],
-            )),
-      )),
-    );
-  }
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
 }
