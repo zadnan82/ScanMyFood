@@ -74,6 +74,7 @@ class _SignOutState extends State<SignOut> {
                           child: Padding(
                             padding: EdgeInsets.all(screenWidth * 0.02),
                             child: Text(
+        
                               'Cancel',
                               style: TextStyle(
                                   fontSize: screenWidth * 0.04,
