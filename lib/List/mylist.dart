@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scanmyfood/dbHelper/shared_prefs.dart';
 
@@ -13,7 +13,6 @@ class MyList extends StatefulWidget {
 
 class MyListState extends State<MyList> {
   @override
-
   void initState() {
     super.initState();
     _loadSelectedLanguage();
@@ -28,7 +27,7 @@ class MyListState extends State<MyList> {
   String resultSe = "Inget har hittats!";
   String resultES = "¡No se ha encontrado nada!";
   String result = "";
-  bool starting = false; 
+  bool starting = false;
   String message = "";
   List<String> words = [];
   String dangerousItemsDetected = "";
@@ -55,7 +54,7 @@ class MyListState extends State<MyList> {
       warning1 = warning1En;
       yourList = yourListEn;
       textExplain = textEn;
-       result = resultEn;
+      result = resultEn;
     } else if (SharedPrefs().mylanguage == 'Swedish') {
       warning1 = warning1Se;
       yourList = yourListSe;
@@ -69,7 +68,6 @@ class MyListState extends State<MyList> {
     }
   }
 
- 
   void getRecognisedText(XFile image) async {
     words = [];
     dangerousItemsDetected = "";
@@ -79,8 +77,9 @@ class MyListState extends State<MyList> {
     warning = false;
     var totalText = "";
     final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = GoogleMlKit.vision.textRecognizer();
-    RecognizedText recognisedText = await textDetector.processImage(inputImage);
+    final textDetector = TextRecognizer();
+    final RecognizedText recognisedText =
+        await textDetector.processImage(inputImage);
     await textDetector.close();
 
     RegExp splitter = RegExp(r'[,\.\;\-/[\](){}<>!@#$%^&*+=|\~`/?\d]');
@@ -112,7 +111,6 @@ class MyListState extends State<MyList> {
     textScanning = false;
     setState(() {});
   }
- 
 
   void getImage(ImageSource source) async {
     try {
@@ -131,170 +129,168 @@ class MyListState extends State<MyList> {
     }
   }
 
- @override
-Widget build(BuildContext context) {
-  final screenSize = MediaQuery.of(context).size;
-    final screenWidth = screenSize.width; 
-  final textScaleFactor = screenWidth > 600
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final textScaleFactor = screenWidth > 600
         ? 1.4
         : screenWidth < 500
             ? 0.8
-            : 1.2; 
+            : 1.2;
     final iconSize = screenSize.width * 0.12 * textScaleFactor;
 
-
-  return Scaffold(
-    body: Center(
-      child: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(20.0 * textScaleFactor),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.lightGreen,
-                  border: Border.all(
-                    color: Colors.black38,
-                    width: 3.0 * textScaleFactor,
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(20.0 * textScaleFactor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.lightGreen,
+                    border: Border.all(
+                      color: Colors.black38,
+                      width: 3.0 * textScaleFactor,
+                    ),
+                    borderRadius: BorderRadius.circular(50.0 * textScaleFactor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.57),
+                        blurRadius: 5.0 * textScaleFactor,
+                      ),
+                    ],
                   ),
-                  borderRadius: BorderRadius.circular(50.0 * textScaleFactor),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.57),
-                      blurRadius: 5.0 * textScaleFactor,
+                  child: PhysicalModel(
+                    elevation: 8.0 * textScaleFactor,
+                    borderRadius: BorderRadius.circular(20.0 * textScaleFactor),
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 30.0 * textScaleFactor,
+                        right: 30.0 * textScaleFactor,
+                      ),
+                      child: DropdownButton<String>(
+                        hint: Text(
+                          yourList,
+                          style: TextStyle(fontSize: 24.0 * textScaleFactor),
+                        ),
+                        onChanged: (String? value) {
+                          setState(() {});
+                        },
+                        items:
+                            SharedPrefs().mylist.map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 50.0 * textScaleFactor,
+                                  right: 45.0 * textScaleFactor,
+                                ),
+                                child: Text(
+                                  value,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 20.0 * textScaleFactor,
+                                    fontWeight: FontWeight.normal,
+                                    color: Color.fromARGB(255, 41, 41, 41),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        isExpanded: true,
+                        underline: Container(),
+                        icon: Padding(
+                          padding: EdgeInsets.only(
+                            left: 20.0 * textScaleFactor,
+                            right: 20.0 * textScaleFactor,
+                          ),
+                          child: Icon(
+                            Icons.arrow_drop_down,
+                            size: 30.0 * textScaleFactor,
+                          ),
+                        ),
+                        iconEnabledColor: Colors.black,
+                        iconSize: 30.0 * textScaleFactor,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0 * textScaleFactor),
+                if (textScanning) CircularProgressIndicator(),
+                if (!textScanning && imageFile == null)
+                  Text(
+                    textExplain,
+                    style: TextStyle(fontSize: 20.0 * textScaleFactor),
+                  ),
+                if (imageFile != null)
+                  Image.file(
+                    File(imageFile!.path),
+                    height: 200.0 * textScaleFactor,
+                    fit: BoxFit.fill,
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 5.0 * textScaleFactor),
+                      padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                      child: IconButton(
+                        icon: Image.asset('assets/images/gallery.png'),
+                        iconSize: iconSize,
+                        onPressed: () {
+                          getImage(ImageSource.gallery);
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 5.0 * textScaleFactor),
+                      padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
+                      child: IconButton(
+                        icon: Image.asset('assets/images/camera.png'),
+                        iconSize: iconSize,
+                        onPressed: () {
+                          getImage(ImageSource.camera);
+                        },
+                      ),
                     ),
                   ],
                 ),
-                child: PhysicalModel(
-                  elevation: 8.0 * textScaleFactor,
-                  borderRadius: BorderRadius.circular(20.0 * textScaleFactor),
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 30.0 * textScaleFactor,
-                      right: 30.0 * textScaleFactor,
-                    ),
-                    child: DropdownButton<String>(
-                      hint: Text(
-                        yourList,
-                        style: TextStyle(fontSize: 24.0 * textScaleFactor),
-                      ),
-                      onChanged: (String? value) {
-                        setState(() {});
-                      },
-                      items: SharedPrefs().mylist.map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 50.0 * textScaleFactor,
-                                right: 45.0 * textScaleFactor,
-                              ),
-                              child: Text(
-                                value,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20.0 * textScaleFactor,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color.fromARGB(255, 41, 41, 41),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                      isExpanded: true,
-                      underline: Container(),
-                      icon: Padding(
-                        padding: EdgeInsets.only(
-                          left: 20.0 * textScaleFactor,
-                          right: 20.0 * textScaleFactor,
-                        ),
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          size: 30.0 * textScaleFactor,
-                        ),
-                      ),
-                      iconEnabledColor: Colors.black,
-                      iconSize: 30.0 * textScaleFactor,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.0 * textScaleFactor),
-              if (textScanning) CircularProgressIndicator(),
-              if (!textScanning && imageFile == null)
-                Text(
-                  textExplain,
-                  style: TextStyle(fontSize: 20.0 * textScaleFactor),
-                ),
-              if (imageFile != null)
-                Image.file(
-                  File(imageFile!.path),
-                  height: 200.0 * textScaleFactor,
-                  fit: BoxFit.fill,
-                ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
-                    padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/gallery.png'),
-                      iconSize: iconSize,
-                      onPressed: () {
-                        getImage(ImageSource.gallery);
-                      },
-                    ),
-                  ),
-                  Container(
-                   margin:
-                        EdgeInsets.symmetric(horizontal: 5.0 * textScaleFactor),
-                    padding: EdgeInsets.only(top: 10.0 * textScaleFactor),
-                    child: IconButton(
-                      icon: Image.asset('assets/images/camera.png'),
-                      iconSize: iconSize,
-                      onPressed: () {
-                        getImage(ImageSource.camera);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(height: 20.0 * textScaleFactor),
-                  if (warning)
+                Column(
+                  children: [
+                    SizedBox(height: 20.0 * textScaleFactor),
+                    if (warning)
+                      Text(
+                        "$warning1 ",
+                        style: TextStyle(fontSize: 20.0 * textScaleFactor),
+                      )
+                    else
+                      const Text(""),
+                    SizedBox(height: 20.0 * textScaleFactor),
                     Text(
-                      "$warning1 ",
-                      style: TextStyle(fontSize: 20.0 * textScaleFactor),
-                    )
-                  else
-                    const Text(""),
-                  SizedBox(height: 20.0 * textScaleFactor),
-                  Text(
-                    dangerousItemsDetected,
-                    style: TextStyle(fontSize: 20.0 * textScaleFactor),
-                  ),
-                  SizedBox(height: 20.0 * textScaleFactor),
-                  if (starting && !warning)
-                    Text(
-                      result,
+                      dangerousItemsDetected,
                       style: TextStyle(fontSize: 20.0 * textScaleFactor),
                     ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 20.0 * textScaleFactor),
+                    if (starting && !warning)
+                      Text(
+                        result,
+                        style: TextStyle(fontSize: 20.0 * textScaleFactor),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
-
+    );
+  }
 }

@@ -31,12 +31,15 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  image_picker: ^0.8.6+1
-  google_ml_kit: ^0.14.0
+  image_picker: ^0.8.6+1 
   cloud_firestore: ^4.8.2
   firebase_core: ^2.14.0
   flutter_circle_flags_svg: ^1.0.4
   shared_preferences: ^2.0.17
+  google_mlkit_text_recognition: ^0.13.1
+  image: ^4.3.0
+  fuzzywuzzy: ^1.1.6
+  camera: ^0.10.5+9
   
   firebase_auth: ^4.6.3
   mongo_dart: ^0.9.1
