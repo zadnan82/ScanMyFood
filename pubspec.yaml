@@ -88,6 +88,14 @@ flutter:
   assets:
      - assets/
      - assets/images/
+     - assets/app_logo.png
+     - assets/cosmeticsapplogo.png
+     - assets/ingredients_en.json
+     - assets/ingredients_sv.json  
+     - assets/ingredients_es.json
+     - assets/translations_en.json
+     - assets/translations_sv.json
+     - assets/translations_es.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

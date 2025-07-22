@@ -1,12 +1,14 @@
+// lib/List/createlist.dart - Updated version
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scanmyfood/dbHelper/shared_prefs.dart';
+import 'package:scanmyfood/services/language_service.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
 
   @override
-  _CreateListState createState() => _CreateListState();
+  State<CreateList> createState() => _CreateListState();
 }
 
 class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
@@ -14,11 +16,19 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  final LanguageService _languageService = LanguageService.instance;
+  final TextEditingController _ingredientController = TextEditingController();
+  List<String> _customIngredients = [];
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
-    _loadSelectedLanguage();
+    _initializeAnimations();
+    _loadCustomList();
+  }
 
+  void _initializeAnimations() {
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
@@ -46,119 +56,29 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
-    _ingredientsController.dispose();
+    _ingredientController.dispose();
     super.dispose();
   }
 
-  String instruction = "";
-  String ingredientText = "";
-  String listSaved = "";
-  String nameExist = "";
-  String fillAll = "";
-  String listDeleted = "";
-  final _ingredientsController = TextEditingController();
-  List<String> ingredients = [];
-  String listToShow = "";
-
-  void _loadSelectedLanguage() async {
-    String selectedLanguage = "";
-    final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('language') ?? "English";
-
-    setState(() {
-      selectedLanguage = language;
-    });
-
-    String instructionEn =
-        "Create your personalized list of unwanted ingredients. Add items one by one, then save your custom blacklist to use during scanning.";
-    String instructionSe =
-        "Skapa din personliga lista över oönskade ingredienser. Lägg till objekt en efter en och spara sedan din anpassade svartlista för att använda under skanning.";
-    String instructionEs =
-        "Crea tu lista personalizada de ingredientes no deseados. Agrega elementos uno por uno, luego guarda tu lista negra personalizada para usar durante el escaneo.";
-
-    String ingredientTextEn = "Enter ingredient name (e.g. aspartame, MSG)";
-    String ingredientTextSe = "Ange ingrediensnamn (t.ex. aspartam, MSG)";
-    String ingredientTextEs =
-        "Ingrese el nombre del ingrediente (ej. aspartamo, MSG)";
-
-    String listSavedEn = "Your custom list has been saved successfully!";
-    String listSavedSe = "Din anpassade lista har sparats framgångsrikt!";
-    String listSavedEs = "¡Tu lista personalizada se guardó exitosamente!";
-
-    String nameExistEn = "This ingredient is already in your list";
-    String nameExistSe = "Denna ingrediens finns redan i din lista";
-    String nameExistEs = "Este ingrediente ya está en tu lista";
-
-    String fillAllEn = "Add at least one ingredient before saving";
-    String fillAllSe = "Lägg till minst en ingrediens innan du sparar";
-    String fillAllEs = "Agrega al menos un ingrediente antes de guardar";
-
-    String listDeletedEn = "Your custom list has been deleted!";
-    String listDeletedSe = "Din anpassade lista har raderats!";
-    String listDeletedEs = "¡Tu lista personalizada ha sido eliminada!";
-
-    if (selectedLanguage == 'English') {
-      instruction = instructionEn;
-      ingredientText = ingredientTextEn;
-      listSaved = listSavedEn;
-      nameExist = nameExistEn;
-      fillAll = fillAllEn;
-      listDeleted = listDeletedEn;
-    } else if (language == 'Swedish') {
-      instruction = instructionSe;
-      ingredientText = ingredientTextSe;
-      listSaved = listSavedSe;
-      nameExist = nameExistSe;
-      fillAll = fillAllSe;
-      listDeleted = listDeletedSe;
-    } else if (language == 'Spanish') {
-      instruction = instructionEs;
-      ingredientText = ingredientTextEs;
-      listSaved = listSavedEs;
-      nameExist = nameExistEs;
-      fillAll = fillAllEs;
-      listDeleted = listDeletedEs;
-    }
-  }
-
-  void addIngredient() {
-    final ingredient = _ingredientsController.text.trim();
-    if (ingredient.isNotEmpty) {
-      final lowerIngredient = ingredient.toLowerCase();
-
-      if (ingredients.contains(lowerIngredient)) {
-        Fluttertoast.showToast(
-          msg: nameExist,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: const Color(0xFFF59E0B),
-          textColor: Colors.white,
-        );
-        return;
-      }
-
+  Future<void> _loadCustomList() async {
+    setState(() => _isLoading = true);
+    try {
+      final savedList = await SharedPrefs().getCustomIngredientsList();
       setState(() {
-        ingredients.add(lowerIngredient);
-        listToShow = ingredients.join(", ");
+        _customIngredients = savedList;
+        _isLoading = false;
       });
-      _ingredientsController.clear();
-
-      // Add haptic feedback
-      // HapticFeedback.lightImpact();
+    } catch (e) {
+      setState(() => _isLoading = false);
+      debugPrint('Error loading custom list: $e');
     }
   }
 
-  void removeIngredient(int index) {
-    setState(() {
-      ingredients.removeAt(index);
-      listToShow = ingredients.join(", ");
-    });
-  }
-
-  checkInputs() {
-    if (ingredients.isEmpty) {
+  Future<void> _saveCustomList() async {
+    if (_customIngredients.isEmpty) {
       Fluttertoast.showToast(
-        msg: fillAll,
+        msg: _languageService.translate('createList.addAtLeastOne',
+            'Add at least one ingredient before saving'),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: const Color(0xFFEF4444),
@@ -166,50 +86,120 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
       );
       return;
     }
-    loadList();
+
+    setState(() => _isLoading = true);
+    try {
+      await SharedPrefs().saveCustomIngredientsList(_customIngredients);
+      setState(() => _isLoading = false);
+
+      Fluttertoast.showToast(
+        msg: _languageService.translate('createList.listSaved',
+            'Your custom list has been saved successfully!'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFF10B981),
+        textColor: Colors.white,
+      );
+    } catch (e) {
+      setState(() => _isLoading = false);
+      Fluttertoast.showToast(
+        msg: _languageService.translate('common.error', 'Error occurred'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFEF4444),
+        textColor: Colors.white,
+      );
+    }
   }
 
-  Future<void> loadList() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('mylist', ingredients);
-    clearInputFields();
-  }
+  void _addIngredient() {
+    final ingredient = _ingredientController.text.trim();
+    if (ingredient.isEmpty) return;
 
-  void clearInputFields() {
-    _ingredientsController.clear();
+    if (_customIngredients.contains(ingredient.toLowerCase())) {
+      Fluttertoast.showToast(
+        msg: _languageService.translate('createList.ingredientExists',
+            'This ingredient is already in your list'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFF59E0B),
+        textColor: Colors.white,
+      );
+      return;
+    }
+
     setState(() {
-      ingredients = [];
-      listToShow = "";
+      _customIngredients.add(ingredient.toLowerCase());
+      _ingredientController.clear();
     });
-    FocusManager.instance.primaryFocus?.unfocus();
-    Fluttertoast.showToast(
-      msg: listSaved,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: const Color(0xFF10B981),
-      textColor: Colors.white,
-    );
   }
 
-  void clearList() {
+  void _removeIngredient(String ingredient) {
     setState(() {
-      ingredients = [];
-      listToShow = "";
+      _customIngredients.remove(ingredient);
     });
-    _ingredientsController.clear();
   }
 
-  void deleteAllLists() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('mylist');
-    clearList();
-    FocusManager.instance.primaryFocus?.unfocus();
-    Fluttertoast.showToast(
-      msg: listDeleted,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: const Color(0xFF10B981),
-      textColor: Colors.white,
+  void _clearList() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            _languageService.translate('createList.deleteAll', 'Delete All'),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+          content: Text(
+            _languageService.translate('createList.confirmDelete',
+                'Are you sure you want to delete all ingredients from your list?'),
+            style: const TextStyle(
+              color: Color(0xFF64748B),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                _languageService.translate('common.cancel', 'Cancel'),
+                style: const TextStyle(color: Color(0xFF64748B)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                setState(() {
+                  _customIngredients.clear();
+                });
+                await SharedPrefs().saveCustomIngredientsList([]);
+                Fluttertoast.showToast(
+                  msg: _languageService.translate('createList.listDeleted',
+                      'Your custom list has been deleted!'),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: const Color(0xFF10B981),
+                  textColor: Colors.white,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFEF4444),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                _languageService.translate('common.delete', 'Delete'),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -237,13 +227,13 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            const Color(0xFF6366F1),
-                            const Color(0xFF8B5CF6),
+                            Color(0xFF6366F1),
+                            Color(0xFF8B5CF6),
                           ],
                         ),
                       ),
@@ -253,14 +243,35 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.white,
-                              size: isTablet ? 36 : 28,
+                            Row(
+                              children: [
+                                Container(
+                                  width: isTablet ? 32 : 28,
+                                  height: isTablet ? 32 : 28,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.asset(
+                                      'assets/app_logo.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Icon(
+                                  Icons.add_circle_outline,
+                                  color: Colors.white,
+                                  size: isTablet ? 28 : 24,
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Create Custom List',
+                              _languageService.translate(
+                                  'createList.title', 'Create Custom List'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isTablet ? 32 : 26,
@@ -269,7 +280,8 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Build your personal ingredient blacklist',
+                              _languageService.translate('createList.subtitle',
+                                  'Build your personal ingredient blacklist'),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontSize: isTablet ? 18 : 16,
@@ -287,40 +299,31 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                   child: Padding(
                     padding: EdgeInsets.all(isTablet ? 24 : 16),
                     child: Container(
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
+                      padding: EdgeInsets.all(isTablet ? 20 : 16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFFE2E8F0),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF6366F1).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              Icons.info_outline,
-                              color: const Color(0xFF6366F1),
-                              size: isTablet ? 28 : 24,
-                            ),
+                          Icon(
+                            Icons.info_outline,
+                            color: const Color(0xFF6366F1),
+                            size: isTablet ? 24 : 20,
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              instruction,
+                              _languageService.translate(
+                                  'createList.instruction',
+                                  'Create your personalized list of unwanted ingredients. Add items one by one, then save your custom blacklist to use during scanning.'),
                               style: TextStyle(
-                                fontSize: isTablet ? 16 : 14,
-                                color: const Color(0xFF475569),
-                                height: 1.5,
+                                fontSize: isTablet ? 14 : 12,
+                                color: const Color(0xFF64748B),
+                                height: 1.4,
                               ),
                             ),
                           ),
@@ -330,7 +333,7 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                   ),
                 ),
 
-                // Input Section
+                // Add Ingredient Section
                 SliverToBoxAdapter(
                   child: Padding(
                     padding:
@@ -342,7 +345,7 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
@@ -352,7 +355,8 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Add Ingredient',
+                            _languageService.translate(
+                                'createList.addIngredient', 'Add Ingredient'),
                             style: TextStyle(
                               fontSize: isTablet ? 20 : 18,
                               fontWeight: FontWeight.bold,
@@ -364,90 +368,73 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                             children: [
                               Expanded(
                                 child: TextField(
-                                  controller: _ingredientsController,
+                                  controller: _ingredientController,
                                   style:
                                       TextStyle(fontSize: isTablet ? 16 : 14),
                                   decoration: InputDecoration(
-                                    hintText: ingredientText,
+                                    hintText: _languageService.translate(
+                                        'createList.enterIngredientName',
+                                        'Enter ingredient name (e.g. aspartame, MSG)'),
                                     hintStyle: TextStyle(
                                       color: const Color(0xFF94A3B8),
                                       fontSize: isTablet ? 16 : 14,
                                     ),
                                     prefixIcon: Icon(
                                       Icons.search,
-                                      color: const Color(0xFF6366F1),
+                                      color: const Color(0xFF94A3B8),
                                       size: isTablet ? 24 : 20,
                                     ),
-                                    suffixIcon: _ingredientsController
-                                            .text.isNotEmpty
-                                        ? IconButton(
-                                            onPressed: () {
-                                              _ingredientsController.clear();
-                                              setState(() {});
-                                            },
-                                            icon: const Icon(
-                                              Icons.clear,
-                                              color: Color(0xFF94A3B8),
-                                            ),
-                                          )
-                                        : null,
-                                    filled: true,
-                                    fillColor: const Color(0xFFF8FAFC),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFE2E8F0)),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(12),
                                       borderSide: const BorderSide(
-                                        color: Color(0xFF6366F1),
-                                        width: 2,
-                                      ),
+                                          color: Color(0xFF6366F1), width: 2),
                                     ),
                                     contentPadding:
                                         EdgeInsets.all(isTablet ? 16 : 12),
                                   ),
-                                  onSubmitted: (_) => addIngredient(),
-                                  onChanged: (value) {
-                                    setState(() {});
-                                  },
+                                  onSubmitted: (_) => _addIngredient(),
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Container(
-                                width: isTablet ? 56 : 48,
                                 height: isTablet ? 56 : 48,
+                                width: isTablet ? 56 : 48,
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                     colors: [
-                                      const Color(0xFF6366F1),
-                                      const Color(0xFF8B5CF6),
+                                      Color(0xFF6366F1),
+                                      Color(0xFF8B5CF6),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
                                       color: const Color(0xFF6366F1)
                                           .withOpacity(0.3),
-                                      blurRadius: 8,
+                                      blurRadius: 10,
                                       offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
                                 child: ElevatedButton(
-                                  onPressed: addIngredient,
+                                  onPressed: _addIngredient,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.transparent,
                                     shadowColor: Colors.transparent,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                     padding: EdgeInsets.zero,
                                   ),
                                   child: Icon(
                                     Icons.add,
                                     color: Colors.white,
-                                    size: isTablet ? 28 : 24,
+                                    size: isTablet ? 24 : 20,
                                   ),
                                 ),
                               ),
@@ -461,8 +448,8 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
 
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-                // Current List
-                if (ingredients.isNotEmpty) ...[
+                // Custom List Section
+                if (_customIngredients.isNotEmpty) ...[
                   SliverToBoxAdapter(
                     child: Padding(
                       padding:
@@ -472,12 +459,9 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFF6366F1).withOpacity(0.2),
-                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withOpacity(0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 2),
                             ),
@@ -487,210 +471,244 @@ class _CreateListState extends State<CreateList> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  Icons.list_alt,
-                                  color: const Color(0xFF6366F1),
-                                  size: isTablet ? 24 : 20,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _languageService.translate(
+                                          'createList.yourCustomList',
+                                          'Your Custom List'),
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF0F172A),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${_customIngredients.length} ${_languageService.translate('createList.items', 'items')}',
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 14 : 12,
+                                        color: const Color(0xFF64748B),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Your Custom List (${ingredients.length} items)',
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 18 : 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF0F172A),
+                                TextButton.icon(
+                                  onPressed: _clearList,
+                                  icon: Icon(
+                                    Icons.delete_outline,
+                                    color: const Color(0xFFEF4444),
+                                    size: isTablet ? 20 : 16,
+                                  ),
+                                  label: Text(
+                                    _languageService.translate(
+                                        'createList.clearList', 'Clear List'),
+                                    style: TextStyle(
+                                      color: const Color(0xFFEF4444),
+                                      fontSize: isTablet ? 14 : 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Container(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.3,
-                              ),
-                              child: SingleChildScrollView(
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children:
-                                      ingredients.asMap().entries.map((entry) {
-                                    int index = entry.key;
-                                    String ingredient = entry.value;
-
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF6366F1)
-                                            .withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                          color: const Color(0xFF6366F1)
-                                              .withOpacity(0.3),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: _customIngredients.map((ingredient) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF1F5F9),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: const Color(0xFFE2E8F0),
+                                    ),
+                                  ),
+                                  child: IntrinsicWidth(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: isTablet ? 16 : 12,
+                                            vertical: isTablet ? 10 : 8,
+                                          ),
+                                          child: Text(
                                             ingredient,
                                             style: TextStyle(
                                               fontSize: isTablet ? 14 : 12,
-                                              color: const Color(0xFF6366F1),
-                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF475569),
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          const SizedBox(width: 6),
-                                          GestureDetector(
-                                            onTap: () =>
-                                                removeIngredient(index),
+                                        ),
+                                        InkWell(
+                                          onTap: () =>
+                                              _removeIngredient(ingredient),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(
+                                                isTablet ? 8 : 6),
                                             child: Icon(
                                               Icons.close,
-                                              size: isTablet ? 18 : 16,
-                                              color: const Color(0xFF6366F1),
+                                              size: isTablet ? 16 : 14,
+                                              color: const Color(0xFF64748B),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                ],
 
-                // Action Buttons
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                    child: Row(
-                      children: [
-                        if (ingredients.isNotEmpty) ...[
-                          Expanded(
-                            child: _buildActionButton(
-                              icon: Icons.clear_all,
-                              label: 'Clear List',
-                              onPressed: clearList,
-                              isTablet: isTablet,
-                              color: const Color(0xFF94A3B8),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+                  // Save Button
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
+                      child: Container(
+                        width: double.infinity,
+                        height: isTablet ? 60 : 52,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF10B981),
+                              Color(0xFF059669),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF10B981).withOpacity(0.3),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                        ],
-                        Expanded(
-                          child: _buildActionButton(
-                            icon: Icons.save,
-                            label: 'Save List',
-                            onPressed: checkInputs,
-                            isTablet: isTablet,
-                            isPrimary: true,
-                          ),
+                          ],
                         ),
-                        if (ingredients.isNotEmpty) ...[
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _buildActionButton(
-                              icon: Icons.delete_forever,
-                              label: 'Delete All',
-                              onPressed: deleteAllLists,
-                              isTablet: isTablet,
-                              color: const Color(0xFFEF4444),
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _saveCustomList,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
                           ),
-                        ],
-                      ],
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.save,
+                                      color: Colors.white,
+                                      size: isTablet ? 24 : 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _languageService.translate(
+                                          'createList.saveList', 'Save List'),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: isTablet ? 16 : 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ] else ...[
+                  // Empty State
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
+                      child: Container(
+                        padding: EdgeInsets.all(isTablet ? 40 : 32),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: isTablet ? 80 : 60,
+                              height: isTablet ? 80 : 60,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Icon(
+                                Icons.add_circle_outline,
+                                color: const Color(0xFF94A3B8),
+                                size: isTablet ? 40 : 30,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              _languageService.translate(
+                                  'createList.emptyState',
+                                  'No ingredients added yet'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 18 : 16,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF64748B),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _languageService.translate(
+                                  'createList.emptyStateDescription',
+                                  'Start building your custom ingredient blacklist by adding ingredients above'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 14 : 12,
+                                color: const Color(0xFF94A3B8),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
 
                 const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-    required bool isTablet,
-    bool isPrimary = false,
-    Color? color,
-  }) {
-    final buttonColor = color ??
-        (isPrimary ? const Color(0xFF6366F1) : const Color(0xFF94A3B8));
-
-    return Container(
-      height: isTablet ? 56 : 48,
-      decoration: BoxDecoration(
-        gradient: isPrimary
-            ? LinearGradient(
-                colors: [
-                  const Color(0xFF6366F1),
-                  const Color(0xFF8B5CF6),
-                ],
-              )
-            : null,
-        color: isPrimary
-            ? null
-            : (color?.withOpacity(0.1) ?? buttonColor.withOpacity(0.1)),
-        borderRadius: BorderRadius.circular(16),
-        border: isPrimary
-            ? null
-            : Border.all(
-                color: buttonColor.withOpacity(0.3),
-              ),
-        boxShadow: isPrimary
-            ? [
-                BoxShadow(
-                  color: const Color(0xFF6366F1).withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : null,
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isPrimary ? Colors.white : buttonColor,
-              size: isTablet ? 20 : 18,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: isPrimary ? Colors.white : buttonColor,
-                fontSize: isTablet ? 14 : 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       ),
     );

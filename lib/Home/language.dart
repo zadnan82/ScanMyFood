@@ -1,10 +1,18 @@
+// lib/Home/language.dart - Updated with proper navigation handling
 import 'package:flutter/material.dart';
 import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scanmyfood/services/language_service.dart';
+
+// Add the extension for translate method
+extension LanguageServiceTranslate on BuildContext {
+  String tr(String key, [String? fallback]) {
+    return LanguageService.instance.translate(key, fallback ?? key);
+  }
+}
 
 class Language extends StatefulWidget {
-  const Language({Key? key});
+  const Language({Key? key}) : super(key: key);
 
   @override
   State<Language> createState() => _LanguageState();
@@ -15,13 +23,15 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  final LanguageService _languageService = LanguageService.instance;
   String selectedLanguage = 'English';
   String searchQuery = '';
+  bool _isChangingLanguage = false;
 
   @override
   void initState() {
     super.initState();
-    _loadCurrentLanguage();
+    selectedLanguage = _languageService.currentLanguage;
 
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 600),
@@ -53,13 +63,6 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _loadCurrentLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      selectedLanguage = prefs.getString('language') ?? 'English';
-    });
-  }
-
   final List<Map<String, String>> languages = [
     {'name': 'English', 'flag': 'gb', 'code': 'en'},
     {'name': 'Spanish', 'flag': 'es', 'code': 'es'},
@@ -87,30 +90,64 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
     {'name': 'Romanian', 'flag': 'ro', 'code': 'ro'},
   ];
 
-  List<Map<String, String>> get filteredLanguages {
-    if (searchQuery.isEmpty) return languages;
+  // Filter out only supported languages for now
+  List<Map<String, String>> get supportedLanguages {
     return languages
+        .where((lang) =>
+            LanguageService.supportedLanguages.containsKey(lang['name']))
+        .toList();
+  }
+
+  List<Map<String, String>> get filteredLanguages {
+    if (searchQuery.isEmpty) return supportedLanguages;
+    return supportedLanguages
         .where((lang) =>
             lang['name']!.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
   }
 
   void _selectLanguage(String language) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+    if (_isChangingLanguage) return;
 
     setState(() {
-      selectedLanguage = language;
+      _isChangingLanguage = true;
     });
 
-    Fluttertoast.showToast(
-      msg: "Language changed to $language",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: const Color(0xFF10B981), // Emerald green
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    try {
+      await _languageService.changeLanguage(language);
+
+      setState(() {
+        selectedLanguage = language;
+        _isChangingLanguage = false;
+      });
+
+      Fluttertoast.showToast(
+        msg:
+            "${_languageService.translate('language.languageChanged', 'Language changed to')} $language",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFF10B981),
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      // Trigger a rebuild of the entire app to reflect language changes
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      setState(() {
+        _isChangingLanguage = false;
+      });
+
+      Fluttertoast.showToast(
+        msg: _languageService.translate('common.error', 'An error occurred'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFEF4444),
+        textColor: Colors.white,
+      );
+    }
   }
 
   @override
@@ -128,22 +165,34 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
             position: _slideAnimation,
             child: CustomScrollView(
               slivers: [
-                // App Bar
+                // App Bar - FIXED: Proper back button handling
                 SliverAppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   expandedHeight: isTablet ? 180 : 140,
                   floating: false,
                   pinned: true,
+                  // CRITICAL FIX: Show back button when navigation is possible
+                  leading: Navigator.of(context).canPop()
+                      ? IconButton(
+                          icon: Icon(
+                            Theme.of(context).platform == TargetPlatform.iOS
+                                ? Icons.arrow_back_ios
+                                : Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => Navigator.of(context).pop(),
+                        )
+                      : null,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            const Color(0xFF6366F1), // Indigo
-                            const Color(0xFF8B5CF6), // Purple
+                            Color(0xFF6366F1),
+                            Color(0xFF8B5CF6),
                           ],
                         ),
                       ),
@@ -180,7 +229,8 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Choose Language',
+                              _languageService.translate(
+                                  'language.title', 'Choose Language'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isTablet ? 32 : 26,
@@ -189,7 +239,8 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Select your preferred language',
+                              _languageService.translate('language.subtitle',
+                                  'Select your preferred language'),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontSize: isTablet ? 18 : 16,
@@ -226,7 +277,9 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                         },
                         style: TextStyle(fontSize: isTablet ? 18 : 16),
                         decoration: InputDecoration(
-                          hintText: 'Search languages...',
+                          hintText: _languageService.translate(
+                              'language.searchLanguages',
+                              'Search languages...'),
                           hintStyle: TextStyle(
                             color: const Color(0xFF94A3B8),
                             fontSize: isTablet ? 18 : 16,
@@ -285,7 +338,9 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Current Language',
+                                  _languageService.translate(
+                                      'language.currentLanguage',
+                                      'Current Language'),
                                   style: TextStyle(
                                     color: const Color(0xFF64748B),
                                     fontSize: isTablet ? 16 : 14,
@@ -304,6 +359,17 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
+                          if (_isChangingLanguage)
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  const Color(0xFF10B981),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -324,13 +390,17 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                       (context, index) {
                         final language = filteredLanguages[index];
                         final isSelected = language['name'] == selectedLanguage;
+                        final isSupported = LanguageService.supportedLanguages
+                            .containsKey(language['name']);
 
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? const Color(0xFF6366F1)
-                                : Colors.white,
+                                : isSupported
+                                    ? Colors.white
+                                    : Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
@@ -349,7 +419,9 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                             ),
                           ),
                           child: InkWell(
-                            onTap: () => _selectLanguage(language['name']!),
+                            onTap: isSupported && !_isChangingLanguage
+                                ? () => _selectLanguage(language['name']!)
+                                : null,
                             borderRadius: BorderRadius.circular(16),
                             child: Padding(
                               padding: EdgeInsets.all(isTablet ? 16 : 12),
@@ -361,17 +433,36 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
-                                    child: Text(
-                                      language['name']!,
-                                      style: TextStyle(
-                                        color: isSelected
-                                            ? Colors.white
-                                            : const Color(0xFF0F172A),
-                                        fontSize: isTablet ? 18 : 16,
-                                        fontWeight: isSelected
-                                            ? FontWeight.bold
-                                            : FontWeight.w500,
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          language['name']!,
+                                          style: TextStyle(
+                                            color: isSelected
+                                                ? Colors.white
+                                                : isSupported
+                                                    ? const Color(0xFF0F172A)
+                                                    : Colors.grey.shade500,
+                                            fontSize: isTablet ? 18 : 16,
+                                            fontWeight: isSelected
+                                                ? FontWeight.bold
+                                                : FontWeight.w500,
+                                          ),
+                                        ),
+                                        if (!isSupported)
+                                          Text(
+                                            'Coming soon',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade400,
+                                              fontSize: isTablet ? 12 : 10,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
                                   if (isSelected)
@@ -387,6 +478,42 @@ class _LanguageState extends State<Language> with TickerProviderStateMixin {
                         );
                       },
                       childCount: filteredLanguages.length,
+                    ),
+                  ),
+                ),
+
+                // Information about supported languages
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(isTablet ? 24 : 16),
+                    child: Container(
+                      padding: EdgeInsets.all(isTablet ? 20 : 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFFE2E8F0),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color: const Color(0xFF6366F1),
+                            size: isTablet ? 24 : 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Currently supporting ${LanguageService.supportedLanguages.length} languages with ingredient databases. More languages coming soon!',
+                              style: TextStyle(
+                                fontSize: isTablet ? 14 : 12,
+                                color: const Color(0xFF64748B),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

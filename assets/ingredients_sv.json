@@ -1,0 +1,1999 @@
+{
+    "ingredients": {
+ "1,3-dichloro-2-propanol": {
+    "name": "1,3-diklor-2-propanol",
+    "severity": "hög",
+    "description": "Kemisk förorening som kan bildas vid livsmedelsbearbetning",
+    "health_effects": "Potentiellt cancerframkallande, kan orsaka organskador",
+    "why_avoid": "Klassificeras som möjligen cancerframkallande för människor av WHO"
+  },
+  "1,4-dioxane": {
+    "name": "1,4-dioxan",
+    "severity": "hög",
+    "description": "Industriellt lösningsmedel som kan förorena livsmedelsbearbetning",
+    "health_effects": "Sannolikt cancerframkallande, skador på njurar och lever",
+    "why_avoid": "EPA klassificerar som troligt cancerframkallande ämne"
+  },
+  "2,3,7,8-tetracholordibenzo-p-dioxin": {
+    "name": "2,3,7,8-tetraklorodibenso-p-dioxin",
+    "severity": "hög",
+    "description": "Extremt giftig miljöförorening",
+    "health_effects": "Cancerframkallande, giftigt för reproduktion och utveckling",
+    "why_avoid": "En av de mest toxiska kemikalierna kända för människan"
+  },
+  "2-amino-1-methyl-6-phenylimidazo[4,5-b]pyridine": {
+    "name": "2-amino-1-metyl-6-fenylimidazo[4,5-b]pyridin",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid hög temperatur vid köttlagning",
+    "health_effects": "Potentiellt cancerframkallande, kopplat till cancerrisk",
+    "why_avoid": "Bildas när kött tillagas vid höga temperaturer"
+  },
+  "2-amino-3,4-dimethylimidazo[4,5-f]quinolone (meiq)": {
+    "name": "2-amino-3,4-dimetylimidazo[4,5-f]kinolon (MeIQ)",
+    "severity": "hög",
+    "description": "Mutagen förening som bildas i tillagad mat",
+    "health_effects": "Mutagent och potentiellt cancerframkallande",
+    "why_avoid": "Kan skada DNA och öka cancerrisk"
+  },
+  "2-amino-3,8-dimethylimidazo[4,5-f]quinoxalone (meiqx)": {
+    "name": "2-amino-3,8-dimetylimidazo[4,5-f]kinoxalon (MeIQx)",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid matlagning",
+    "health_effects": "Mutagent, potentiellt cancerframkallande",
+    "why_avoid": "Associerat med ökad cancerrisk"
+  },
+  "2-methylimidazole": {
+    "name": "2-metylimidazol",
+    "severity": "medel",
+    "description": "Kemisk förening i karamellfärgämnen",
+    "health_effects": "Kan orsaka kramper och blodsjukdomar vid höga doser",
+    "why_avoid": "Potentiella neurotoxiska effekter"
+  },
+  "3-chloro-1,2-propanediol": {
+    "name": "3-klor-1,2-propandiol",
+    "severity": "hög",
+    "description": "Processförorening i raffinerade livsmedel",
+    "health_effects": "Potentiellt cancerframkallande, njurskador",
+    "why_avoid": "Kan orsaka cancer och organskador"
+  },
+  "4-methylimidazole": {
+    "name": "4-metylimidazol",
+    "severity": "medel",
+    "description": "Kemisk biprodukt vid tillverkning av karamellfärgämne",
+    "health_effects": "Potentiellt cancerframkallande i djurförsök",
+    "why_avoid": "Kalifornien listar som potentiellt cancerframkallande kemikalie"
+  },
+  "5-methoxypsoralen": {
+    "name": "5-metoxipsoralen",
+    "severity": "medel",
+    "description": "Naturlig förening som kan bli giftig vid ljusexponering",
+    "health_effects": "Fototoxiska reaktioner, hudkänslighet",
+    "why_avoid": "Kan orsaka allvarliga hudreaktioner vid UV-ljus"
+  },
+   "acesulfame kalium": {
+    "name": "Acesulfam kalium",
+    "severity": "medel",
+    "description": "Konstgjort sötningsmedel som används i lightprodukter och drycker",
+    "health_effects": "Kan störa tarmfloran och potentiellt påverka humöret",
+    "why_avoid": "Begränsade långtidsstudier om säkerhet, kan påverka metabolismen"
+  },
+  "acetaldehyd": {
+    "name": "Acetaldehyd",
+    "severity": "hög",
+    "description": "Kemisk förening som bildas vid alkoholnedbrytning",
+    "health_effects": "Cancerframkallande, orsakar DNA-skador",
+    "why_avoid": "Klassificerad som grupp 1-cancerframkallande ämne av WHO"
+  },
+  "akrylamid": {
+    "name": "Akrylamid",
+    "severity": "hög",
+    "description": "Kemikalie som bildas när stärkelserik mat tillagas vid hög temperatur",
+    "health_effects": "Sannolikt cancerframkallande för människor, neurotoxiskt",
+    "why_avoid": "Bildas i stekt, bakad och rostad mat vid hög värme"
+  },
+  "akrylonitril": {
+    "name": "Akrylonitril",
+    "severity": "hög",
+    "description": "Industrikemikalie som kan läcka från livsmedelsförpackningar",
+    "health_effects": "Sannolikt cancerframkallande, andnings- och nervsystemspåverkan",
+    "why_avoid": "EPA klassificerar som sannolikt cancerframkallande för människor"
+  },
+  "aflatoxiner": {
+    "name": "Aflatoxiner",
+    "severity": "hög",
+    "description": "Giftiga ämnen från mögel på spannmål och nötter",
+    "health_effects": "Mycket cancerframkallande, leverskador",
+    "why_avoid": "Bland de mest potenta naturliga carcinogenerna"
+  },
+  "agaritin d": {
+    "name": "Agaritin D",
+    "severity": "medel",
+    "description": "Naturligt gift som finns i vissa svampar",
+    "health_effects": "Potentiellt cancerframkallande, kan skada DNA",
+    "why_avoid": "Naturligt förekommande men potentiellt skadligt"
+  },
+  "agaritin": {
+    "name": "Agaritin",
+    "severity": "medel",
+    "description": "Naturlig förening i råa svampar",
+    "health_effects": "Potentiellt cancerframkallande, förstörs vid tillagning",
+    "why_avoid": "Kan öka cancerrisk vid stor konsumtion av råa svampar"
+  },
+  "agave nektar": {
+    "name": "Agave nektar",
+    "severity": "medel",
+    "description": "Högprocesserat sötningsmedel med extremt högt fruktosinnehåll",
+    "health_effects": "Kan bidra till insulinresistens och fettlever",
+    "why_avoid": "Innehåller mer fruktos än majssirap med hög fruktosinnehåll"
+  },
+  "alkaloider": {
+    "name": "Alkaloid",
+    "severity": "medel",
+    "description": "Naturliga växtämnen som kan vara giftiga i höga doser",
+    "health_effects": "Olika giftverkan beroende på typ",
+    "why_avoid": "Vissa är mycket toxiska även i små mängder"
+  },
+  "alkenylbensen": {
+    "name": "Alkenylbensen",
+    "severity": "medel",
+    "description": "Naturliga föreningar i örter och kryddor",
+    "health_effects": "Potentiell leverpåverkan och cancerrisk",
+    "why_avoid": "Kan orsaka leverskador vid långvarig exponering"
+  },
+  "alkylerade imidazoler": {
+    "name": "Alkylerade imidazoler",
+    "severity": "medel",
+    "description": "Föreningar som bildas vid livsmedelsbearbetning",
+    "health_effects": "Potentiella nervsystemspåverkan",
+    "why_avoid": "Kan påverka nervsystemets funktion"
+  },
+  "aluminium": {
+    "name": "Aluminium",
+    "severity": "medel",
+    "description": "Metall i livsmedelstillsatser och köksredskap",
+    "health_effects": "Kan ansamlas i hjärnan, kopplat till nervsjukdomar",
+    "why_avoid": "Potentiell neurotoxicitet vid långvarig exponering"
+  },
+   "amino-3-metylimidazo[4,5-f]kinolin": {
+    "name": "Amino-3-metylimidazo[4,5-f]kinolin",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid tillagning av kött",
+    "health_effects": "Mutagent och cancerframkallande",
+    "why_avoid": "Starka bevis för cancerframkallande egenskaper"
+  },
+  "annatto": {
+    "name": "Annatto",
+    "severity": "medel",
+    "description": "Naturligt färgämne från frön",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet hos känsliga personer",
+    "why_avoid": "Kan utlösa livsmedelsöverkänsligheter och beteendeproblem"
+  },
+  "antiskummingsmedel": {
+    "name": "Antiskummingsmedel",
+    "severity": "medel",
+    "description": "Kemiska tillsatser som förhindrar skumbildning",
+    "health_effects": "Varierar beroende på specifikt ämne",
+    "why_avoid": "Innehåller ofta syntetiska kemikalier med okända långtidseffekter"
+  },
+  "aristolochasyra": {
+    "name": "Aristolochasyra",
+    "severity": "hög",
+    "description": "Naturlig förening i vissa växter",
+    "health_effects": "Mycket cancerframkallande, orsakar njurskador",
+    "why_avoid": "Klassificerad som grupp 1-cancerframkallande av WHO"
+  },
+  "arsenik": {
+    "name": "Arsenik",
+    "severity": "hög",
+    "description": "Tungmetallförorening i mat och vatten",
+    "health_effects": "Cancerframkallande, orsakar organskador och utvecklingsproblem",
+    "why_avoid": "Känt cancerframkallande ämne utan säker exponeringsnivå"
+  },
+  "konstgjord färg": {
+    "name": "Konstgjord färg",
+    "severity": "medel",
+    "description": "Syntetiska färgämnen i bearbetade livsmedel",
+    "health_effects": "Kan orsaka hyperaktivitet, allergier och beteendeproblem",
+    "why_avoid": "Kopplat till ADHD hos barn och tillverkas av petroleumderivat"
+  },
+  "konstgjord smak": {
+    "name": "Konstgjord smak",
+    "severity": "medel",
+    "description": "Syntetiska kemikalier som imiterar naturliga smaker",
+    "health_effects": "Kan orsaka allergier, huvudvärk och hyperaktivitet",
+    "why_avoid": "Innehåller okända kemikalier med potentiella långtidseffekter"
+  },
+  "aspartam": {
+    "name": "Aspartam",
+    "severity": "medel",
+    "description": "Konstgjort sötningsmedel i dietprodukter",
+    "health_effects": "Kan orsaka huvudvärk, humörförändringar och neurologiska symptom",
+    "why_avoid": "Bryts ner till potentiellt skadliga ämnen i kroppen"
+  },
+  "aspergillus flavus": {
+    "name": "Aspergillus flavus",
+    "severity": "hög",
+    "description": "Mögel som producerar giftiga aflatoxiner",
+    "health_effects": "Producerar mycket cancerframkallande aflatoxiner",
+    "why_avoid": "Källa till några av de mest potenta naturliga carcinogenerna"
+  },
+  "azodikarbonamid": {
+    "name": "Azodikarbonamid",
+    "severity": "hög",
+    "description": "Kemikalie som används som mjölblekningsmedel och degförbättringsmedel",
+    "health_effects": "Kan orsaka andningsproblem och allergiska reaktioner",
+    "why_avoid": "Förbjudet i EU, bryts ner till potentiellt skadliga ämnen"
+  },
+  "benz[a]antracen": {
+    "name": "Benz[a]antracen",
+    "severity": "hög",
+    "description": "Polycyklisk aromatisk kolväte i rökt och grillad mat",
+    "health_effects": "Sannolikt cancerframkallande för människor",
+    "why_avoid": "Bildas vid hög temperatur vid matlagning och rökning"
+  },
+  "bensen": {
+    "name": "Bensen",
+    "severity": "hög",
+    "description": "Kemikalie som kan bildas i drycker med natriumbensoat och C-vitamin",
+    "health_effects": "Känt cancerframkallande ämne, orsakar blodsjukdomar",
+    "why_avoid": "Klassificerad som grupp 1-cancerframkallande av WHO"
+  },
+  "benso[a]pyren": {
+    "name": "Benso[a]pyren",
+    "severity": "hög",
+    "description": "Cancerframkallande ämne som bildas vid grilling och rökning",
+    "health_effects": "Känt cancerframkallande ämne för människor",
+    "why_avoid": "Bildas när kött tillagas vid höga temperaturer"
+  },
+  "benso[b]fluoranten": {
+    "name": "Benso[b]fluoranten",
+    "severity": "hög",
+    "description": "Polycyklisk aromatisk kolväte i bearbetade livsmedel",
+    "health_effects": "Sannolikt cancerframkallande för människor",
+    "why_avoid": "Bildas vid hög temperatur vid livsmedelsbearbetning"
+  },
+  "bensofenon": {
+    "name": "Bensofenon",
+    "severity": "medel",
+    "description": "Kemikalie som kan migrera från livsmedelsförpackningar",
+    "health_effects": "Potentiell hormonsstörande effekt",
+    "why_avoid": "Kan störa hormonsystemet"
+  },
+  "bha": {
+    "name": "BHA (Butylerad hydroksianisol)",
+    "severity": "hög",
+    "description": "Syntetiskt antioxidationsmedel och konserveringsmedel",
+    "health_effects": "Möjligt cancerframkallande, hormonsstörande",
+    "why_avoid": "Listas som cancerframkallande i Kalifornien, förbjudet i vissa länder"
+  },
+  "bht": {
+    "name": "BHT (Butylerad hydroksitoluen)",
+    "severity": "hög",
+    "description": "Syntetiskt konserveringsmedel mot härskning",
+    "health_effects": "Kan orsaka leverskador och sköldkörtelproblem",
+    "why_avoid": "Potentiellt cancerframkallande och hormonsstörande"
+  },
+  "bisfenol a": {
+    "name": "Bisfenol A (BPA)",
+    "severity": "hög",
+    "description": "Kemikalie i livsmedelsförpackningar och burkbeläggningar",
+    "health_effects": "Hormonsstörande, kopplat till reproduktions- och utvecklingsproblem",
+    "why_avoid": "Härmar östrogen och stör hormonbalansen"
+  },
+  "bisfenoler": {
+    "name": "Bisfenoler",
+    "severity": "hög",
+    "description": "Familj av kemikalier i livsmedelsförpackningar",
+    "health_effects": "Hormonstörning, reproduktiv toxicitet",
+    "why_avoid": "Stör hormonsystem och utveckling"
+  },
+  "bixin": {
+    "name": "Bixin",
+    "severity": "medel",
+    "description": "Naturligt färgämne från annattofrön",
+    "health_effects": "Kan orsaka allergiska reaktioner hos känsliga personer",
+    "why_avoid": "Kan utlösa livsmedelsallergier och överkänsligheter"
+  },
+  "blekt stärkelse": {
+    "name": "Blekt stärkelse",
+    "severity": "medel",
+    "description": "Stärkelse behandlad med blekningskemikalier",
+    "health_effects": "Kan innehålla kemiska rester från blekningsprocessen",
+    "why_avoid": "Bearbetningskemikalier kan finnas kvar som föroreningar"
+  },
+  "blå #1": {
+    "name": "Blå #1 (Brilliant Blue FCF)",
+    "severity": "medel",
+    "description": "Syntetiskt blått färgämne",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Tillverkat av petroleumderivat, kopplat till beteendeproblem"
+  },
+  "blå #2": {
+    "name": "Blå #2 (Indigokarmin)",
+    "severity": "medel",
+    "description": "Syntetiskt blått färgämne",
+    "health_effects": "Kan orsaka hjärntumörer i djurförsök",
+    "why_avoid": "Potentiella cancerframkallande effekter i laboratoriestudier"
+  },
+  "blå 1": {
+    "name": "Blå 1",
+    "severity": "medel",
+    "description": "Syntetiskt blått färgämne",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Tillverkat av petroleumderivat"
+  },
+  "blå 2": {
+    "name": "Blå 2",
+    "severity": "medel",
+    "description": "Syntetiskt blått färgämne",
+    "health_effects": "Kan orsaka hjärntumörer i djurförsök",
+    "why_avoid": "Potentiella cancerframkallande effekter"
+  },
+  "blått färgämne": {
+    "name": "Blått färgämne",
+    "severity": "medel",
+    "description": "Syntetiska blå färgämnen",
+    "health_effects": "Kan orsaka allergiska reaktioner och beteendeproblem",
+    "why_avoid": "Konstgjorda färgämnen kopplade till hyperaktivitet hos barn"
+  },
+  "bpa": {
+    "name": "BPA",
+    "severity": "hög",
+    "description": "Bisfenol A från livsmedelsförpackningar",
+    "health_effects": "Hormonsstörande, reproduktiv toxicitet",
+    "why_avoid": "Härmar hormoner och stör utvecklingen"
+  },
+  "ormbunke": {
+    "name": "Ormbunke",
+    "severity": "hög",
+    "description": "Ätlig ormbunke som innehåller cancerframkallande ämnen",
+    "health_effects": "Innehåller flera carcinogener",
+    "why_avoid": "Höga halter av cancerframkallande ämnen"
+  },
+  "bromerad vegetabilisk olja": {
+    "name": "Bromerad vegetabilisk olja (BVO)",
+    "severity": "hög",
+    "description": "Kemisk tillsats i citrusdrycker",
+    "health_effects": "Kan ansamlas i kroppsfett, neurologiska och reproduktiva problem",
+    "why_avoid": "Förbjuden i EU och Japan, ansamlas i vävnader"
+  },
+  "brunt ht": {
+    "name": "Brunt HT",
+    "severity": "medel",
+    "description": "Syntetiskt brunt färgämne",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Konstgjort färgämne med potentiella beteendeeffekter"
+  },
+  "butan": {
+    "name": "Butan",
+    "severity": "medel",
+    "description": "Drivgas i livsmedelsprodukter",
+    "health_effects": "Irritation av luftvägarna, narkotisk effekt vid höga halter",
+    "why_avoid": "Industrikemikalie inte avsedd för konsumtion"
+  },
+  "butylerad hydroksianisol": {
+    "name": "Butylerad hydroksianisol (BHA)",
+    "severity": "hög",
+    "description": "Syntetiskt antioxidationsmedel",
+    "health_effects": "Möjligt cancerframkallande, hormonstörning",
+    "why_avoid": "Listas som cancerframkallande i Kalifornien"
+  },
+  "butylerad hydroksitoluen": {
+    "name": "Butylerad hydroksitoluen (BHT)",
+    "severity": "hög",
+    "description": "Syntetiskt konserveringsmedel mot härskning",
+    "health_effects": "Kan orsaka leverskador och sköldkörtelproblem",
+    "why_avoid": "Potentiellt cancerframkallande och hormonsstörande"
+  },
+  "bvo": {
+    "name": "BVO (Bromerad vegetabilisk olja)",
+    "severity": "hög",
+    "description": "Kemisk tillsats som emulgeringsmedel i drycker",
+    "health_effects": "Bioackumulering, neurologiska effekter",
+    "why_avoid": "Förbjuden i många länder, ansamlas i kroppsvävnad"
+  },
+  "kadmium": {
+    "name": "Kadmium",
+    "severity": "hög",
+    "description": "Tungmetallförorening i livsmedel",
+    "health_effects": "Cancerframkallande, njur- och skelettskador",
+    "why_avoid": "Giftig tungmetall utan biologisk funktion"
+  },
+  "carnaubavax": {
+    "name": "Carnaubavax",
+    "severity": "medel",
+    "description": "Naturligt vax som glansmedel på livsmedel",
+    "health_effects": "Generellt säkert men kan orsaka matsmältningsproblem i stora mängder",
+    "why_avoid": "Oblandbart överdrag på livsmedel"
+  },
+  "rapsolja": {
+    "name": "Rapsolja",
+    "severity": "medel",
+    "description": "Högprocesserad olja från genetiskt modifierad raps",
+    "health_effects": "Högt innehåll av inflammatoriska omega-6-fettsyror",
+    "why_avoid": "Kraftigt processad, ofta från GMO-källor, främjar inflammation"
+  },
+  "raps": {
+    "name": "Raps",
+    "severity": "medel",
+    "description": "Olja extraherad från rapsväxter",
+    "health_effects": "Högt innehåll av inflammatoriska omega-6-fettsyror",
+    "why_avoid": "Kraftigt processad och ofta genetiskt modifierad"
+  },
+  "karamellfärg": {
+    "name": "Karamellfärg",
+    "severity": "medel",
+    "description": "Konstgjord färg tillverkad genom kemiska processer",
+    "health_effects": "Kan innehålla cancerframkallande ämnen som 4-metylimidazol",
+    "why_avoid": "Kemisk processering skapar potentiellt skadliga biprodukter"
+  },
+  "karamellfärgning": {
+    "name": "Karamellfärgning",
+    "severity": "medel",
+    "description": "Kemiskt framställt brunt färgämne",
+    "health_effects": "Innehåller potentiella carcinogener från tillverkningsprocessen",
+    "why_avoid": "Kan innehålla 4-metylimidazol, ett möjligt cancerframkallande ämne"
+  },
+  "carnaubavax": {
+    "name": "Carnaubavax",
+    "severity": "medel",
+    "description": "Naturligt vax som används som överdrag på livsmedel",
+    "health_effects": "Oblandbart, kan orsaka matsmältningsbesvär",
+    "why_avoid": "Skapar oblandbart överdrag på livsmedel"
+  },
+  "karragenan (naturligt)": {
+    "name": "Karragenan (naturligt)",
+    "severity": "medel",
+    "description": "Förtjockningsmedel från tång",
+    "health_effects": "Kan orsaka matsmältningsinflammation och aktivering av immunsystemet",
+    "why_avoid": "Kopplat till tarminflammation och matsmältningsproblem"
+  },
+  "karragenan": {
+    "name": "Karragenan",
+    "severity": "medel",
+    "description": "Tångextrakt som förtjocknings- och stabiliseringsmedel",
+    "health_effects": "Kan orsaka matsmältningsinflammation och immunsystemsproblem",
+    "why_avoid": "Associerat med tarminflammation och tarmsjukdomar"
+  },
+  "karragenan": {
+    "name": "Karragenan",
+    "severity": "medel",
+    "description": "Livsmedelstillsats från tång",
+    "health_effects": "Potentiell irritation i matsmältningskanalen",
+    "why_avoid": "Kan utlösa inflammatoriska reaktioner i tarmen"
+  },
+  "klorat (natriumsalt)": {
+    "name": "Klorat (natriumsalt)",
+    "severity": "hög",
+    "description": "Kemisk förening som kan förorena livsmedel",
+    "health_effects": "Stör sköldkörtelfunktionen, potentiellt cancerframkallande",
+    "why_avoid": "Påverkar jodupptag och sköldkörtelfunktion"
+  },
+  "klorid": {
+    "name": "Klorid",
+    "severity": "medel",
+    "description": "Saltkomponent, överdrivna mängder i bearbetade livsmedel",
+    "health_effects": "Bidrar till högt blodtryck och hjärt-kärlsjukdom",
+    "why_avoid": "För högt natriumintag från bearbetade livsmedel"
+  },
+  "klordioxid": {
+    "name": "Klordioxid",
+    "severity": "hög",
+    "description": "Kemikalie som används för blekning av mjöl och vattenrening",
+    "health_effects": "Irritation av luftvägarna, potentiella organskador",
+    "why_avoid": "Industriellt blekningsmedel inte avsett för konsumtion"
+  },
+  "klorpropanoler": {
+    "name": "Klorpropanoler",
+    "severity": "hög",
+    "description": "Kemiska föroreningar som bildas vid livsmedelsbearbetning",
+    "health_effects": "Potentiella carcinogener, organtoxicitet",
+    "why_avoid": "Bildas vid industriell livsmedelsbearbetning, potentiellt cancerframkallande"
+  },
+  "citrusrött #1": {
+    "name": "Citrusrött #1",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne på citrusfrukters skal",
+    "health_effects": "Potentiellt cancerframkallande, kan orsaka allergiska reaktioner",
+    "why_avoid": "Begränsad användning på grund av cancerfarhågor"
+  },
+  "citrusrött #2": {
+    "name": "Citrusrött #2",
+    "severity": "medel",
+    "description": "Konstgjord röd färg för citrusfrukter",
+    "health_effects": "Kan orsaka tumörer i djurförsök",
+    "why_avoid": "Begränsad användning på grund av potentiella cancerframkallande effekter"
+  },
+  "citrusrött": {
+    "name": "Citrusrött",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne för citrusfrukter",
+    "health_effects": "Potentiella cancerframkallande och allergiframkallande effekter",
+    "why_avoid": "Konstgjort färgämne med säkerhetsproblem"
+  },
+  "majs": {
+    "name": "Majs",
+    "severity": "medel",
+    "description": "Högprocesserade majsprodukter och majsderivat",
+    "health_effects": "Ofta genetiskt modifierad, högt glykemiskt index",
+    "why_avoid": "Ofta GMO, bidrar till blodsockertoppar"
+  },
+  "majsolja": {
+    "name": "Majsolja",
+    "severity": "medel",
+    "description": "Högprocesserad olja extraherad från majs",
+    "health_effects": "Högt innehåll av inflammatoriska omega-6-fettsyror",
+    "why_avoid": "Främjar inflammation, ofta från GMO-majs"
+  },
+  "bomullsfrö": {
+    "name": "Bomullsfrö",
+    "severity": "medel",
+    "description": "Frön från bomullsplantor som används i livsmedelsproduktion",
+    "health_effects": "Kan innehålla bekämpningsmedelsrester och naturliga gifter",
+    "why_avoid": "Bomull är kraftigt behandlad med bekämpningsmedel"
+  },
+  "bomullsfröolja": {
+    "name": "Bomullsfröolja",
+    "severity": "medel",
+    "description": "Olja extraherad från bomullsfrön",
+    "health_effects": "Höga bekämpningsmedelsrester, inflammatoriska omega-6-fetter",
+    "why_avoid": "Bomull är en av de mest bekämpningsmedelsbehandlade grödorna"
+  },
+  "kumarin": {
+    "name": "Kumarin",
+    "severity": "medel",
+    "description": "Naturlig förening i kanel och andra växter",
+    "health_effects": "Levertoxicitet vid höga doser",
+    "why_avoid": "Kan orsaka leverskador vid överdriven konsumtion"
+  },
+  "krotonaldehyd": {
+    "name": "Krotonaldehyd",
+    "severity": "hög",
+    "description": "Kemikalie som bildas vid livsmedelsbearbetning och matlagning",
+    "health_effects": "Sannolikt cancerframkallande för människor, andningsvägsirritation",
+    "why_avoid": "Giftig förening som bildas vid hög temperatur"
+  },
+  "cykasin": {
+    "name": "Cykasin",
+    "severity": "hög",
+    "description": "Naturligt gift i cykadväxter",
+    "health_effects": "Cancerframkallande och neurotoxiskt",
+    "why_avoid": "Potent naturlig carcinogen och neurotoxin"
+  },
+  "daminozid": {
+    "name": "Daminozid",
+    "severity": "hög",
+    "description": "Kemisk tillväxtreglerare som används på äpplen",
+    "health_effects": "Potentiellt cancerframkallande",
+    "why_avoid": "Förbjudet i många länder på grund av cancerfarhågor"
+  },
+  "dbp": {
+    "name": "DBP (Dibutylftalat)",
+    "severity": "hög",
+    "description": "Mjukgörare som kan migrera från livsmedelsförpackningar",
+    "health_effects": "Hormonsstörande, reproduktiv toxicitet",
+    "why_avoid": "Stör hormonell utveckling och reproduktion"
+  },
+  "ddt": {
+    "name": "DDT",
+    "severity": "hög",
+    "description": "Persistent bekämpningsmedel som ansamlas i naturen",
+    "health_effects": "Sannolikt cancerframkallande för människor, hormonstörning",
+    "why_avoid": "Förbjudet bekämpningsmedel som finns kvar i miljön och näringskedjan"
+  },
+  "dep": {
+    "name": "DEP (Dietylftalat)",
+    "severity": "medel",
+    "description": "Mjukgörare i livsmedelsförpackningar",
+    "health_effects": "Potentiell hormonstörning",
+    "why_avoid": "Kan störa hormonsystemet"
+  },
+  "druvsocker": {
+    "name": "Druvsocker",
+    "severity": "medel",
+    "description": "Enkelt socker från majs",
+    "health_effects": "Orsakar snabba blodsockertoppar, ofta från GMO-majs",
+    "why_avoid": "Högt glykemiskt index, bidrar till metaboliska problem"
+  },
+  "di(2-etylhexyl)ftalat": {
+    "name": "Di(2-etylhexyl)ftalat",
+    "severity": "hög",
+    "description": "Mjukgörare som migrerar från livsmedelsförpackningar",
+    "health_effects": "Hormonsstörande, reproduktiv och utvecklingstoxicitet",
+    "why_avoid": "Potent hormonsstörare som påverkar utvecklingen"
+  },
+  "dibutylftalat": {
+    "name": "Dibutylftalat",
+    "severity": "hög",
+    "description": "Mjukgörare i livsmedelsförpackningar",
+    "health_effects": "Hormonstörning, reproduktiv toxicitet",
+    "why_avoid": "Stör hormonell utveckling"
+  },
+  "diklordifenyltrikloroetan": {
+    "name": "Diklordifenyltrikloroetan (DDT)",
+    "severity": "hög",
+    "description": "Persistent klororganiskt bekämpningsmedel",
+    "health_effects": "Cancerframkallande, hormonstörning, bioackumulering",
+    "why_avoid": "Förbjudet men kvarstår som miljöförorening"
+  },
+  "dietylftalat": {
+    "name": "Dietylftalat",
+    "severity": "medel",
+    "description": "Mjukgörare i livsmedelsförpackningar",
+    "health_effects": "Potentiell hormonstörning",
+    "why_avoid": "Kan påverka hormonbalansen"
+  },
+  "dimetylsilikon": {
+    "name": "Dimetylsilikon",
+    "severity": "medel",
+    "description": "Antiskummingsmedel i livsmedelsbearbetning",
+    "health_effects": "Kan innehålla föroreningar och nedbrytningsprodukter",
+    "why_avoid": "Industrikemikalie med okända långtidseffekter"
+  },
+  "dioxiner": {
+    "name": "Dioxiner",
+    "severity": "hög",
+    "description": "Extremt giftiga miljöföroreningar",
+    "health_effects": "Cancerframkallande, reproduktions- och utvecklingsskador, immunsystemspåverkan",
+    "why_avoid": "Bland de mest giftiga kemikalierna, ansamlas i näringskedjan"
+  },
+  "dinatriumguanylat": {
+    "name": "Dinatriumguanylat",
+    "severity": "medel",
+    "description": "Smakförstärkare som ofta används med MSG",
+    "health_effects": "Kan utlösa astma och gikt hos känsliga personer",
+    "why_avoid": "Kan förvärra befintliga hälsoproblem"
+  },
+  "dinatriuminosinat": {
+    "name": "Dinatriuminosinat",
+    "severity": "medel",
+    "description": "Smakförstärkare som ofta kombineras med MSG",
+    "health_effects": "Kan orsaka allergiska reaktioner och förvärra gikt",
+    "why_avoid": "Risk för biverkningar hos känsliga personer"
+  },
+  "d-limonene": {
+    "name": "D-limonene",
+    "severity": "medel",
+    "description": "Naturlig förening i citrusfruktskal",
+    "health_effects": "Kan orsaka hudöverkänslighet och allergiska reaktioner",
+    "why_avoid": "Kan utlösa allergier hos känsliga individer"
+  },
+  "berikad mjöl": {
+    "name": "Berikad mjöl",
+    "severity": "medel",
+    "description": "Raffinerad mjöl med tillagda syntetiska vitaminer",
+    "health_effects": "Låg fiberhalt, orsakar blodsockertoppar, kopplat till inflammation",
+    "why_avoid": "Kraftigt processerad med borttagna naturliga näringsämnen"
+  },
+  "equal": {
+    "name": "Equal (Aspartam)",
+    "severity": "medel",
+    "description": "Varumärke för aspartam som sötningsmedel",
+    "health_effects": "Kan orsaka huvudvärk, humörförändringar och neurologiska symptom",
+    "why_avoid": "Bryts ner till potentiellt skadliga ämnen"
+  },
+  "erytritol": {
+    "name": "Erytritol",
+    "severity": "medel",
+    "description": "Sockeralkohol som kalorifattigt sötningsmedel",
+    "health_effects": "Kan orsaka matsmältningsproblem och potentiellt öka risken för stroke",
+    "why_avoid": "Nya studier tyder på hjärt-kärlrisker"
+  },
+  "estragol": {
+    "name": "Estragol",
+    "severity": "medel",
+    "description": "Naturlig förening i örter som basilika och dragon",
+    "health_effects": "Potentiellt cancerframkallande vid höga doser",
+    "why_avoid": "Kan öka cancerrisk vid överdriven konsumtion"
+  },
+  "etylkarbamat": {
+    "name": "Etylkarbamat",
+    "severity": "hög",
+    "description": "Kemisk förening som bildas vid jäsning",
+    "health_effects": "Sannolikt cancerframkallande för människor",
+    "why_avoid": "Bildas naturligt i jästa livsmedel och alkoholhaltiga drycker"
+  },
+  "etylenglykol": {
+    "name": "Etylenglykol",
+    "severity": "hög",
+    "description": "Kemikalie för sterilisering av kryddor och torkade livsmedel",
+    "health_effects": "Känt cancerframkallande ämne, andnings- och nervsystemspåverkan",
+    "why_avoid": "Klassificerad som grupp 1-cancerframkallande av WHO"
+  },
+  "eugenol": {
+    "name": "Eugenol",
+    "severity": "medel",
+    "description": "Naturlig förening i kryddnejlikor och andra kryddor",
+    "health_effects": "Kan orsaka leverskador vid höga doser",
+    "why_avoid": "Kan vara giftigt vid stor konsumtion"
+  },
+  "smakämne": {
+    "name": "Smakämne",
+    "severity": "medel",
+    "description": "Generell term för smaktillsatser",
+    "health_effects": "Effekter beror på specifika kemikalier som används",
+    "why_avoid": "Vag etikettering döljer potentiellt skadliga syntetiska kemikalier"
+  },
+  "flumekin": {
+    "name": "Flumekin",
+    "severity": "medel",
+    "description": "Antibiotika som kan förorena animaliska produkter",
+    "health_effects": "Antibiotikaresistens, allergiska reaktioner",
+    "why_avoid": "Bidrar till antibiotikaresistensproblemet"
+  },
+  "fumonisin b1": {
+    "name": "Fumonisin B1",
+    "severity": "hög",
+    "description": "Mykotoxin producerad av Fusarium-mögel på majs",
+    "health_effects": "Möjligt cancerframkallande för människor, neuralrörsdefekter",
+    "why_avoid": "Giftigt mögelämne som påverkar utvecklingen"
+  },
+  "fumonisiner": {
+    "name": "Fumonisiner",
+    "severity": "hög",
+    "description": "Grupp av mykotoxiner från mögelkontamination",
+    "health_effects": "Cancerframkallande potential, utvecklingstoxicitet",
+    "why_avoid": "Giftiga föreningar från mögelkontamination"
+  },
+  "furan": {
+    "name": "Furan",
+    "severity": "hög",
+    "description": "Kemikalie som bildas vid värmebehandling av livsmedel",
+    "health_effects": "Möjligt cancerframkallande för människor, leverskador",
+    "why_avoid": "Bildas vid konservering och hög temperatur"
+  },
+  "furfurol": {
+    "name": "Furfurol",
+    "severity": "medel",
+    "description": "Kemikalie som bildas vid livsmedelsbearbetning",
+    "health_effects": "Irritation av luftvägar och hud, potentiell toxicitet",
+    "why_avoid": "Industrikemikalie som bildas vid bearbetning"
+  },
+  "fusarin c": {
+    "name": "Fusarin C",
+    "severity": "hög",
+    "description": "Mykotoxin producerad av Fusarium-mögel",
+    "health_effects": "Mutagent och potentiellt cancerframkallande",
+    "why_avoid": "Giftigt mögelmetabolit med DNA-skadande egenskaper"
+  },
+  "fusarium moniliforme": {
+    "name": "Fusarium moniliforme",
+    "severity": "hög",
+    "description": "Mögelsort som producerar giftiga föreningar",
+    "health_effects": "Producerar cancerframkallande mykotoxiner",
+    "why_avoid": "Källa till höggiftiga fumonisin-föreningar"
+  },
+  "genistein": {
+    "name": "Genistein",
+    "severity": "medel",
+    "description": "Fytoöstrogen i sojaprodukter",
+    "health_effects": "Kan störa hormonfunktion och utveckling",
+    "why_avoid": "Potent östrogenliknande förening som kan störa hormonbalansen"
+  },
+  "druvkärnolja": {
+    "name": "Druvkärnolja",
+    "severity": "medel",
+    "description": "Kraftigt processerad olja från druvkärnor",
+    "health_effects": "Mycket hög halt av inflammatoriska omega-6-fettsyror",
+    "why_avoid": "Extremt högt omega-6-innehåll som främjar inflammation"
+  },
+  "grönt #3": {
+    "name": "Grönt #3 (Fast Green FCF)",
+    "severity": "medel",
+    "description": "Syntetiskt grönt färgämne",
+    "health_effects": "Kan orsaka allergiska reaktioner och beteendeproblem",
+    "why_avoid": "Konstgjort färgämne tillverkat av petroleumderivat"
+  },
+  "grönt 3": {
+    "name": "Grönt 3",
+    "severity": "medel",
+    "description": "Syntetiskt grönt färgämne",
+    "health_effects": "Potentiella allergiska och beteendemässiga effekter",
+    "why_avoid": "Konstgjort färgämne med säkerhetsproblem"
+  },
+  "grönt färgämne": {
+    "name": "Grönt färgämne",
+    "severity": "medel",
+    "description": "Syntetiska gröna färgämnen",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Konstgjorda färgämnen kopplade till beteendeproblem"
+  },
+  "guargummi": {
+    "name": "Guargummi",
+    "severity": "medel",
+    "description": "Naturligt förtjockningsmedel från guar-bönor",
+    "health_effects": "Kan orsaka matsmältningsproblem och allergiska reaktioner",
+    "why_avoid": "Kan ge gastrointestinala besvär hos känsliga individer"
+  },
+  "hepatocellulärt karcinom": {
+    "name": "Hepatocellulärt karcinom",
+    "severity": "hög",
+    "description": "Levercancer associerad med vissa livsmedelsföroreningar",
+    "health_effects": "Malign levercancer",
+    "why_avoid": "Allvarlig form av levercancer"
+  },
+  "heterocykliska aminer": {
+    "name": "Heterocykliska aminer",
+    "severity": "hög",
+    "description": "Cancerframkallande föreningar som bildas vid hög temperatur",
+    "health_effects": "Mutagenta och cancerframkallande",
+    "why_avoid": "Bildas när kött tillagas vid hög värme"
+  },
+  "hexenal": {
+    "name": "Hexenal",
+    "severity": "medel",
+    "description": "Aldehydförening som bildas vid lipidoxidation",
+    "health_effects": "Kan bidra till avvikande smaker och potentiell toxicitet",
+    "why_avoid": "Indikerar härskenhet och oxidativ skada"
+  },
+  "hfcs": {
+    "name": "HFCS (Glukos-fruktossirap)",
+    "severity": "hög",
+    "description": "Kraftigt processerat sötningsmedel från majsstärkelse",
+    "health_effects": "Kopplat till fetma, diabetes och fettleversjukdom",
+    "why_avoid": "Processas annorlunda än socker, kan orsaka metaboliska problem"
+  },
+  "glukos-fruktossirap": {
+    "name": "Glukos-fruktossirap",
+    "severity": "hög",
+    "description": "Sötningsmedel tillverkat från majsstärkelse",
+    "health_effects": "Kopplat till fetma, diabetes och fettleversjukdom",
+    "why_avoid": "Processas annorlunda än socker, kan orsaka metaboliska problem"
+  },
+  "hydrokinon": {
+    "name": "Hydrokinon",
+    "severity": "hög",
+    "description": "Kemikalie som kan bildas i vissa livsmedel vid bearbetning",
+    "health_effects": "Potentiellt cancerframkallande, hud- och ögonirritation",
+    "why_avoid": "Giftig förening med cancerframkallande potential"
+  },
+  "iarc-klassificerade ämnen": {
+    "name": "IARC-klassificerade ämnen",
+    "severity": "hög",
+    "description": "Ämnen klassificerade av Internationella cancerforskningsbyrån",
+    "health_effects": "Olika cancerframkallande effekter beroende på klassificering",
+    "why_avoid": "Officiellt erkända som cancerframkallande ämnen"
+  },
+  "isatidin": {
+    "name": "Isatidin",
+    "severity": "medel",
+    "description": "Alkaloidförening i vissa växter",
+    "health_effects": "Potentiell levertoxicitet",
+    "why_avoid": "Kan orsaka leverskador vid exponering"
+  },
+  "isobutan": {
+    "name": "Isobutan",
+    "severity": "medel",
+    "description": "Drivgas i livsmedelsprodukter",
+    "health_effects": "Kväver vid höga koncentrationer, inte avsett för konsumtion",
+    "why_avoid": "Industrigas inte avsedd för intag"
+  },
+  "lasiokarpin": {
+    "name": "Lasiokarpin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid i vissa växter",
+    "health_effects": "Levertoxisk och cancerframkallande",
+    "why_avoid": "Orsakar allvarliga leverskador och cancer"
+  },
+  "bly": {
+    "name": "Bly",
+    "severity": "hög",
+    "description": "Tungmetallförorening i livsmedel",
+    "health_effects": "Neurotoxiskt, särskilt skadligt för barns utveckling",
+    "why_avoid": "Ingen säker exponeringsnivå, orsakar permanent nervskada"
+  },
+  "magnesiumsulfat": {
+    "name": "Magnesiumsulfat",
+    "severity": "medel",
+    "description": "Mineralhalt som livsmedelstillsats",
+    "health_effects": "Kan orsaka matsmältningsbesvär i stora mängder",
+    "why_avoid": "Kan fungera som laxermedel och orsaka gastrointestinala besvär"
+  },
+  "malondialdehyd": {
+    "name": "Malondialdehyd",
+    "severity": "medel",
+    "description": "Förening som bildas vid lipidperoxidation",
+    "health_effects": "Markör för oxidativ stress, potentiell DNA-skada",
+    "why_avoid": "Indikerar härskenhet och cellulär skada"
+  },
+  "maltodextrin": {
+    "name": "Maltodextrin",
+    "severity": "medel",
+    "description": "Kraftigt processerat stärkelsederivat",
+    "health_effects": "Mycket högt glykemiskt index, kan störa tarmfloran",
+    "why_avoid": "Orsakar snabba blodsockertoppar, ofta från GMO-majs"
+  },
+  "maté": {
+    "name": "Maté",
+    "severity": "medel",
+    "description": "Traditionell sydamerikansk dryck",
+    "health_effects": "Kan öka cancerrisk vid mycket varm konsumtion",
+    "why_avoid": "Varm konsumtion kopplad till matstrupscancer"
+  },
+  "meiq": {
+    "name": "MeIQ",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid matlagning",
+    "health_effects": "Mutagent och cancerframkallande",
+    "why_avoid": "Potent mutagen som bildas i tillagat kött"
+  },
+  "meiqx": {
+    "name": "MeIQx",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid hög temperatur",
+    "health_effects": "Mutagent, potentiellt cancerframkallande",
+    "why_avoid": "Stark cancerframkallande potential"
+  },
+  "kvicksilver": {
+    "name": "Kvicksilver",
+    "severity": "hög",
+    "description": "Tungmetallförorening, särskilt i skaldjur",
+    "health_effects": "Neurotoxiskt, särskilt skadligt för hjärnans utveckling",
+    "why_avoid": "Potent neurotoxin som ansamlas i kroppen"
+  },
+  "metoxsalen": {
+    "name": "Metoxsalen",
+    "severity": "medel",
+    "description": "Naturlig förening som blir giftig vid ljusexponering",
+    "health_effects": "Fototoxiska reaktioner, hudskador",
+    "why_avoid": "Kan orsaka allvarliga hudreaktioner vid UV-exponering"
+  },
+  "metyleugenol": {
+    "name": "Metyleugenol",
+    "severity": "medel",
+    "description": "Naturlig förening i örter och kryddor",
+    "health_effects": "Potentiellt cancerframkallande, levertoxicitet",
+    "why_avoid": "Kan orsaka leverskador och öka cancerrisk"
+  },
+  "metylisobutylketon": {
+    "name": "Metylisobutylketon",
+    "severity": "medel",
+    "description": "Industriellt lösningsmedel som kan förorena livsmedel",
+    "health_effects": "Neurologiska effekter, andningsvägsirritation",
+    "why_avoid": "Industrikemikalie inte avsedd för konsumtion"
+  },
+  "metylazoximetanol": {
+    "name": "Metylazoximetanol",
+    "severity": "hög",
+    "description": "Cancerframkallande förening från cykadväxter",
+    "health_effects": "Potent carcinogen och neurotoxin",
+    "why_avoid": "Höggiftig naturlig förening"
+  },
+  "metylenklorid": {
+    "name": "Metylenklorid",
+    "severity": "hög",
+    "description": "Lösningsmedel som kan förorena koffeinfria produkter",
+    "health_effects": "Sannolikt cancerframkallande för människor, effekter på centrala nervsystemet",
+    "why_avoid": "Industriellt lösningsmedel med cancerframkallande potential"
+  },
+  "monokrotalin": {
+    "name": "Monokrotalin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid från vissa växter",
+    "health_effects": "Allvarlig lever- och lungtoxicitet",
+    "why_avoid": "Höggiftig alkaloid som orsakar organskador"
+  },
+  "mononatriumglutamat": {
+    "name": "Mononatriumglutamat (MSG)",
+    "severity": "medel",
+    "description": "Smakförstärkare och konserveringsmedel",
+    "health_effects": "Kan orsaka huvudvärk, illamående och bröstsmärta hos känsliga personer",
+    "why_avoid": "Kan utlösa biverkningar hos känsliga individer"
+  },
+  "naturligt smakämne": {
+    "name": "Naturligt smakämne",
+    "severity": "medel",
+    "description": "Smakämnen från naturliga källor men kemiskt processade",
+    "health_effects": "Kan innehålla syntetiska processeringshjälpmedel och lösningsmedel",
+    "why_avoid": "Ofta kraftigt processerat trots 'naturlig' etikettering"
+  },
+  "naturlig arom": {
+    "name": "Naturlig arom",
+    "severity": "medel",
+    "description": "Smakämnen från naturliga källor",
+    "health_effects": "Kan innehålla processkemikalier och allergener",
+    "why_avoid": "Bearbetningsmetoder kan introducera oönskade kemikalier"
+  },
+  "nitrosamider": {
+    "name": "Nitrosamider",
+    "severity": "hög",
+    "description": "Cancerframkallande föreningar som kan bildas i processerat kött",
+    "health_effects": "Cancerframkallande, särskilt kopplat till magcancer",
+    "why_avoid": "Bildas från nitrit och nitrat i rökt och behandlat kött"
+  },
+  "nitrosaminer": {
+    "name": "Nitrosaminer",
+    "severity": "hög",
+    "description": "Cancerframkallande föreningar som bildas från nitrit",
+    "health_effects": "Potenta carcinogener som påverkar flera organ",
+    "why_avoid": "Bildas när nitrit reagerar med aminer vid tillagning"
+  },
+  "dikväveoxid": {
+    "name": "Dikväveoxid",
+    "severity": "medel",
+    "description": "Gas som drivmedel i vispgräddesbehållare",
+    "health_effects": "Kan förtränga syre, B12-brist vid långvarig exponering",
+    "why_avoid": "Inte avsett för direkt konsumtion"
+  },
+  "n-metyl-n-formylhydrazin": {
+    "name": "N-metyl-N-formylhydrazin",
+    "severity": "hög",
+    "description": "Cancerframkallande förening i svampar",
+    "health_effects": "Cancerframkallande, orsakar levertumörer",
+    "why_avoid": "Potent carcinogen som förekommer naturligt i vissa svampar"
+  },
+  "n-nitrosoföreningar": {
+    "name": "N-Nitrosoföreningar",
+    "severity": "hög",
+    "description": "Grupp av cancerframkallande föreningar",
+    "health_effects": "Höggradigt cancerframkallande, toxicitet i flera organ",
+    "why_avoid": "Potenta cancerframkallande föreningar"
+  },
+  "n-nitrosodietylamin": {
+    "name": "N-Nitrosodietylamin",
+    "severity": "hög",
+    "description": "Nitrosaminförening som kan bildas i livsmedel",
+    "health_effects": "Cancerframkallande, levertoxicitet",
+    "why_avoid": "Cancerframkallande förening som kan bildas vid bearbetning"
+  },
+  "n-nitrosodimetylamin": {
+    "name": "N-Nitrosodimetylamin",
+    "severity": "hög",
+    "description": "Potent cancerframkallande nitrosamin",
+    "health_effects": "Höggradigt cancerframkallande, leverskador",
+    "why_avoid": "En av de mest potenta nitrosamin-carcinogenerna"
+  },
+  "norbixin": {
+    "name": "Norbixin",
+    "severity": "medel",
+    "description": "Naturligt färgämne från annatto",
+    "health_effects": "Kan orsaka allergiska reaktioner hos känsliga individer",
+    "why_avoid": "Kan utlösa livsmedelsallergier och överkänsligheter"
+  },
+  "nutrasweet": {
+    "name": "NutraSweet (Aspartam)",
+    "severity": "medel",
+    "description": "Varumärke för aspartam som sötningsmedel",
+    "health_effects": "Kan orsaka huvudvärk, humörförändringar och neurologiska symptom",
+    "why_avoid": "Bryts ner till potentiellt skadliga metaboliter"
+  },
+  "okratoxin": {
+    "name": "Okratoxin",
+    "severity": "hög",
+    "description": "Mykotoxin producerad av Aspergillus- och Penicillium-mögel",
+    "health_effects": "Cancerframkallande, njurtoxicitet",
+    "why_avoid": "Giftigt mögelämne som skadar njurar och kan orsaka cancer"
+  },
+  "oktafluorcyklobutan": {
+    "name": "Oktafluorcyklobutan",
+    "severity": "medel",
+    "description": "Fluorerad förening som drivmedel",
+    "health_effects": "Andningspåverkan, miljöpersistens",
+    "why_avoid": "Industrikemikalie med okända långtidseffekter"
+  },
+  "olestra": {
+    "name": "Olestra",
+    "severity": "medel",
+    "description": "Syntetiskt fettersättningsmedel",
+    "health_effects": "Hindrar upptag av fettlösliga vitaminer, matsmältningsproblem",
+    "why_avoid": "Orsakar näringsbrist och gastrointestinala problem"
+  },
+  "orange b": {
+    "name": "Orange B",
+    "severity": "medel",
+    "description": "Syntetiskt orange färgämne",
+    "health_effects": "Begränsad användning på grund av säkerhetsproblem",
+    "why_avoid": "Begränsat konstgjort färgämne med potentiella hälsorisker"
+  },
+  "orange färgämne": {
+    "name": "Orange färgämne",
+    "severity": "medel",
+    "description": "Syntetiska orange färgämnen",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Konstgjorda färgämnen kopplade till beteendeproblem"
+  },
+  "p,p'-diklordifenyltrikloroetan": {
+    "name": "p,p'-Diklordifenyltrikloroetan",
+    "severity": "hög",
+    "description": "DDT-bekämpningsmedelsförening",
+    "health_effects": "Cancerframkallande, hormonstörning, bioackumulering",
+    "why_avoid": "Persistent miljöförorening"
+  },
+  "pahs": {
+    "name": "PAH (Polycykliska aromatiska kolväten)",
+    "severity": "hög",
+    "description": "Cancerframkallande föreningar som bildas vid grilling och rökning",
+    "health_effects": "Flera carcinogener som påverkar olika organ",
+    "why_avoid": "Bildas vid hög temperatur vid matlagning och rökning"
+  },
+  "palmolja": {
+    "name": "Palmolja",
+    "severity": "medel",
+    "description": "Kraftigt processerad olja som ofta används i bearbetade livsmedel",
+    "health_effects": "Hög halt av mättade fetter, kan innehålla processföroreningar",
+    "why_avoid": "Miljöproblem och potentiella processföroreningar"
+  },
+  "parabener": {
+    "name": "Parabener",
+    "severity": "medel",
+    "description": "Konserveringsmedel som kan migrera från förpackningar",
+    "health_effects": "Hormonstörning, allergiska reaktioner",
+    "why_avoid": "Hormonstörande konserveringsmedel"
+  },
+  "paraquat": {
+    "name": "Paraquat",
+    "severity": "hög",
+    "description": "Extremt giftigt herbicid som kan förorena livsmedel",
+    "health_effects": "Mycket toxiskt, lungskador, koppling till Parkinsons sjukdom",
+    "why_avoid": "Ett av de mest giftiga bekämpningsmedlen i bruk"
+  },
+  "patulin": {
+    "name": "Patulin",
+    "severity": "hög",
+    "description": "Mykotoxin producerad av Penicillium-mögel i frukter",
+    "health_effects": "Cancerframkallande potential, undertryckt immunsystem",
+    "why_avoid": "Giftigt mögelämne i skadad frukt"
+  },
+  "pbcs": {
+    "name": "PBCs (Polybromerade föreningar)",
+    "severity": "hög",
+    "description": "Persistenta organiska föroreningar som ansamlas i naturen",
+    "health_effects": "Hormonstörning, utvecklingstoxicitet",
+    "why_avoid": "Långlivade miljöföroreningar"
+  },
+  "jordnötsolja": {
+    "name": "Jordnötsolja",
+    "severity": "medel",
+    "description": "Olja extraherad från jordnötter",
+    "health_effects": "Hög halt av omega-6-fetter, potentiellt allergen, risk för aflatoxinförorening",
+    "why_avoid": "Inflammatorisk omega-6-profil och potentiell mykotoxinförorening"
+  },
+  "perklorat": {
+    "name": "Perklorat",
+    "severity": "hög",
+    "description": "Kemikalie som kan förorena vatten och livsmedel",
+    "health_effects": "Stör sköldkörtelfunktionen, utvecklingspåverkan",
+    "why_avoid": "Påverkar sköldkörtelhormonproduktionen"
+  },
+  "perfluorerade alkylämnen": {
+    "name": "Perfluorerade alkylämnen",
+    "severity": "hög",
+    "description": "Långlivade kemikalier från livsmedelsförpackningar",
+    "health_effects": "Bioackumulering, immunsystemspåverkan, cancerrisk",
+    "why_avoid": "Evighetskemikalier som består i kropp och miljö"
+  },
+  "pfas": {
+    "name": "PFAS (Per- och polyfluorerade alkylämnen)",
+    "severity": "hög",
+    "description": "Evighetskemikalier från förpackningar och bearbetning",
+    "health_effects": "Bioackumulering, cancer, immunsystemsskador",
+    "why_avoid": "Långlivade kemikalier som ansamlas i kroppsvävnad"
+  },
+  "phip": {
+    "name": "PhIP (2-Amino-1-metyl-6-fenylimidazo[4,5-b]pyridin)",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid matlagning",
+    "health_effects": "Cancerframkallande, DNA-skador",
+    "why_avoid": "Potent mutagen som bildas när kött tillagas vid hög värme"
+  },
+  "ftalater": {
+    "name": "Ftalater",
+    "severity": "hög",
+    "description": "Mjukgörare som migrerar från livsmedelsförpackningar",
+    "health_effects": "Hormonstörning, reproduktiv och utvecklingstoxicitet",
+    "why_avoid": "Hormonstörande kemikalier som påverkar utvecklingen"
+  },
+  "plasttillsatser": {
+    "name": "Plasttillsatser",
+    "severity": "medel",
+    "description": "Olika kemikalier från plastförpackningar",
+    "health_effects": "Hormonstörning, potentiella cancerframkallande effekter",
+    "why_avoid": "Kemisk migration från förpackningar till mat"
+  },
+  "polyamider": {
+    "name": "Polyamider",
+    "severity": "medel",
+    "description": "Syntetiska polymerer i livsmedelsförpackningar",
+    "health_effects": "Potentiell migration av kemiska tillsatser",
+    "why_avoid": "Kan frigöra kemiska tillsatser till mat"
+  },
+  "polycykliska aromatiska kolväten": {
+    "name": "Polycykliska aromatiska kolväten",
+    "severity": "hög",
+    "description": "Cancerframkallande föreningar som bildas vid grilling och rökning",
+    "health_effects": "Flera carcinogener, DNA-skador",
+    "why_avoid": "Bildas vid hög temperatur vid matlagning"
+  },
+  "polyestrar": {
+    "name": "Polyestrar",
+    "severity": "medel",
+    "description": "Syntetiska polymerer i livsmedelsförpackningar",
+    "health_effects": "Potentiell kemisk migration till mat",
+    "why_avoid": "Kan läcka kemiska tillsatser"
+  },
+  "polyfluorerade alkylämnen": {
+    "name": "Polyfluorerade alkylämnen",
+    "severity": "hög",
+    "description": "Långlivade fluorerade kemikalier",
+    "health_effects": "Bioackumulering, immunsuppression, cancerrisk",
+    "why_avoid": "Evighetskemikalier med allvarliga hälsoeffekter"
+  },
+  "polymertillsatser": {
+    "name": "Polymertillsatser",
+    "severity": "medel",
+    "description": "Stor-molekylära tillsatser i livsmedelsbearbetning",
+    "health_effects": "Potentiell nedbrytning till mindre giftiga föreningar",
+    "why_avoid": "Kan brytas ner till skadliga mindre molekyler"
+  },
+  "polyolefiner": {
+    "name": "Polyolefiner",
+    "severity": "medel",
+    "description": "Plastmaterial i livsmedelsförpackningar",
+    "health_effects": "Potentiell migration av tillsatser och monomerer",
+    "why_avoid": "Kemisk migration från plastförpackningar"
+  },
+  "polysorbat 60": {
+    "name": "Polysorbat 60",
+    "severity": "medel",
+    "description": "Syntetiskt emulgeringsmedel från petroleum",
+    "health_effects": "Kan störa tarmfloran och orsaka matsmältningsproblem",
+    "why_avoid": "Syntetiskt emulgeringsmedel som kan påverka tarmhälsan"
+  },
+  "polystyren": {
+    "name": "Polystyren",
+    "severity": "medel",
+    "description": "Plastmaterial i livsmedelsbehållare",
+    "health_effects": "Potentiell utlakning av styrenmonomer",
+    "why_avoid": "Styren är ett möjligen cancerframkallande ämne"
+  },
+  "kaliumsorbat": {
+    "name": "Kaliumsorbat",
+    "severity": "medel",
+    "description": "Syntetiskt konserveringsmedel mot mögel",
+    "health_effects": "Kan orsaka allergiska reaktioner och hudirritation",
+    "why_avoid": "Kan utlösa allergiska reaktioner hos känsliga personer"
+  },
+  "kaliumbenzoat": {
+    "name": "Kaliumbenzoat",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel liknande natriumbenzoat",
+    "health_effects": "Kan bilda bensen när det kombineras med C-vitamin",
+    "why_avoid": "Potential att bilda cancerframkallande bensen"
+  },
+  "kaliumbromat": {
+    "name": "Kaliumbromat",
+    "severity": "hög",
+    "description": "Kemikalie som stärker bröddeg",
+    "health_effects": "Sannolikt cancerframkallande för människor, njur- och sköldkörteltoxicitet",
+    "why_avoid": "Förbjudet i många länder på grund av cancerrisk"
+  },
+  "drivgaser": {
+    "name": "Drivgaser",
+    "severity": "medel",
+    "description": "Gaser för att spruta ut livsmedelsprodukter",
+    "health_effects": "Inte avsedda för konsumtion, potentiella andningseffekter",
+    "why_avoid": "Industrigaser inte avsedda för intag"
+  },
+  "propan": {
+    "name": "Propan",
+    "severity": "medel",
+    "description": "Drivgas i livsmedelsdispensrar",
+    "health_effects": "Kväver vid höga koncentrationer",
+    "why_avoid": "Industrigas inte avsedd för konsumtion"
+  },
+  "drivgas": {
+      "name": "Drivgas",
+      "severity": "medel",
+      "description": "Gaser som används för att spruta ut livsmedel från förpackningar",
+      "health_effects": "Varierar beroende på specifik gas, inte avsedd att intas",
+      "why_avoid": "Industrikemikalier som inte är avsedda att förtäras"
+    },
+  "propylgallat": {
+    "name": "Propylgallat",
+    "severity": "medel",
+    "description": "Syntetiskt antioxidationsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och magirritation",
+    "why_avoid": "Potentiellt allergen med gastrointestinala effekter"
+  },
+  "propylparaben": {
+    "name": "Propylparaben",
+    "severity": "medel",
+    "description": "Konserveringsmedel som kan migrera från förpackningar",
+    "health_effects": "Hormonstörning, allergiska reaktioner",
+    "why_avoid": "Hormonstörande konserveringsmedel"
+  },
+  "propylen": {
+    "name": "Propylen",
+    "severity": "medel",
+    "description": "Kemisk förening i livsmedelsbearbetning",
+    "health_effects": "Potentiell andnings- och hudirritation",
+    "why_avoid": "Industrikemikalie med begränsad säkerhetsdata"
+  },
+  "propylenglykol": {
+    "name": "Propylenglykol",
+    "severity": "medel",
+    "description": "Kemikalie som fukthållare och lösningsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och hudirritation",
+    "why_avoid": "Industrikemikalie som används i frostskyddsmedel och kosmetika"
+  },
+  "ptaquilosid": {
+    "name": "Ptaquilosid",
+    "severity": "hög",
+    "description": "Cancerframkallande förening i ormbunke",
+    "health_effects": "Mycket cancerframkallande, DNA-skador",
+    "why_avoid": "Potent naturlig carcinogen"
+  },
+  "pyretroider": {
+    "name": "Pyretroider",
+    "severity": "medel",
+    "description": "Syntetiskt insekticid som kan förorena livsmedel",
+    "health_effects": "Neurologiska effekter, hormonstörning",
+    "why_avoid": "Bekämpningsmedelsrester med neurotoxiska egenskaper"
+  },
+  "pyrolizidinalkaloider": {
+    "name": "Pyrolizidinalkaloider",
+    "severity": "hög",
+    "description": "Naturliga gifter i vissa växter",
+    "health_effects": "Allvarlig levertoxicitet, cancerframkallande",
+    "why_avoid": "Höggiftiga växtföreningar som orsakar organskador"
+  },
+  "kinolingult": {
+    "name": "Kinolingult",
+    "severity": "medel",
+    "description": "Syntetiskt gult färgämne",
+    "health_effects": "Kan orsaka allergiska reaktioner och hyperaktivitet",
+    "why_avoid": "Konstgjort färgämne kopplat till beteendeproblem"
+  },
+  "rött #3": {
+    "name": "Rött #3 (Erytrosin)",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne",
+    "health_effects": "Kan orsaka sköldkörteltumörer och hyperaktivitet",
+    "why_avoid": "Förbjudet i kosmetika på grund av cancerfarhågor"
+  },
+  "rött #40": {
+    "name": "Rött #40 (Allurarött)",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne",
+    "health_effects": "Kopplat till hyperaktivitet hos barn och allergiska reaktioner",
+    "why_avoid": "Tillverkat av petroleumderivat, beteendeeffekter"
+  },
+  "rött 3": {
+    "name": "Rött 3",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne",
+    "health_effects": "Potentiella sköldkörtelpåverkan och hyperaktivitet",
+    "why_avoid": "Säkerhetsproblem som lett till begränsningar"
+  },
+  "rött 40": {
+    "name": "Rött 40",
+    "severity": "medel",
+    "description": "Syntetiskt rött färgämne",
+    "health_effects": "Kopplat till hyperaktivitet hos barn och allergiska reaktioner",
+    "why_avoid": "Tillverkat av petroleumderivat"
+  },
+  "rött färgämne": {
+    "name": "Rött färgämne",
+    "severity": "medel",
+    "description": "Syntetiska röda färgämnen",
+    "health_effects": "Kan orsaka allergiska reaktioner och beteendeproblem",
+    "why_avoid": "Konstgjorda färgämnen kopplade till hyperaktivitet"
+  },
+  "retronecin": {
+    "name": "Retronecin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid i vissa växter",
+    "health_effects": "Allvarlig levertoxicitet och cancerframkallande",
+    "why_avoid": "Höggiftig alkaloid som orsakar leverskador"
+  },
+  "safflorolja": {
+    "name": "Safflorolja",
+    "severity": "medel",
+    "description": "Kraftigt processerad olja med mycket högt omega-6-innehåll",
+    "health_effects": "Extremt högt omega-6-innehåll främjar inflammation",
+    "why_avoid": "En av de omega-6-rikaste oljorna, starkt inflammatorisk"
+  },
+  "safrol": {
+    "name": "Safrol",
+    "severity": "hög",
+    "description": "Naturlig förening i sassafras och andra växter",
+    "health_effects": "Cancerframkallande, förbjudet i livsmedel",
+    "why_avoid": "Känd carcinogen förbjuden av FDA"
+  },
+  "semikarbazid": {
+    "name": "Semikarbazid",
+    "severity": "hög",
+    "description": "Kemikalie som bildas vid nedbrytning av azodikarbonamid",
+    "health_effects": "Potentiellt cancerframkallande",
+    "why_avoid": "Bildas från nedbrytning av förbjudet livsmedelstillsats"
+  },
+  "senecifyllin": {
+    "name": "Senecifyllin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid från ståndsblomsterväxter",
+    "health_effects": "Levertoxisk och cancerframkallande",
+    "why_avoid": "Giftig alkaloid som orsakar allvarliga leverskador"
+  },
+  "senecioalkaloider": {
+    "name": "Senecioalkaloider",
+    "severity": "hög",
+    "description": "Giftiga alkaloider från Senecio-växter",
+    "health_effects": "Allvarlig levertoxicitet och cancer",
+    "why_avoid": "Höggiftiga växtföreningar"
+  },
+  "senecionin": {
+    "name": "Senecionin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid i korsört",
+    "health_effects": "Levertoxisk och cancerframkallande",
+    "why_avoid": "Orsakar allvarliga leverskador och cancer"
+  },
+  "kiseldioxid": {
+    "name": "Kiseldioxid",
+    "severity": "medel",
+    "description": "Antiklumpningsmedel i bearbetade livsmedel",
+    "health_effects": "Kan orsaka andningsproblem vid inandning, matsmältningsirritation",
+    "why_avoid": "Industriell tillsats med potentiella hälsoproblem"
+  },
+  "natriumdihydrogenpyrofosfat": {
+    "name": "Natriumdihydrogenpyrofosfat",
+    "severity": "medel",
+    "description": "Kemiskt jäsningsmedel och konserveringsmedel",
+    "health_effects": "Kan orsaka illamående och matsmältningsbesvär",
+    "why_avoid": "Syntetisk kemisk tillsats med begränsade långtidsstudier"
+  },
+  "natriumaluminiumfosfat": {
+    "name": "Natriumaluminiumfosfat",
+    "severity": "hög",
+    "description": "Kemiskt jäsningsmedel med aluminium",
+    "health_effects": "Aluminiumackumulering, potentiell neurotoxicitet",
+    "why_avoid": "Källa till aluminium som kan ansamlas i hjärnvävnad"
+  },
+  "natriumaluminiumsulfat": {
+    "name": "Natriumaluminiumsulfat",
+    "severity": "hög",
+    "description": "Kemisk tillsats med aluminium",
+    "health_effects": "Aluminiumexponering, potentiella neurologiska effekter",
+    "why_avoid": "Innehåller aluminium som kan vara neurotoxiskt"
+  },
+  "natriumbenzoat": {
+    "name": "Natriumbenzoat",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel mot förstöring",
+    "health_effects": "Kan bilda bensen (en carcinogen) när det kombineras med C-vitamin",
+    "why_avoid": "Potential att bilda skadliga föreningar under vissa förhållanden"
+  },
+  "natriumbisulfit": {
+    "name": "Natriumbisulfit",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel och antioxidationsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och astmaanfall",
+    "why_avoid": "Kan utlösa allvarliga allergiska reaktioner hos känsliga personer"
+  },
+  "natriumkaseinat": {
+    "name": "Natriumkaseinat",
+    "severity": "medel",
+    "description": "Mjölkproteinderivat som emulgeringsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner hos mjölkkänsliga personer",
+    "why_avoid": "Dold mjölkingrediens som kan utlösa allergier"
+  },
+  "natriumdiacetat": {
+    "name": "Natriumdiacetat",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel och smakämne",
+    "health_effects": "Kan orsaka matsmältningsirritation hos känsliga personer",
+    "why_avoid": "Syntetisk tillsats med potentiella gastrointestinala effekter"
+  },
+  "natriumerytorbat": {
+    "name": "Natriumerytorbat",
+    "severity": "medel",
+    "description": "Syntetiskt antioxidationsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och njursten",
+    "why_avoid": "Syntetisk kemikalie med potentiella biverkningar"
+  },
+  "natriumhexametafosfat": {
+    "name": "Natriumhexametafosfat",
+    "severity": "medel",
+    "description": "Kemikalie som emulgeringsmedel och sekvesteringsmedel",
+    "health_effects": "Kan orsaka matsmältningsbesvär och mineralobalanser",
+    "why_avoid": "Kan störa mineralupptaget"
+  },
+  "natriummetabisulfit": {
+    "name": "Natriummetabisulfit",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel och antioxidationsmedel",
+    "health_effects": "Kan orsaka allvarliga allergiska reaktioner och astma",
+    "why_avoid": "Kan utlösa livshotande reaktioner hos känsliga personer"
+  },
+  "natriumnitrat": {
+    "name": "Natriumnitrat",
+    "severity": "hög",
+    "description": "Kemiskt konserveringsmedel i rökt kött",
+    "health_effects": "Omvandlas till nitriter, bildar cancerframkallande nitrosaminer",
+    "why_avoid": "Förstadium till cancerframkallande nitrosaminer"
+  },
+  "natriumnitrit": {
+    "name": "Natriumnitrit",
+    "severity": "hög",
+    "description": "Kemiskt konserveringsmedel som bevarar köttfärg",
+    "health_effects": "Bildar cancerframkallande nitrosaminer, risk för methemoglobinemi",
+    "why_avoid": "Kombineras med aminer till cancerframkallande föreningar"
+  },
+  "natriumfosfat": {
+    "name": "Natriumfosfat",
+    "severity": "medel",
+    "description": "Kemisk tillsats som emulgeringsmedel och pH-reglerare",
+    "health_effects": "Kan orsaka matsmältningsproblem och mineralobalanser",
+    "why_avoid": "Kan störa kalcium och andra mineralers upptag"
+  },
+  "natriumsulfit": {
+    "name": "Natriumsulfit",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel och antioxidationsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och astmaanfall",
+    "why_avoid": "Kan utlösa allvarliga andningsreaktioner hos känsliga personer"
+  },
+  "sorbinsyra": {
+    "name": "Sorbinsyra",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel mot mögel",
+    "health_effects": "Kan orsaka hud- och andningsirritation",
+    "why_avoid": "Kan utlösa allergiska reaktioner hos känsliga personer"
+  },
+  "sorbitol": {
+    "name": "Sorbitol",
+    "severity": "medel",
+    "description": "Sockeralkohol som sötningsmedel och fukthållare",
+    "health_effects": "Kan orsaka matsmältningsbesvär, diarré och gaser",
+    "why_avoid": "Kan orsaka betydande gastrointestinala besvär"
+  },
+  "sojabönsolja": {
+    "name": "Sojabönsolja",
+    "severity": "medel",
+    "description": "Olja extraherad från sojabönor",
+    "health_effects": "Hög halt av omega-6-fetter, kan främja inflammation",
+    "why_avoid": "Kraftigt processerad och ofta från GMO-sojabönor"
+  },
+  "solecitin": {
+    "name": "Solecitin",
+    "severity": "medel",
+    "description": "Emulgeringsmedel från sojabönor",
+    "health_effects": "Generellt säkert men kan orsaka matsmältningsproblem hos vissa",
+    "why_avoid": "Ofta tillverkat från genetiskt modifierade sojabönor"
+  },
+  "splenda": {
+    "name": "Splenda (Sukralos)",
+    "severity": "medel",
+    "description": "Varumärke för sukralos som sötningsmedel",
+    "health_effects": "Kan störa tarmfloran och glukosmetabolismen",
+    "why_avoid": "Syntetiskt klorerat ämne med okända långtidseffekter"
+  },
+  "steviosid": {
+    "name": "Steviosid",
+    "severity": "medel",
+    "description": "Naturligt sötningsämne från steviaväxt",
+    "health_effects": "Generellt säkert men kommersiella produkter kan innehålla tillsatser",
+    "why_avoid": "Kommersiella steviaprodukter innehåller ofta andra tillsatser"
+  },
+  "sukralos": {
+    "name": "Sukralos",
+    "severity": "medel",
+    "description": "Konstgjort sötningsmedel genom klorering av socker",
+    "health_effects": "Kan störa tarmfloran och påverka glukosmetabolismen",
+    "why_avoid": "Syntetisk klorerad förening med okända långtidseffekter"
+  },
+  "svaveldioxid": {
+    "name": "Svaveldioxid",
+    "severity": "medel",
+    "description": "Kemiskt konserveringsmedel och antioxidationsmedel",
+    "health_effects": "Kan orsaka allergiska reaktioner och astmaanfall",
+    "why_avoid": "Kan utlösa allvarliga andningsreaktioner"
+  },
+  "svavelsyra": {
+    "name": "Svavelsyra",
+    "severity": "hög",
+    "description": "Stark syra i livsmedelsbearbetning",
+    "health_effects": "Mycket frätande, kan orsaka allvarliga brännskador och andningsskador",
+    "why_avoid": "Farlig industrikemikalie"
+  },
+  "solrosolja": {
+    "name": "Solrosolja",
+    "severity": "medel",
+    "description": "Olja från solroskärnor, ofta kraftigt processerad",
+    "health_effects": "Mycket hög halt av omega-6-fettsyror, främjar inflammation",
+    "why_avoid": "Extremt högt omega-6-innehåll bidrar till inflammatoriska tillstånd"
+  },
+  "sunset yellow": {
+    "name": "Sunset Yellow",
+    "severity": "medel",
+    "description": "Syntetiskt gult färgämne",
+    "health_effects": "Kan orsaka hyperaktivitet och allergiska reaktioner",
+    "why_avoid": "Konstgjort färgämne kopplat till beteendeproblem hos barn"
+  },
+  "sweet'n low": {
+    "name": "Sweet'N Low (Sakkarin)",
+    "severity": "medel",
+    "description": "Varumärke för sakkarin som sötningsmedel",
+    "health_effects": "Potentiell carcinogen, bitter metallisk eftersmak",
+    "why_avoid": "Djurförsök visade ökad cancerrisk"
+  },
+  "symfytin": {
+    "name": "Symfytin",
+    "severity": "hög",
+    "description": "Pyrolizidinalkaloid i vallört",
+    "health_effects": "Levertoxisk och cancerframkallande",
+    "why_avoid": "Giftig alkaloid som orsakar leverskador och cancer"
+  },
+  "tartrazin": {
+    "name": "Tartrazin (Gult #5)",
+    "severity": "medel",
+    "description": "Syntetiskt gult färgämne",
+    "health_effects": "Kan orsaka hyperaktivitet, allergiska reaktioner och astma",
+    "why_avoid": "Kopplat till beteendeproblem och allergiska reaktioner"
+  },
+  "tbhq": {
+    "name": "TBHQ (Tertiär-butylhydrokinon)",
+    "severity": "hög",
+    "description": "Syntetiskt antioxidationsmedel",
+    "health_effects": "Kan orsaka illamående, kräkningar och potentiella cancerframkallande effekter",
+    "why_avoid": "Petroleumderivat med oroande toxicitetsstudier"
+  },
+  "tertiär-butylhydrokinon": {
+    "name": "Tertiär-butylhydrokinon",
+    "severity": "hög",
+    "description": "Syntetiskt antioxidationsmedel från petroleum",
+    "health_effects": "Kan orsaka magtumörer och DNA-skador",
+    "why_avoid": "Industrikemikalie med potentiella cancerframkallande egenskaper"
+  },
+  "titandioxid": {
+    "name": "Titandioxid",
+    "severity": "medel",
+    "description": "Vitt pigment för att ljusna och vitna livsmedel",
+    "health_effects": "Kan orsaka inflammatoriska och immunsvar",
+    "why_avoid": "Potentiell carcinogen vid inandning, immunsystemspåverkan"
+  },
+  "transfetter": {
+    "name": "Transfetter",
+    "severity": "hög",
+    "description": "Konstgjorda fetter genom hydrogenering",
+    "health_effects": "Ökar risken för hjärtsjukdom, inflammation och dåligt kolesterol",
+    "why_avoid": "Ingen säker konsumtionsnivå, förbjudet i många länder"
+  },
+  "trp-p-1": {
+    "name": "Trp-P-1",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid proteinglys",
+    "health_effects": "Mutagent och cancerframkallande",
+    "why_avoid": "Potent mutagen som bildas vid hög temperatur"
+  },
+  "trp-p-2": {
+    "name": "Trp-P-2",
+    "severity": "hög",
+    "description": "Heterocyklisk amin som bildas vid matlagning",
+    "health_effects": "Mycket mutagen och cancerframkallande",
+    "why_avoid": "Stark cancerframkallande potential"
+  },
+  "vegetabilisk olja": {
+    "name": "Vegetabilisk olja",
+    "severity": "medel",
+    "description": "Generell term för kraftigt processerade växtoljor",
+    "health_effects": "Vanligtvis hög halt av inflammatoriska omega-6-fettsyror",
+    "why_avoid": "Vag etikettering döljer ofta mindre önskvärda oljor"
+  },
+  "vinylklorid": {
+    "name": "Vinylklorid",
+    "severity": "hög",
+    "description": "Kemikalie som kan migrera från PVC-förpackningar",
+    "health_effects": "Känd cancerframkallande för människor, leverskador",
+    "why_avoid": "Potent carcinogen som kan förorena förpackad mat"
+  },
+  "vit mineralolja": {
+    "name": "Vit mineralolja",
+    "severity": "medel",
+    "description": "Petroleumderiverad olja som livsmedelstillsats",
+    "health_effects": "Kan störa vitaminupptaget",
+    "why_avoid": "Petroleumprodukt som kan blockera näringsämnesupptag"
+  },
+  "xantangummi": {
+    "name": "Xantangummi",
+    "severity": "medel",
+    "description": "Mikrobiell polysackarid som förtjockningsmedel",
+    "health_effects": "Kan orsaka matsmältningsbesvär och allergiska reaktioner",
+    "why_avoid": "Kan ge gastrointestinala besvär hos känsliga personer"
+  },
+  "xylitol": {
+    "name": "Xylitol",
+    "severity": "medel",
+    "description": "Sockeralkohol som sötningsmedel",
+    "health_effects": "Kan orsaka matsmältningsbesvär, extremt giftigt för hundar",
+    "why_avoid": "Kan orsaka betydande gastrointestinala besvär"
+  },
+  "gult #5": {
+    "name": "Gult #5 (Tartrazin)",
+    "severity": "medel",
+    "description": "Syntetiskt gult färgämne",
+    "health_effects": "Kan orsaka hyperaktivitet, allergiska reaktioner och astma",
+    "why_avoid": "Kopplat till beteendeproblem och kräver varningstexter i Europa"
+  },
+  "gult #6": {
+    "name": "Gult #6 (Sunset Yellow)",
+    "severity": "medel",
+    "description": "Syntetiskt gul livsmedelsfärgämne",
+    "health_effects": "Kan orsaka hyperaktivitet och allergiska reaktioner",
+    "why_avoid": "Tillverkat av petroleumderivat, kopplat till beteendeproblem"
+  },
+  "gult 5": {
+    "name": "Gult 5",
+    "severity": "medel",
+    "description": "Syntetiskt gul färgämne",
+    "health_effects": "Kan orsaka hyperaktivitet och allergiska reaktioner",
+    "why_avoid": "Konstgjort färgämne med beteendemässiga och allergiska effekter"
+  },
+  "gult 6": {
+    "name": "Gult 6",
+    "severity": "medel",
+    "description": "Syntetiskt gul livsmedelsfärgämne",
+    "health_effects": "Potentiella beteendemässiga och allergiska effekter",
+    "why_avoid": "Tillverkat av petroleum, säkerhetsproblem"
+  },
+  "gult": {
+    "name": "Gult (livsmedelsfärgämne)",
+    "severity": "medel",
+    "description": "Syntetiska gula livsmedelsfärgämnen",
+    "health_effects": "Kan orsaka hyperaktivitet och allergiska reaktioner",
+    "why_avoid": "Konstgjorda färgämnen kopplade till beteendeproblem"
+  },
+  "zearalenon": {
+    "name": "Zearalenon",
+    "severity": "hög",
+    "description": "Mykotoxin med östrogena effekter från Fusarium",
+    "health_effects": "Hormonstörningar, reproduktiv toxicitet",
+    "why_avoid": "Potent östrogenliknande förening från mögel"
+  },
+  "psoralen": {
+    "name": "Psoralen",
+    "severity": "medel",
+    "description": "Naturligt förekommande fototoxiskt ämne i vissa växter",
+    "health_effects": "Fototoxiska reaktioner, hudkänslighet för UV-ljus",
+    "why_avoid": "Kan orsaka allvarliga hudreaktioner vid solljusexponering"
+  },
+  "pulegon": {
+    "name": "Pulegon",
+    "severity": "medel",
+    "description": "Naturligt ämne i myntväxter",
+    "health_effects": "Potentiell levertoxicitet vid höga doser",
+    "why_avoid": "Kan orsaka leverskador vid överdriven konsumtion"
+  },
+  "pyrrolizidinalkaloider": {
+    "name": "Pyrrolizidinalkaloider",
+    "severity": "hög",
+    "description": "Grupp av giftiga ämnen i vissa växter",
+    "health_effects": "Leverpåverkan, cancerframkallande potential",
+    "why_avoid": "Mycket giftigt för levern även i små mängder"
+  },
+  "kvercetin": {
+    "name": "Kvercetin",
+    "severity": "låg",
+    "description": "Naturligt växtflavonoid med antioxidativa egenskaper",
+    "health_effects": "Generellt säkert men kan interagera med vissa läkemedel",
+    "why_avoid": "Potentiella läkemedelsinteraktioner vid höga doser"
+  },
+  "raktopamin": {
+    "name": "Raktopamin",
+    "severity": "hög",
+    "description": "Tillväxtfrämjande medel i djurproduktion",
+    "health_effects": "Potentiella hjärt-kärl-effekter, förbjudet i många länder",
+    "why_avoid": "Ej godkänt i livsmedel i många länder"
+  },
+  "rbgh": {
+    "name": "rBGH (Rekombinant bovint tillväxthormon)",
+    "severity": "hög",
+    "description": "Syntetiskt tillväxthormon i mjölkkor",
+    "health_effects": "Potentiellt ökade IGF-1-nivåer, möjlig cancerlänk",
+    "why_avoid": "Förbjudet i många länder p.g.a. hälsorisker"
+  },
+  "rekombinant bovint tillväxthormon": {
+    "name": "Rekombinant Bovint Tillväxthormon",
+    "severity": "hög",
+    "description": "Gentekniskt framställt hormon för ökad mjölkproduktion",
+    "health_effects": "Kan öka tillväxtfaktorer i mjölk",
+    "why_avoid": "Kontroversiellt p.g.a. potentiella hälsoeffekter"
+  },
+  "rött #2": {
+    "name": "Rött #2 (Amaranth)",
+    "severity": "hög",
+    "description": "Syntetiskt rött livsmedelsfärgämne",
+    "health_effects": "Förbjudet i USA p.g.a. cancerrisk",
+    "why_avoid": "Visat cancerframkallande effekter i djurförsök"
+  },
+  "rött 2": {
+    "name": "Rött 2",
+    "severity": "hög",
+    "description": "Syntetiskt rött färgämne (Amaranth)",
+    "health_effects": "Potentiellt cancerframkallande",
+    "why_avoid": "Förbjudet i många länder p.g.a. säkerhetsrisk"
+  },
+  "retrorsin": {
+    "name": "Retrorsin",
+    "severity": "hög",
+    "description": "Pyrrolizidinalkaloid från ståndsblommor",
+    "health_effects": "Allvarlig levertoxicitet, cancerframkallande",
+    "why_avoid": "Mycket giftigt växtämne som skadar levern"
+  },
+  "risklieolja": {
+    "name": "Risklieolja",
+    "severity": "medel",
+    "description": "Olja extraherad från riskli",
+    "health_effects": "Kan innehålla spår av arsenik från ris",
+    "why_avoid": "Potentiell tungmetallkontamination"
+  },
+  "riddellin": {
+    "name": "Riddellin",
+    "severity": "hög",
+    "description": "Pyrrolizidinalkaloid från Senecio-växter",
+    "health_effects": "Leverpåverkan, cancerframkallande",
+    "why_avoid": "Potent levergift och carcinogen"
+  },
+  "sackarin": {
+    "name": "Sackarin",
+    "severity": "medel",
+    "description": "Konstgjort sötningsmedel",
+    "health_effects": "Potentiellt cancerframkallande i höga doser, bitter eftersmak",
+    "why_avoid": "Äldre artificiellt sötningsmedel med säkerhetsproblem"
+  },
+  "safflor": {
+    "name": "Safflor",
+    "severity": "medel",
+    "description": "Källa till safflorolja",
+    "health_effects": "Hög omega-6-halt kan främja inflammation",
+    "why_avoid": "Högt processad form kan vara inflammatorisk"
+  },
+  "senkirkin": {
+    "name": "Senkirkin",
+    "severity": "hög",
+    "description": "Pyrrolizidinalkaloid från vallört",
+    "health_effects": "Leverpåverkan, cancerframkallande",
+    "why_avoid": "Potent levergift i vissa örter"
+  },
+  "sesamolja": {
+    "name": "Sesamolja",
+    "severity": "medel",
+    "description": "Olja från sesamfrön",
+    "health_effects": "Hög omega-6-halt, potentiellt allergen",
+    "why_avoid": "Kan vara inflammatorisk i stora mängder"
+  },
+  "natriumbisulfat": {
+    "name": "Natriumbisulfat",
+    "severity": "medel",
+    "description": "Surhetsreglerande medel och konserveringsmedel",
+    "health_effects": "Kan orsaka magirritation",
+    "why_avoid": "Stark syra som kan irritera matsmältningskanalen"
+  },
+  "natriumkarboximetylcellulosa": {
+    "name": "Natriumkarboximetylcellulosa",
+    "severity": "medel",
+    "description": "Syntetiskt förtjockningsmedel",
+    "health_effects": "Kan störa tarmfloran",
+    "why_avoid": "Konstgjort tillsatsämne som kan påverka tarmhälsan"
+  },
+  "natriumnitrat": {
+    "name": "Natriumnitrat",
+    "severity": "hög",
+    "description": "Konserveringsmedel i processerat kött",
+    "health_effects": "Kan bilda cancerframkallande nitrosaminer",
+    "why_avoid": "Kopplat till ökad cancerrisk"
+  },
+  "natriumnitrit": {
+    "name": "Natriumnitrit",
+    "severity": "hög",
+    "description": "Konserveringsmedel som behåller köttets rosa färg",
+    "health_effects": "Bildar cancerframkallande nitrosaminer i kroppen",
+    "why_avoid": "Känd för att bilda cancerframkallande ämnen"
+  },
+  "natriumsackarin": {
+    "name": "Natriumsackarin",
+    "severity": "medel",
+    "description": "Saltform av sackarin",
+    "health_effects": "Potentiellt cancerframkallande i höga doser",
+    "why_avoid": "Konstgjort sötningsmedel med säkerhetsproblem"
+  },
+  "styre": {
+    "name": "Styren",
+    "severity": "hög",
+    "description": "Kemikalie som kan migrera från polystyrenförpackningar",
+    "health_effects": "Möjlig cancerrisk, neurologiska effekter",
+    "why_avoid": "Kan läcka från plastförpackningar till mat"
+  },
+  "sugartwin": {
+    "name": "SugarTwin (Sackarin)",
+    "severity": "medel",
+    "description": "Varumärke för sackarin",
+    "health_effects": "Potentiellt cancerframkallande, bitter eftersmak",
+    "why_avoid": "Konstgjort sötningsmedel med säkerhetsproblem"
+  },
+  "solros": {
+    "name": "Solros",
+    "severity": "medel",
+    "description": "Källa till solrosolja",
+    "health_effects": "Hög omega-6-halt kan främja inflammation",
+    "why_avoid": "Högt processad form kan vara inflammatorisk"
+  },
+  "symfytin": {
+    "name": "Symfytin",
+    "severity": "hög",
+    "description": "Pyrrolizidinalkaloid från vallört",
+    "health_effects": "Leverpåverkan, cancerframkallande",
+    "why_avoid": "Potent levergift i vallört"
+  },
+  "tcdd": {
+    "name": "TCDD (2,3,7,8-Tetraklorodibenso-p-dioxin)",
+    "severity": "hög",
+    "description": "Den mest toxiska dioxinföreningen",
+    "health_effects": "Extremt giftig, cancerframkallande, hormonstörande",
+    "why_avoid": "En av de mest giftiga kemikalierna kända"
+  },
+  "tert-butylhydrokinon": {
+    "name": "Tert-Butylhydrokinon (TBHQ)",
+    "severity": "hög",
+    "description": "Syntetiskt antioxidationsmedel",
+    "health_effects": "Potentiellt cancerframkallande, leverskador",
+    "why_avoid": "Petroleumderiverat konserveringsmedel med risker"
+  },
+  "trans,trans-2,4-hexadienal": {
+    "name": "trans,trans-2,4-Hexadienal",
+    "severity": "medel",
+    "description": "Aldehyd som bildas vid fettoxidation",
+    "health_effects": "Potentiell toxicitet vid höga nivåer",
+    "why_avoid": "Indikerar härskenhet i oljor och fetter"
+  },
+  "trikloretylen": {
+    "name": "Trikloretylen",
+    "severity": "hög",
+    "description": "Industriellt lösningsmedel som kan förorena livsmedel",
+    "health_effects": "Cancerframkallande, neurologiska effekter",
+    "why_avoid": "Industrikemikalie med allvarliga hälsorisker"
+  },
+  "uretan": {
+    "name": "Uretan",
+    "severity": "hög",
+    "description": "Kemikalie som kan bildas vid jäsning",
+    "health_effects": "Cancerframkallande, potentiell organskada",
+    "why_avoid": "Bildas naturligt i vissa jästa livsmedel"
+  },
+  "vanillin": {
+    "name": "Vanillin",
+    "severity": "låg",
+    "description": "Huvudkomponent i vaniljextrakt",
+    "health_effects": "Generellt säkert men syntetiska former kan innehålla föroreningar",
+    "why_avoid": "Konstgjorda versioner kan innehålla oönskade kemikalier"
+  },
+  "jästextrakt": {
+    "name": "Jästextrakt",
+    "severity": "medel",
+    "description": "Smakförstärkare med naturliga glutamater",
+    "health_effects": "Kan orsaka reaktioner hos MSG-känsliga personer",
+    "why_avoid": "Innehåller fria glutamater liknande MSG"
+  },
+  "zearalenon": {
+    "name": "Zearalenon",
+    "severity": "hög",
+    "description": "Mykotoxin med östrogena effekter",
+    "health_effects": "Hormonstörningar, reproduktiva effekter",
+    "why_avoid": "Potent östrogenliknande förening från mögel"
+  },
+  "α,β-aldehyder": {
+    "name": "α,β-Aldehyder",
+    "severity": "medel",
+    "description": "Oxidationsprodukter av omättade fettsyror",
+    "health_effects": "Potentiell toxicitet vid höga nivåer",
+    "why_avoid": "Indikerar härskenhet och oxidativ skada"
+  },
+  "β-myrcen": {
+    "name": "β-Myrcen",
+    "severity": "låg",
+    "description": "Naturlig terpen i växter",
+    "health_effects": "Generellt säkert men kan ha lugnande effekt",
+    "why_avoid": "Potentiella läkemedelsinteraktioner vid höga doser"
+  }
+} 
+} 
