@@ -1876,13 +1876,6 @@
         "health_effects": "May disrupt gut microbiota",
         "why_avoid": "Artificial additive that may affect gut health"
       },
-      "sodium erythorbate": {
-        "name": "Sodium Erythorbate",
-        "severity": "medium",
-        "description": "Synthetic antioxidant",
-        "health_effects": "May cause allergic reactions in sensitive individuals",
-        "why_avoid": "Chemical preservative with potential side effects"
-      },
       "sodium nitrates": {
         "name": "Sodium Nitrates",
         "severity": "high",
