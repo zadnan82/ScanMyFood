@@ -1,34 +1,45 @@
+// lib/Joining/signup.dart - Updated version
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../dbHelper/mongodb.dart';
+import 'package:scanmyfood/Joining/signin.dart';
+import 'package:scanmyfood/Home/home.dart';
+import 'package:scanmyfood/services/language_service.dart';
 
 class SignUp extends StatefulWidget {
+  // Make constructor const
+  const SignUp({Key? key}) : super(key: key);
+
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  bool _passwordVisible = false;
-  bool _confirmPasswordVisible = false;
+  final LanguageService _languageService = LanguageService.instance;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
   bool _isLoading = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   bool _acceptTerms = false;
 
   @override
   void initState() {
     super.initState();
+    _initializeAnimations();
+  }
 
+  void _initializeAnimations() {
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -64,93 +75,74 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  bool _isValidEmailFormat(String email) {
-    final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-    return emailRegex.hasMatch(email);
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Password is required';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters';
-    }
-    if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'Password must contain at least one uppercase letter';
-    }
-    if (!value.contains(RegExp(r'[0-9]'))) {
-      return 'Password must contain at least one number';
-    }
-    return null;
-  }
-
-  Future<void> createUserEmailAndPassword() async {
+  Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (!_acceptTerms) {
       Fluttertoast.showToast(
-        msg: "Please accept the terms and conditions",
+        msg: _languageService.translate(
+            'errors.acceptTerms', 'Please accept the terms and conditions'),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFFEF4444),
+        backgroundColor: const Color(0xFFF59E0B),
         textColor: Colors.white,
       );
       return;
     }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
-      Fluttertoast.showToast(
-        msg: "Passwords do not match",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFFEF4444),
-        textColor: Colors.white,
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.toLowerCase().trim(),
-        password: _passwordController.text.trim(),
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
       );
 
-      MongoDatabase.register(
-        _firstNameController.text.trim(),
-        _lastNameController.text.trim(),
-        _emailController.text.toLowerCase().trim(),
+      // Update display name
+      await userCredential.user?.updateDisplayName(
+        '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
       );
 
-      Fluttertoast.showToast(
-        msg: "Account created successfully!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFF10B981),
-        textColor: Colors.white,
-      );
+      if (mounted) {
+        Fluttertoast.showToast(
+          msg: _languageService.translate(
+              'auth.accountCreated', 'Account created successfully!'),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xFF10B981),
+          textColor: Colors.white,
+        );
 
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+        // Navigate to main app (Home with bottom navigation)
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+          (route) => false,
+        );
+      }
     } on FirebaseAuthException catch (e) {
-      String message = 'An error occurred. Please try again.';
-
-      if (e.code == 'weak-password') {
-        message = "The password provided is too weak";
-      } else if (e.code == 'email-already-in-use') {
-        message = "An account already exists for this email";
-      } else if (e.code == 'invalid-email') {
-        message = "Please enter a valid email address";
-      } else if (e.code == 'operation-not-allowed') {
-        message = "Email/password accounts are not enabled";
+      String errorMessage;
+      switch (e.code) {
+        case 'weak-password':
+          errorMessage = _languageService.translate(
+              'errors.weakPassword', 'The password provided is too weak.');
+          break;
+        case 'email-already-in-use':
+          errorMessage = _languageService.translate(
+              'errors.emailInUse', 'An account already exists for that email.');
+          break;
+        case 'invalid-email':
+          errorMessage = _languageService.translate(
+              'errors.invalidEmail', 'Please enter a valid email address');
+          break;
+        default:
+          errorMessage = _languageService.translate(
+              'errors.signUpError', 'An error occurred. Please try again.');
       }
 
       Fluttertoast.showToast(
-        msg: message,
+        msg: errorMessage,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: const Color(0xFFEF4444),
@@ -158,92 +150,71 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "An unexpected error occurred. Please try again.",
+        msg: _languageService.translate(
+            'common.error', 'An unexpected error occurred'),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: const Color(0xFFEF4444),
         textColor: Colors.white,
       );
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
+    final screenWidth = screenSize.width;
     final bool isTablet = screenWidth > 600;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Icon(
-              Icons.arrow_back,
-              color: const Color(0xFF6366F1),
-              size: isTablet ? 24 : 20,
-            ),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
           position: _slideAnimation,
           child: SafeArea(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(isTablet ? 32 : 24),
-                child: Form(
-                  key: _formKey,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: screenHeight - MediaQuery.of(context).padding.top,
+                ),
+                child: IntrinsicHeight(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: screenHeight * 0.02),
-
-                      // Header Section
+                      // Header
                       Container(
+                        width: double.infinity,
                         padding: EdgeInsets.all(isTablet ? 32 : 24),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              const Color(0xFF6366F1),
-                              const Color(0xFF8B5CF6),
+                              Color(0xFF6366F1),
+                              Color(0xFF8B5CF6),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF6366F1).withOpacity(0.3),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
                         ),
                         child: Column(
                           children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
                             Container(
                               width: isTablet ? 100 : 80,
                               height: isTablet ? 100 : 80,
@@ -266,22 +237,23 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                                 ),
                               ),
                             ),
-                            SizedBox(height: isTablet ? 16 : 12),
+                            const SizedBox(height: 24),
                             Text(
-                              'Create Account',
+                              _languageService.translate(
+                                  'auth.createAccount', 'Create Account'),
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: isTablet ? 28 : 22,
+                                fontSize: isTablet ? 32 : 28,
                                 fontWeight: FontWeight.bold,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Join us to start scanning ingredients',
+                              _languageService.translate('auth.joinUs',
+                                  'Join us to start protecting your health with smart ingredient scanning'),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
-                                fontSize: isTablet ? 16 : 14,
+                                fontSize: isTablet ? 18 : 16,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -289,261 +261,412 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
 
-                      SizedBox(height: screenHeight * 0.04),
+                      // Form Section
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(isTablet ? 32 : 24),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 24),
 
-                      // First Name Field
-                      _buildTextField(
-                        controller: _firstNameController,
-                        label: 'First Name',
-                        icon: Icons.person_outline,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'First name is required';
-                          }
-                          if (value.trim().length < 2) {
-                            return 'First name must be at least 2 characters';
-                          }
-                          return null;
-                        },
-                        isTablet: isTablet,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Last Name Field
-                      _buildTextField(
-                        controller: _lastNameController,
-                        label: 'Last Name',
-                        icon: Icons.person_outline,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Last name is required';
-                          }
-                          if (value.trim().length < 2) {
-                            return 'Last name must be at least 2 characters';
-                          }
-                          return null;
-                        },
-                        isTablet: isTablet,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Email Field
-                      _buildTextField(
-                        controller: _emailController,
-                        label: 'Email Address',
-                        icon: Icons.email_outlined,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Email is required';
-                          }
-                          if (!_isValidEmailFormat(value)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                        isTablet: isTablet,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Password Field
-                      _buildTextField(
-                        controller: _passwordController,
-                        label: 'Password',
-                        icon: Icons.lock_outline,
-                        obscureText: !_passwordVisible,
-                        validator: _validatePassword,
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _passwordVisible
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: const Color(0xFF94A3B8),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          },
-                        ),
-                        isTablet: isTablet,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Confirm Password Field
-                      _buildTextField(
-                        controller: _confirmPasswordController,
-                        label: 'Confirm Password',
-                        icon: Icons.lock_outline,
-                        obscureText: !_confirmPasswordVisible,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (value != _passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _confirmPasswordVisible
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: const Color(0xFF94A3B8),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _confirmPasswordVisible =
-                                  !_confirmPasswordVisible;
-                            });
-                          },
-                        ),
-                        isTablet: isTablet,
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Terms and Conditions
-                      Container(
-                        padding: EdgeInsets.all(isTablet ? 20 : 16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: const Color(0xFFE2E8F0),
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: isTablet ? 1.2 : 1.0,
-                              child: Checkbox(
-                                value: _acceptTerms,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _acceptTerms = value ?? false;
-                                  });
-                                },
-                                activeColor: const Color(0xFF6366F1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'I agree to the Terms and Conditions',
-                                    style: TextStyle(
-                                      fontSize: isTablet ? 16 : 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xFF0F172A),
+                                // Name Fields Row
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextFormField(
+                                        controller: _firstNameController,
+                                        style: TextStyle(
+                                            fontSize: isTablet ? 16 : 14),
+                                        decoration: InputDecoration(
+                                          labelText: _languageService.translate(
+                                              'auth.firstName', 'First Name'),
+                                          labelStyle: TextStyle(
+                                            color: const Color(0xFF64748B),
+                                            fontSize: isTablet ? 14 : 12,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFFE2E8F0)),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF6366F1),
+                                                width: 2),
+                                          ),
+                                          contentPadding: EdgeInsets.all(
+                                              isTablet ? 16 : 12),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return _languageService.translate(
+                                                'errors.firstNameRequired',
+                                                'First name is required');
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'By creating an account, you agree to our privacy policy and terms of service.',
-                                    style: TextStyle(
-                                      fontSize: isTablet ? 14 : 12,
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: TextFormField(
+                                        controller: _lastNameController,
+                                        style: TextStyle(
+                                            fontSize: isTablet ? 16 : 14),
+                                        decoration: InputDecoration(
+                                          labelText: _languageService.translate(
+                                              'auth.lastName', 'Last Name'),
+                                          labelStyle: TextStyle(
+                                            color: const Color(0xFF64748B),
+                                            fontSize: isTablet ? 14 : 12,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFFE2E8F0)),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF6366F1),
+                                                width: 2),
+                                          ),
+                                          contentPadding: EdgeInsets.all(
+                                              isTablet ? 16 : 12),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return _languageService.translate(
+                                                'errors.lastNameRequired',
+                                                'Last name is required');
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                // Email Field
+                                TextFormField(
+                                  controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  style:
+                                      TextStyle(fontSize: isTablet ? 16 : 14),
+                                  decoration: InputDecoration(
+                                    labelText: _languageService.translate(
+                                        'auth.email', 'Email Address'),
+                                    labelStyle: TextStyle(
                                       color: const Color(0xFF64748B),
+                                      fontSize: isTablet ? 14 : 12,
                                     ),
+                                    prefixIcon: Icon(
+                                      Icons.email_outlined,
+                                      color: const Color(0xFF64748B),
+                                      size: isTablet ? 20 : 18,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFE2E8F0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF6366F1), width: 2),
+                                    ),
+                                    contentPadding:
+                                        EdgeInsets.all(isTablet ? 16 : 12),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return _languageService.translate(
+                                          'errors.emailRequired',
+                                          'Email is required');
+                                    }
+                                    if (!RegExp(
+                                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                        .hasMatch(value)) {
+                                      return _languageService.translate(
+                                          'errors.invalidEmail',
+                                          'Please enter a valid email address');
+                                    }
+                                    return null;
+                                  },
+                                ),
 
-                      const SizedBox(height: 32),
+                                const SizedBox(height: 16),
 
-                      // Create Account Button
-                      Container(
-                        height: isTablet ? 60 : 52,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xFF6366F1),
-                              const Color(0xFF8B5CF6),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF6366F1).withOpacity(0.3),
-                              blurRadius: 15,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: ElevatedButton(
-                          onPressed:
-                              _isLoading ? null : createUserEmailAndPassword,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: _isLoading
-                              ? SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
+                                // Password Field
+                                TextFormField(
+                                  controller: _passwordController,
+                                  obscureText: _obscurePassword,
+                                  style:
+                                      TextStyle(fontSize: isTablet ? 16 : 14),
+                                  decoration: InputDecoration(
+                                    labelText: _languageService.translate(
+                                        'auth.password', 'Password'),
+                                    labelStyle: TextStyle(
+                                      color: const Color(0xFF64748B),
+                                      fontSize: isTablet ? 14 : 12,
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.lock_outlined,
+                                      color: const Color(0xFF64748B),
+                                      size: isTablet ? 20 : 18,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscurePassword = !_obscurePassword;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        _obscurePassword
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: const Color(0xFF64748B),
+                                        size: isTablet ? 20 : 18,
+                                      ),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFE2E8F0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF6366F1), width: 2),
+                                    ),
+                                    contentPadding:
+                                        EdgeInsets.all(isTablet ? 16 : 12),
                                   ),
-                                )
-                              : Text(
-                                  'Create Account',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: isTablet ? 18 : 16,
-                                    fontWeight: FontWeight.bold,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return _languageService.translate(
+                                          'errors.passwordRequired',
+                                          'Password is required');
+                                    }
+                                    if (value.length < 6) {
+                                      return _languageService.translate(
+                                          'errors.passwordTooShort',
+                                          'Password must be at least 6 characters');
+                                    }
+                                    return null;
+                                  },
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                // Confirm Password Field
+                                TextFormField(
+                                  controller: _confirmPasswordController,
+                                  obscureText: _obscureConfirmPassword,
+                                  style:
+                                      TextStyle(fontSize: isTablet ? 16 : 14),
+                                  decoration: InputDecoration(
+                                    labelText: _languageService.translate(
+                                        'auth.confirmPassword',
+                                        'Confirm Password'),
+                                    labelStyle: TextStyle(
+                                      color: const Color(0xFF64748B),
+                                      fontSize: isTablet ? 14 : 12,
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.lock_outlined,
+                                      color: const Color(0xFF64748B),
+                                      size: isTablet ? 20 : 18,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscureConfirmPassword =
+                                              !_obscureConfirmPassword;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        _obscureConfirmPassword
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: const Color(0xFF64748B),
+                                        size: isTablet ? 20 : 18,
+                                      ),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFE2E8F0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF6366F1), width: 2),
+                                    ),
+                                    contentPadding:
+                                        EdgeInsets.all(isTablet ? 16 : 12),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return _languageService.translate(
+                                          'errors.confirmPasswordRequired',
+                                          'Please confirm your password');
+                                    }
+                                    if (value != _passwordController.text) {
+                                      return _languageService.translate(
+                                          'errors.passwordsDoNotMatch',
+                                          'Passwords do not match');
+                                    }
+                                    return null;
+                                  },
+                                ),
+
+                                const SizedBox(height: 20),
+
+                                // Terms Checkbox
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: _acceptTerms,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _acceptTerms = value ?? false;
+                                        });
+                                      },
+                                      activeColor: const Color(0xFF6366F1),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        _languageService.translate(
+                                            'auth.termsConditions',
+                                            'I agree to the Terms and Conditions'),
+                                        style: TextStyle(
+                                          color: const Color(0xFF64748B),
+                                          fontSize: isTablet ? 14 : 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 24),
+
+                                // Sign Up Button
+                                Container(
+                                  width: double.infinity,
+                                  height: isTablet ? 56 : 48,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0xFF6366F1),
+                                        Color(0xFF8B5CF6),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF6366F1)
+                                            .withOpacity(0.3),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: _isLoading ? null : _signUp,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: _isLoading
+                                        ? const SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.white),
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(
+                                            _languageService.translate(
+                                                'auth.createAccount',
+                                                'Create Account'),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: isTablet ? 16 : 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                 ),
+
+                                const Spacer(),
+
+                                // Sign In Link
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      _languageService.translate(
+                                          'auth.alreadyHaveAccount',
+                                          'Already have an account? '),
+                                      style: TextStyle(
+                                        color: const Color(0xFF64748B),
+                                        fontSize: isTablet ? 14 : 12,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SignIn()),
+                                        );
+                                      },
+                                      child: Text(
+                                        _languageService.translate(
+                                            'auth.signIn', 'Sign In'),
+                                        style: TextStyle(
+                                          color: const Color(0xFF6366F1),
+                                          fontSize: isTablet ? 14 : 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 16),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-
-                      const SizedBox(height: 24),
-
-                      // Already have account
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Already have an account? ',
-                            style: TextStyle(
-                              fontSize: isTablet ? 16 : 14,
-                              color: const Color(0xFF64748B),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: isTablet ? 16 : 14,
-                                color: const Color(0xFF6366F1),
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -551,94 +674,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    required bool isTablet,
-    TextInputType? keyboardType,
-    bool obscureText = false,
-    String? Function(String?)? validator,
-    Widget? suffixIcon,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        style: TextStyle(fontSize: isTablet ? 18 : 16),
-        validator: validator,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(
-            color: const Color(0xFF64748B),
-            fontSize: isTablet ? 16 : 14,
-          ),
-          prefixIcon: Icon(
-            icon,
-            color: const Color(0xFF6366F1),
-            size: isTablet ? 24 : 20,
-          ),
-          suffixIcon: suffixIcon ??
-              (controller.text.isNotEmpty
-                  ? IconButton(
-                      onPressed: () {
-                        controller.clear();
-                        setState(() {});
-                      },
-                      icon: const Icon(
-                        Icons.clear,
-                        color: Color(0xFF94A3B8),
-                      ),
-                    )
-                  : null),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(
-              color: Color(0xFF6366F1),
-              width: 2,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(
-              color: Color(0xFFEF4444),
-              width: 2,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(
-              color: Color(0xFFEF4444),
-              width: 2,
-            ),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: EdgeInsets.all(isTablet ? 20 : 16),
-        ),
-        onChanged: (value) {
-          setState(() {});
-        },
       ),
     );
   }

@@ -1,0 +1,1999 @@
+{
+  "ingredients": {
+    "1,3-dicloro-2-propanol": {
+    "name": "1,3-Dicloro-2-propanol",
+    "severity": "high",
+    "description": "Contaminante químico que puede formarse durante el procesamiento de alimentos",
+    "health_effects": "Posible carcinógeno, puede causar daño orgánico",
+    "why_avoid": "Clasificado como posiblemente cancerígeno para humanos por la OMS"
+},
+"1,4-dioxano": {
+    "name": "1,4-Dioxano",
+    "severity": "high",
+    "description": "Solvente industrial que puede contaminar el procesamiento de alimentos",
+    "health_effects": "Probable carcinógeno humano, daño hepático y renal",
+    "why_avoid": "Clasificado por la EPA como compuesto probablemente cancerígeno"
+},
+"2,3,7,8-tetraclorodibenzo-p-dioxina": {
+    "name": "2,3,7,8-Tetraclorodibenzo-p-dioxina",
+    "severity": "high",
+    "description": "Contaminante ambiental altamente tóxico",
+    "health_effects": "Cancerígeno, toxicidad reproductiva y del desarrollo",
+    "why_avoid": "Uno de los químicos más tóxicos conocidos para humanos"
+},
+"2-amino-1-metil-6-fenilimidazo[4,5-b]piridina": {
+    "name": "2-Amino-1-metil-6-fenilimidazo[4,5-b]piridina",
+    "severity": "high",
+    "description": "Amina heterocíclica formada durante la cocción a alta temperatura",
+    "health_effects": "Posible carcinógeno, relacionado con riesgo de cáncer",
+    "why_avoid": "Se forma cuando la carne se cocina a altas temperaturas"
+},
+"2-amino-3,4-dimetilimidazo[4,5-f]quinolona (meiq)": {
+    "name": "2-Amino-3,4-dimetilimidazo[4,5-f]quinolona (MeIQ)",
+    "severity": "high",
+    "description": "Compuesto mutagénico formado en alimentos cocinados",
+    "health_effects": "Mutagénico y potencialmente cancerígeno",
+    "why_avoid": "Puede dañar el ADN y aumentar el riesgo de cáncer"
+},
+"2-amino-3,8-dimetilimidazo[4,5-f]quinoxalina (meiqx)": {
+    "name": "2-Amino-3,8-dimetilimidazo[4,5-f]quinoxalina (MeIQx)",
+    "severity": "high",
+    "description": "Amina heterocíclica producida durante la cocción",
+    "health_effects": "Mutagénica, potencial carcinógeno",
+    "why_avoid": "Asociada con mayor riesgo de cáncer"
+},
+"2-metilimidazol": {
+    "name": "2-Metilimidazol",
+    "severity": "medium",
+    "description": "Compuesto químico encontrado en colorante caramelo",
+    "health_effects": "Puede causar convulsiones y trastornos sanguíneos en altas dosis",
+    "why_avoid": "Posibles efectos neurotóxicos"
+},
+"3-cloro-1,2-propanodiol": {
+    "name": "3-Cloro-1,2-propanodiol",
+    "severity": "high",
+    "description": "Contaminante de procesamiento en alimentos refinados",
+    "health_effects": "Posible carcinógeno, daño renal",
+    "why_avoid": "Puede causar cáncer y daño orgánico"
+},
+"4-metilimidazol": {
+    "name": "4-Metilimidazol",
+    "severity": "medium",
+    "description": "Subproducto químico en la producción de colorante caramelo",
+    "health_effects": "Posible carcinógeno en estudios con animales",
+    "why_avoid": "California lo lista como químico potencialmente cancerígeno"
+},
+"5-metoxipsoraleno": {
+    "name": "5-Metoxipsoraleno",
+    "severity": "medium",
+    "description": "Compuesto natural que puede volverse tóxico con exposición a la luz",
+    "health_effects": "Reacciones fototóxicas, sensibilidad cutánea",
+    "why_avoid": "Puede causar reacciones cutáneas severas al exponerse a luz UV"
+},
+"acesulfamo potásico": {
+    "name": "Acesulfamo Potásico",
+    "severity": "medium",
+    "description": "Edulcorante artificial usado en alimentos y bebidas dietéticas",
+    "health_effects": "Puede alterar la flora intestinal, posibles efectos en el estado de ánimo",
+    "why_avoid": "Estudios limitados sobre seguridad a largo plazo, puede afectar el metabolismo"
+},
+"acetaldehído": {
+    "name": "Acetaldehído",
+    "severity": "high",
+    "description": "Compuesto químico producido durante el metabolismo del alcohol",
+    "health_effects": "Cancerígeno, causa daño al ADN",
+    "why_avoid": "Clasificado por la OMS como carcinógeno Grupo 1"
+},
+"acrilamida": {
+    "name": "Acrilamida",
+    "severity": "high",
+    "description": "Químico que se forma cuando alimentos con almidón se cocinan a altas temperaturas",
+    "health_effects": "Probable carcinógeno humano, neurotóxico",
+    "why_avoid": "Se forma en alimentos fritos, horneados y tostados a altas temperaturas"
+},
+"acrilonitrilo": {
+    "name": "Acrilonitrilo",
+    "severity": "high",
+    "description": "Químico industrial que puede contaminar empaques de alimentos",
+    "health_effects": "Probable carcinógeno, efectos respiratorios y neurológicos",
+    "why_avoid": "Clasificado por la EPA como probable carcinógeno humano"
+},
+"aflatoxinas": {
+    "name": "Aflatoxinas",
+    "severity": "high",
+    "description": "Compuestos tóxicos producidos por moho en granos y nueces",
+    "health_effects": "Altamente cancerígenas, daño hepático",
+    "why_avoid": "Entre los carcinógenos naturales más potentes conocidos"
+},
+"agaritina d": {
+    "name": "Agaritina D",
+    "severity": "medium",
+    "description": "Toxina natural encontrada en ciertos hongos",
+    "health_effects": "Posible carcinógeno, puede causar daño al ADN",
+    "why_avoid": "Compuesto natural pero potencialmente dañino"
+},
+"agaritina": {
+    "name": "Agaritina",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en hongos crudos",
+    "health_effects": "Potencialmente cancerígeno, se destruye al cocinar",
+    "why_avoid": "Puede aumentar el riesgo de cáncer si se consume crudo en grandes cantidades"
+},
+"néctar de agave": {
+    "name": "Néctar de Agave",
+    "severity": "medium",
+    "description": "Edulcorante altamente procesado con contenido extremadamente alto de fructosa",
+    "health_effects": "Puede contribuir a resistencia a la insulina e hígado graso",
+    "why_avoid": "Mayor contenido de fructosa que el jarabe de maíz alto en fructosa"
+},
+"alcaloides": {
+    "name": "Alcaloides",
+    "severity": "medium",
+    "description": "Compuestos vegetales naturales que pueden ser tóxicos en altas cantidades",
+    "health_effects": "Varios efectos tóxicos dependiendo del tipo",
+    "why_avoid": "Algunos son altamente tóxicos incluso en pequeñas cantidades"
+},
+"alquenilbenceno": {
+    "name": "Alquenilbenceno",
+    "severity": "medium",
+    "description": "Compuestos naturales encontrados en hierbas y especias",
+    "health_effects": "Posible toxicidad hepática y efectos cancerígenos",
+    "why_avoid": "Puede causar daño hepático con exposición crónica"
+},
+"imidazoles alquilados": {
+    "name": "Imidazoles Alquilados",
+    "severity": "medium",
+    "description": "Compuestos formados durante el procesamiento de alimentos",
+    "health_effects": "Posibles efectos neurotóxicos",
+    "why_avoid": "Puede afectar la función del sistema nervioso"
+},
+"aluminio": {
+    "name": "Aluminio",
+    "severity": "medium",
+    "description": "Metal usado en aditivos alimentarios y utensilios de cocina",
+    "health_effects": "Puede acumularse en tejido cerebral, vinculado a trastornos neurológicos",
+    "why_avoid": "Posible neurotoxicidad con exposición crónica"
+},
+"amino-3-metilimidazo[4,5-f]quinolina": {
+    "name": "Amino-3-metilimidazo[4,5-f]quinolina",
+    "severity": "high",
+    "description": "Amina heterocíclica formada al cocinar carne",
+    "health_effects": "Mutagénica y cancerígena",
+    "why_avoid": "Fuerte evidencia de propiedades cancerígenas"
+},
+"achiote": {
+    "name": "Achiote",
+    "severity": "medium",
+    "description": "Colorante alimentario natural de semillas",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad en individuos sensibles",
+    "why_avoid": "Puede desencadenar sensibilidades alimentarias y problemas de comportamiento"
+},
+"agente antiespumante": {
+    "name": "Agente Antiespumante",
+    "severity": "medium",
+    "description": "Aditivos químicos usados para prevenir la formación de espuma",
+    "health_effects": "Varían según el agente específico usado",
+    "why_avoid": "A menudo contiene químicos sintéticos con efectos a largo plazo desconocidos"
+},
+"ácido aristolóquico": {
+    "name": "Ácido Aristolóquico",
+    "severity": "high",
+    "description": "Compuesto natural encontrado en ciertas plantas",
+    "health_effects": "Altamente cancerígeno, causa daño renal",
+    "why_avoid": "Clasificado por la OMS como carcinógeno Grupo 1"
+},
+"arsénico": {
+    "name": "Arsénico",
+    "severity": "high",
+    "description": "Contaminante de metal pesado en alimentos y agua",
+    "health_effects": "Cancerígeno, causa daño orgánico y problemas de desarrollo",
+    "why_avoid": "Carcinógeno humano conocido sin nivel seguro de exposición"
+},
+"colorante artificial": {
+    "name": "Colorante Artificial",
+    "severity": "medium",
+    "description": "Colorantes sintéticos usados en alimentos procesados",
+    "health_effects": "Puede causar hiperactividad, reacciones alérgicas y problemas de comportamiento",
+    "why_avoid": "Vinculado a TDAH en niños y hecho de derivados del petróleo"
+},
+"sabor artificial": {
+    "name": "Sabor Artificial",
+    "severity": "medium",
+    "description": "Químicos sintéticos usados para imitar sabores naturales",
+    "health_effects": "Puede causar reacciones alérgicas, dolores de cabeza e hiperactividad",
+    "why_avoid": "Contiene compuestos químicos desconocidos con posibles efectos a largo plazo"
+},
+"aspartamo": {
+    "name": "Aspartamo",
+    "severity": "medium",
+    "description": "Edulcorante artificial usado en productos dietéticos",
+    "health_effects": "Puede causar dolores de cabeza, cambios de humor y síntomas neurológicos",
+    "why_avoid": "Se descompone en compuestos potencialmente dañinos en el cuerpo"
+},
+"aspergillus flavus": {
+    "name": "Aspergillus Flavus",
+    "severity": "high",
+    "description": "Mohos que producen aflatoxinas tóxicas",
+    "health_effects": "Produce aflatoxinas altamente cancerígenas",
+    "why_avoid": "Fuente de algunos de los carcinógenos naturales más potentes"
+},
+"azodicarbonamida": {
+    "name": "Azodicarbonamida",
+    "severity": "high",
+    "description": "Químico usado como agente blanqueador de harina y acondicionador de masa",
+    "health_effects": "Puede causar problemas respiratorios y reacciones alérgicas",
+    "why_avoid": "Prohibido en Europa, se descompone en compuestos potencialmente dañinos"
+},
+"benz[a]antraceno": {
+    "name": "Benz[a]antraceno",
+    "severity": "high",
+    "description": "Hidrocarburo aromático policíclico encontrado en alimentos ahumados y a la parrilla",
+    "health_effects": "Probable carcinógeno humano",
+    "why_avoid": "Se forma durante la cocción a alta temperatura y el ahumado"
+},
+"benceno": {
+    "name": "Benceno",
+    "severity": "high",
+    "description": "Químico que puede formarse en bebidas que contienen benzoato de sodio y vitamina C",
+    "health_effects": "Carcinógeno humano conocido, causa trastornos sanguíneos",
+    "why_avoid": "Clasificado por la OMS como carcinógeno Grupo 1"
+},
+"benzo[a]pireno": {
+    "name": "Benzo[a]pireno",
+    "severity": "high",
+    "description": "Compuesto cancerígeno formado durante el asado y ahumado",
+    "health_effects": "Carcinógeno humano conocido",
+    "why_avoid": "Se forma cuando la carne se cocina a altas temperaturas"
+},
+"benzo[b}fluoranteno": {
+    "name": "Benzo[b]fluoranteno",
+    "severity": "high",
+    "description": "Hidrocarburo aromático policíclico en alimentos procesados",
+    "health_effects": "Probable carcinógeno humano",
+    "why_avoid": "Formado durante el procesamiento de alimentos a alta temperatura"
+},
+"benzofenona": {
+    "name": "Benzofenona",
+    "severity": "medium",
+    "description": "Químico que puede migrar de empaques de alimentos",
+    "health_effects": "Posible disruptor endocrino",
+    "why_avoid": "Puede interferir con la función hormonal"
+},
+"bha": {
+    "name": "BHA (Butilhidroxianisol)",
+    "severity": "high",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Posible carcinógeno humano, disrupción endocrina",
+    "why_avoid": "California lo lista como carcinógeno, prohibido en algunos países"
+},
+"bht": {
+    "name": "BHT (Butilhidroxitolueno)",
+    "severity": "high",
+    "description": "Conservante sintético para prevenir rancidez",
+    "health_effects": "Puede causar daño hepático y problemas de tiroides",
+    "why_avoid": "Posible carcinógeno y disruptor endocrino"
+},
+"bisfenol a": {
+    "name": "Bisfenol A (BPA)",
+    "severity": "high",
+    "description": "Químico usado en empaques de alimentos y revestimientos de latas",
+    "health_effects": "Disruptor endocrino, vinculado a problemas reproductivos y de desarrollo",
+    "why_avoid": "Imita al estrógeno y altera el equilibrio hormonal"
+},
+"bisfenoles": {
+    "name": "Bisfenoles",
+    "severity": "high",
+    "description": "Familia de químicos usados en empaques de alimentos",
+    "health_effects": "Disrupción endocrina, toxicidad reproductiva",
+    "why_avoid": "Alteran los sistemas hormonales y el desarrollo"
+},
+"bixina": {
+    "name": "Bixina",
+    "severity": "medium",
+    "description": "Agente colorante natural de semillas de achiote",
+    "health_effects": "Puede causar reacciones alérgicas en individuos sensibles",
+    "why_avoid": "Puede desencadenar alergias alimentarias y sensibilidades"
+},
+"almidón blanqueado": {
+    "name": "Almidón Blanqueado",
+    "severity": "medium",
+    "description": "Almidón tratado con químicos blanqueadores",
+    "health_effects": "Puede contener residuos químicos del proceso de blanqueo",
+    "why_avoid": "Los químicos de procesamiento pueden permanecer como contaminantes"
+},
+"azul #1": {
+    "name": "Azul #1 (Azul Brillante FCF)",
+    "severity": "medium",
+    "description": "Colorante alimentario azul sintético",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Hecho de derivados del petróleo, vinculado a problemas de comportamiento"
+},
+"azul #2": {
+    "name": "Azul #2 (Indigotina)",
+    "severity": "medium",
+    "description": "Colorante alimentario azul sintético",
+    "health_effects": "Puede causar tumores cerebrales en estudios con animales",
+    "why_avoid": "Posibles efectos cancerígenos en estudios de laboratorio"
+},
+"azul 1": {
+    "name": "Azul 1",
+    "severity": "medium",
+    "description": "Colorante alimentario azul sintético",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Hecho de derivados del petróleo"
+},
+"azul 2": {
+    "name": "Azul 2",
+    "severity": "medium",
+    "description": "Colorante alimentario azul sintético",
+    "health_effects": "Puede causar tumores cerebrales en estudios con animales",
+    "why_avoid": "Posibles efectos cancerígenos"
+},
+"azul": {
+    "name": "Azul (Colorante Alimentario)",
+    "severity": "medium",
+    "description": "Colorantes alimentarios azules sintéticos",
+    "health_effects": "Puede causar reacciones alérgicas y problemas de comportamiento",
+    "why_avoid": "Colorantes artificiales vinculados a hiperactividad en niños"
+},
+"bpa": {
+    "name": "BPA",
+    "severity": "high",
+    "description": "Bisfenol A de empaques de alimentos",
+    "health_effects": "Disruptor endocrino, toxicidad reproductiva",
+    "why_avoid": "Imita hormonas y altera el desarrollo"
+},
+"helecho común": {
+    "name": "Helecho Común",
+    "severity": "high",
+    "description": "Helecho comestible que contiene compuestos cancerígenos",
+    "health_effects": "Contiene múltiples carcinógenos",
+    "why_avoid": "Altos niveles de compuestos cancerígenos"
+},
+"aceite vegetal bromado": {
+    "name": "Aceite Vegetal Bromado (BVO)",
+    "severity": "high",
+    "description": "Aditivo químico usado en bebidas con sabor a cítricos",
+    "health_effects": "Puede acumularse en grasa corporal, problemas neurológicos y reproductivos",
+    "why_avoid": "Prohibido en Europa y Japón, se acumula en tejidos"
+},
+"marrón ht": {
+    "name": "Marrón HT",
+    "severity": "medium",
+    "description": "Colorante alimentario marrón sintético",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Colorante artificial con posibles efectos conductuales"
+},
+"butano": {
+    "name": "Butano",
+    "severity": "medium",
+    "description": "Gas propelente usado en productos alimenticios",
+    "health_effects": "Irritación respiratoria, efectos narcóticos en altas concentraciones",
+    "why_avoid": "Químico industrial no destinado al consumo"
+},
+"butilhidroxianisol": {
+    "name": "Butilhidroxianisol (BHA)",
+    "severity": "high",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Posible carcinógeno humano, disrupción endocrina",
+    "why_avoid": "California lo lista como carcinógeno"
+},
+"butilhidroxitolueno": {
+    "name": "Butilhidroxitolueno (BHT)",
+    "severity": "high",
+    "description": "Conservante sintético para prevenir rancidez",
+    "health_effects": "Puede causar daño hepático y problemas de tiroides",
+    "why_avoid": "Posible carcinógeno y disruptor endocrino"
+},
+"bvo": {
+    "name": "BVO (Aceite Vegetal Bromado)",
+    "severity": "high",
+    "description": "Aditivo químico usado como emulsionante en bebidas",
+    "health_effects": "Bioacumulación, efectos neurológicos",
+    "why_avoid": "Prohibido en muchos países, se acumula en tejidos corporales"
+},
+"cadmio": {
+    "name": "Cadmio",
+    "severity": "high",
+    "description": "Contaminante de metal pesado en alimentos",
+    "health_effects": "Cancerígeno, daño renal y óseo",
+    "why_avoid": "Metal pesado tóxico sin función biológica"
+},
+"cera de carnauba": {
+    "name": "Cera de Carnauba",
+    "severity": "medium",
+    "description": "Cera natural usada como agente glaseante en alimentos",
+    "health_effects": "Generalmente segura pero puede causar problemas digestivos en grandes cantidades",
+    "why_avoid": "Recubrimiento indigestible en alimentos"
+},
+"aceite de canola": {
+    "name": "Aceite de Canola",
+    "severity": "medium",
+    "description": "Aceite altamente procesado de colza genéticamente modificada",
+    "health_effects": "Alto en ácidos grasos omega-6 inflamatorios",
+    "why_avoid": "Altamente procesado, frecuentemente de fuentes transgénicas, promueve inflamación"
+},
+"canola": {
+    "name": "Canola",
+    "severity": "medium",
+    "description": "Aceite extraído de plantas de colza",
+    "health_effects": "Alto en ácidos grasos omega-6 inflamatorios",
+    "why_avoid": "Altamente procesado y frecuentemente genéticamente modificado"
+},
+"color caramelo": {
+    "name": "Color Caramelo",
+    "severity": "medium",
+    "description": "Colorante artificial hecho mediante procesos químicos",
+    "health_effects": "Puede contener compuestos cancerígenos como 4-metilimidazol",
+    "why_avoid": "El procesamiento químico crea subproductos potencialmente dañinos"
+},
+"colorante caramelo": {
+    "name": "Colorante Caramelo",
+    "severity": "medium",
+    "description": "Colorante alimentario marrón producido químicamente",
+    "health_effects": "Contiene posibles carcinógenos del proceso de fabricación",
+    "why_avoid": "Puede contener 4-metilimidazol, un posible carcinógeno"
+},
+"cera carnauba": {
+    "name": "Cera Carnauba",
+    "severity": "medium",
+    "description": "Cera natural usada como recubrimiento en alimentos",
+    "health_effects": "Indigestible, puede causar malestar digestivo",
+    "why_avoid": "Crea un recubrimiento indigestible en alimentos"
+},
+"carragenano (nativo) d": {
+    "name": "Carragenano (Nativo)",
+    "severity": "medium",
+    "description": "Agente espesante derivado de algas marinas",
+    "health_effects": "Puede causar inflamación digestiva y activación del sistema inmunológico",
+    "why_avoid": "Vinculado a inflamación intestinal y problemas digestivos"
+},
+"carragenano": {
+    "name": "Carragenano",
+    "severity": "medium",
+    "description": "Extracto de algas usado como espesante y estabilizador",
+    "health_effects": "Puede causar inflamación digestiva y problemas del sistema inmunológico",
+    "why_avoid": "Asociado con inflamación intestinal y problemas de salud digestiva"
+},
+"carragenina": {
+    "name": "Carragenina",
+    "severity": "medium",
+    "description": "Aditivo alimentario derivado de algas",
+    "health_effects": "Posible irritación del tracto digestivo",
+    "why_avoid": "Puede desencadenar respuestas inflamatorias en el intestino"
+},
+"clorato (sal de sodio) d": {
+    "name": "Clorato (Sal de Sodio)",
+    "severity": "high",
+    "description": "Compuesto químico que puede contaminar alimentos",
+    "health_effects": "Alteración tiroidea, posible carcinógeno",
+    "why_avoid": "Interfiere con la absorción de yodo y la función tiroidea"
+},
+"cloruro": {
+    "name": "Cloruro",
+    "severity": "medium",
+    "description": "Componente de sal, cantidades excesivas en alimentos procesados",
+    "health_effects": "Contribuye a presión arterial alta y enfermedades cardiovasculares",
+    "why_avoid": "Excesiva ingesta de sodio de alimentos procesados"
+},
+"dióxido de cloro": {
+    "name": "Dióxido de Cloro",
+    "severity": "high",
+    "description": "Químico usado para blanquear harina y tratamiento de agua",
+    "health_effects": "Irritación respiratoria, posible daño orgánico",
+    "why_avoid": "Agente blanqueador industrial no destinado al consumo"
+},
+"cloropropanoles": {
+    "name": "Cloropropanoles",
+    "severity": "high",
+    "description": "Contaminantes químicos formados durante el procesamiento de alimentos",
+    "health_effects": "Posibles carcinógenos, toxicidad orgánica",
+    "why_avoid": "Formados durante el procesamiento industrial de alimentos, potencialmente cancerígenos"
+},
+"rojo cítrico #1": {
+    "name": "Rojo Cítrico #1",
+    "severity": "medium",
+    "description": "Colorante rojo sintético usado en cáscaras de cítricos",
+    "health_effects": "Posible carcinógeno, puede causar reacciones alérgicas",
+    "why_avoid": "Uso restringido debido a preocupaciones de cáncer"
+},
+"rojo cítrico #2": {
+    "name": "Rojo Cítrico #2",
+    "severity": "medium",
+    "description": "Colorante rojo artificial para frutas cítricas",
+    "health_effects": "Puede causar tumores en estudios con animales",
+    "why_avoid": "Uso limitado debido a posibles efectos cancerígenos"
+},
+"rojo cítrico": {
+    "name": "Rojo Cítrico",
+    "severity": "medium",
+    "description": "Colorante rojo sintético para colorear frutas cítricas",
+    "health_effects": "Posibles efectos cancerígenos y alergénicos",
+    "why_avoid": "Colorante artificial con problemas de seguridad"
+},
+"maíz": {
+    "name": "Maíz",
+    "severity": "medium",
+    "description": "Productos de maíz altamente procesados y derivados del maíz",
+    "health_effects": "Frecuentemente genéticamente modificado, alto índice glucémico",
+    "why_avoid": "Frecuentemente transgénico, contribuye a picos de azúcar en sangre"
+},
+"aceite de maíz": {
+    "name": "Aceite de Maíz",
+    "severity": "medium",
+    "description": "Aceite altamente procesado extraído del maíz",
+    "health_effects": "Alto en ácidos grasos omega-6 inflamatorios",
+    "why_avoid": "Promueve inflamación, frecuentemente de maíz transgénico"
+},
+"semilla de algodón": {
+    "name": "Semilla de Algodón",
+    "severity": "medium",
+    "description": "Semillas de plantas de algodón usadas en producción de alimentos",
+    "health_effects": "Puede contener residuos de pesticidas y toxinas naturales",
+    "why_avoid": "El algodón es altamente tratado con pesticidas"
+},
+"aceite de semilla de algodón": {
+    "name": "Aceite de Semilla de Algodón",
+    "severity": "medium",
+    "description": "Aceite extraído de semillas de algodón",
+    "health_effects": "Altos residuos de pesticidas, grasas omega-6 inflamatorias",
+    "why_avoid": "El algodón es uno de los cultivos más tratados con pesticidas"
+},
+"cumarina": {
+    "name": "Cumarina",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en canela y otras plantas",
+    "health_effects": "Toxicidad hepática en altas dosis",
+    "why_avoid": "Puede causar daño hepático con consumo excesivo"
+},
+"crotonaldehído": {
+    "name": "Crotonaldehído",
+    "severity": "high",
+    "description": "Químico formado durante el procesamiento y cocción de alimentos",
+    "health_effects": "Probable carcinógeno humano, irritante respiratorio",
+    "why_avoid": "Compuesto tóxico formado durante procesamiento a alta temperatura"
+},
+"cicasina": {
+    "name": "Cicasina",
+    "severity": "high",
+    "description": "Toxina natural encontrada en plantas de cica",
+    "health_effects": "Cancerígena y neurotóxica",
+    "why_avoid": "Potente carcinógeno y neurotoxina natural"
+},
+"daminozida": {
+    "name": "Daminozida",
+    "severity": "high",
+    "description": "Regulador químico del crecimiento usado en manzanas",
+    "health_effects": "Posible carcinógeno",
+    "why_avoid": "Prohibido en muchos países debido a preocupaciones de cáncer"
+},
+"dbp": {
+    "name": "DBP (Dibutilftalato)",
+    "severity": "high",
+    "description": "Plastificante que puede migrar de empaques de alimentos",
+    "health_effects": "Disruptor endocrino, toxicidad reproductiva",
+    "why_avoid": "Altera el desarrollo hormonal y la reproducción"
+},
+"ddt": {
+    "name": "DDT",
+    "severity": "high",
+    "description": "Pesticida persistente que se bioacumula",
+    "health_effects": "Probable carcinógeno humano, disrupción endocrina",
+    "why_avoid": "Pesticida prohibido que persiste en el ambiente y cadena alimenticia"
+},
+"dep": {
+    "name": "DEP (Dietilftalato)",
+    "severity": "medium",
+    "description": "Plastificante encontrado en empaques de alimentos",
+    "health_effects": "Posible disrupción endocrina",
+    "why_avoid": "Puede interferir con la función hormonal"
+},
+"dextrosa": {
+    "name": "Dextrosa",
+    "severity": "medium",
+    "description": "Azúcar simple derivado del maíz",
+    "health_effects": "Causa picos rápidos de azúcar en sangre, frecuentemente de maíz transgénico",
+    "why_avoid": "Alto índice glucémico, contribuye a problemas metabólicos"
+},
+"di(2-etilhexil) ftalato": {
+    "name": "Di(2-etilhexil) Ftalato",
+    "severity": "high",
+    "description": "Plastificante que migra de empaques de alimentos",
+    "health_effects": "Disruptor endocrino, toxicidad reproductiva y del desarrollo",
+    "why_avoid": "Potente disruptor hormonal que afecta el desarrollo"
+},
+"dibutilftalato": {
+    "name": "Dibutilftalato",
+    "severity": "high",
+    "description": "Químico plastificante en envases de alimentos",
+    "health_effects": "Disrupción endocrina, toxicidad reproductiva",
+    "why_avoid": "Interfiere con el desarrollo hormonal"
+},
+"diclorodifeniltricloroetano": {
+    "name": "Diclorodifeniltricloroetano (DDT)",
+    "severity": "high",
+    "description": "Pesticida organoclorado persistente",
+    "health_effects": "Cancerígeno, disrupción endocrina, bioacumulación",
+    "why_avoid": "Prohibido pero persiste como contaminante ambiental"
+},
+"dietilftalato": {
+    "name": "Dietilftalato",
+    "severity": "medium",
+    "description": "Plastificante en materiales en contacto con alimentos",
+    "health_effects": "Posible disrupción endocrina",
+    "why_avoid": "Puede afectar el equilibrio hormonal"
+},
+"dimetilsilicona": {
+    "name": "Dimetilsilicona",
+    "severity": "medium",
+    "description": "Agente antiespumante usado en procesamiento de alimentos",
+    "health_effects": "Puede contener impurezas y productos de descomposición",
+    "why_avoid": "Químico industrial con efectos a largo plazo desconocidos"
+},
+"dioxinas": {
+    "name": "Dioxinas",
+    "severity": "high",
+    "description": "Contaminantes ambientales altamente tóxicos",
+    "health_effects": "Cancerígenas, toxicidad reproductiva y del desarrollo, daño al sistema inmunológico",
+    "why_avoid": "Entre los químicos más tóxicos conocidos, se bioacumulan en la cadena alimenticia"
+},
+"guanilato de disodio": {
+    "name": "Guanilato de Disodio",
+    "severity": "medium",
+    "description": "Potenciador de sabor frecuentemente usado con glutamato monosódico",
+    "health_effects": "Puede desencadenar asma y gota en individuos sensibles",
+    "why_avoid": "Puede empeorar condiciones de salud existentes"
+},
+"inosinato de disodio": {
+    "name": "Inosinato de Disodio",
+    "severity": "medium",
+    "description": "Potenciador de sabor comúnmente combinado con glutamato monosódico",
+    "health_effects": "Puede causar reacciones alérgicas y empeorar la gota",
+    "why_avoid": "Potencial para desencadenar reacciones adversas en personas sensibles"
+},
+"d-limoneno": {
+    "name": "D-Limoneno",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en cáscaras de cítricos",
+    "health_effects": "Puede causar sensibilización cutánea y reacciones alérgicas",
+    "why_avoid": "Puede desencadenar alergias en individuos sensibles"
+},
+"harina enriquecida": {
+    "name": "Harina Enriquecida",
+    "severity": "medium",
+    "description": "Harina refinada con vitaminas sintéticas añadidas",
+    "health_effects": "Baja en fibra, causa picos de azúcar en sangre, vinculada a inflamación",
+    "why_avoid": "Altamente procesada con la mayoría de nutrientes naturales removidos"
+},
+"equal": {
+    "name": "Equal (Aspartamo)",
+    "severity": "medium",
+    "description": "Nombre comercial del edulcorante artificial aspartamo",
+    "health_effects": "Puede causar dolores de cabeza, cambios de humor y síntomas neurológicos",
+    "why_avoid": "Se descompone en compuestos potencialmente dañinos"
+},
+"eritritol": {
+    "name": "Eritritol",
+    "severity": "medium",
+    "description": "Alcohol de azúcar usado como edulcorante bajo en calorías",
+    "health_effects": "Puede causar problemas digestivos y potencialmente aumentar el riesgo de derrame cerebral",
+    "why_avoid": "Estudios recientes sugieren riesgos cardiovasculares"
+},
+"estragol": {
+    "name": "Estragol",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en hierbas como albahaca y estragón",
+    "health_effects": "Posible carcinógeno en altas dosis",
+    "why_avoid": "Puede aumentar el riesgo de cáncer con consumo excesivo"
+},
+"uretano de etilo": {
+    "name": "Uretano de Etilo",
+    "severity": "high",
+    "description": "Compuesto químico formado durante la fermentación",
+    "health_effects": "Probable carcinógeno humano",
+    "why_avoid": "Se forma naturalmente en alimentos fermentados y bebidas alcohólicas"
+},
+"óxido de etileno": {
+    "name": "Óxido de Etileno",
+    "severity": "high",
+    "description": "Químico usado para esterilizar especias y alimentos secos",
+    "health_effects": "Carcinógeno humano conocido, efectos respiratorios y neurológicos",
+    "why_avoid": "Clasificado por la OMS como carcinógeno Grupo 1"
+},
+"eugenol d": {
+    "name": "Eugenol",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en clavo y otras especias",
+    "health_effects": "Puede causar toxicidad hepática en altas dosis",
+    "why_avoid": "Puede ser tóxico cuando se consume en grandes cantidades"
+},
+"saborizantes": {
+    "name": "Saborizantes",
+    "severity": "medium",
+    "description": "Término genérico para aditivos de sabor",
+    "health_effects": "Efectos dependen de los químicos específicos usados",
+    "why_avoid": "Etiquetado vago oculta químicos sintéticos potencialmente dañinos"
+},
+"flumequina": {
+    "name": "Flumequina",
+    "severity": "medium",
+    "description": "Antibiótico que puede contaminar productos animales",
+    "health_effects": "Resistencia a antibióticos, reacciones alérgicas",
+    "why_avoid": "Contribuye al problema de resistencia a antibióticos"
+},
+"fumonisina b1": {
+    "name": "Fumonisina B1",
+    "severity": "high",
+    "description": "Micotoxina producida por moho Fusarium en maíz",
+    "health_effects": "Posible carcinógeno humano, defectos del tubo neural",
+    "why_avoid": "Compuesto de moho tóxico que afecta el desarrollo"
+},
+"fumonisinas": {
+    "name": "Fumonisinas",
+    "severity": "high",
+    "description": "Grupo de micotoxinas de contaminación por moho",
+    "health_effects": "Potencial cancerígeno, toxicidad del desarrollo",
+    "why_avoid": "Compuestos tóxicos de contaminación por moho"
+},
+"furano": {
+    "name": "Furano",
+    "severity": "high",
+    "description": "Químico formado durante el procesamiento térmico de alimentos",
+    "health_effects": "Posible carcinógeno humano, toxicidad hepática",
+    "why_avoid": "Se forma durante el enlatado y procesamiento a alta temperatura"
+},
+"furfural d": {
+    "name": "Furfural",
+    "severity": "medium",
+    "description": "Químico formado durante el procesamiento de alimentos",
+    "health_effects": "Irritación respiratoria y cutánea, potencial toxicidad",
+    "why_avoid": "Químico industrial formado durante el procesamiento"
+},
+"fusarina c": {
+    "name": "Fusarina C",
+    "severity": "high",
+    "description": "Micotoxina producida por moho Fusarium",
+    "health_effects": "Mutagénica y potencialmente cancerígena",
+    "why_avoid": "Metabolito de moho tóxico con propiedades dañinas para el ADN"
+},
+"fusarium moniliforme": {
+    "name": "Fusarium Moniliforme",
+    "severity": "high",
+    "description": "Especie de moho que produce compuestos tóxicos",
+    "health_effects": "Produce micotoxinas cancerígenas",
+    "why_avoid": "Fuente de compuestos de fumonisina altamente tóxicos"
+},
+"genisteína d": {
+    "name": "Genisteína",
+    "severity": "medium",
+    "description": "Fitoestrógeno encontrado en productos de soya",
+    "health_effects": "Puede interferir con la función hormonal y el desarrollo",
+    "why_avoid": "Compuesto similar al estrógeno que puede alterar el equilibrio hormonal"
+},
+"aceite de semilla de uva": {
+    "name": "Aceite de Semilla de Uva",
+    "severity": "medium",
+    "description": "Aceite altamente procesado extraído de semillas de uva",
+    "health_effects": "Muy alto en ácidos grasos omega-6 inflamatorios",
+    "why_avoid": "Contenido extremadamente alto de omega-6 promueve inflamación"
+},
+"verde #3": {
+    "name": "Verde #3 (Verde Rápido FCF)",
+    "severity": "medium",
+    "description": "Colorante alimentario verde sintético",
+    "health_effects": "Puede causar reacciones alérgicas y problemas de comportamiento",
+    "why_avoid": "Colorante artificial hecho de derivados del petróleo"
+},
+"verde 3": {
+    "name": "Verde 3",
+    "severity": "medium",
+    "description": "Colorante alimentario verde sintético",
+    "health_effects": "Posibles efectos alergénicos y conductuales",
+    "why_avoid": "Colorante artificial con problemas de seguridad"
+},
+"verde": {
+    "name": "Verde (Colorante Alimentario)",
+    "severity": "medium",
+    "description": "Colorantes alimentarios verdes sintéticos",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Colorantes artificiales vinculados a problemas de comportamiento"
+},
+"goma guar": {
+    "name": "Goma Guar",
+    "severity": "medium",
+    "description": "Espesante natural de semillas de guar",
+    "health_effects": "Puede causar problemas digestivos y reacciones alérgicas",
+    "why_avoid": "Puede causar malestar gastrointestinal en individuos sensibles"
+},
+"carcinoma hepatocelular": {
+    "name": "Carcinoma Hepatocelular",
+    "severity": "high",
+    "description": "Cáncer de hígado asociado con ciertos contaminantes alimentarios",
+    "health_effects": "Cáncer hepático maligno",
+    "why_avoid": "Forma grave de cáncer de hígado"
+},
+"aminas heterocíclicas": {
+    "name": "Aminas Heterocíclicas",
+    "severity": "high",
+    "description": "Compuestos cancerígenos formados durante la cocción a alta temperatura",
+    "health_effects": "Mutagénicos y cancerígenos",
+    "why_avoid": "Se forman cuando la carne se cocina a altas temperaturas"
+},
+"hexenal": {
+    "name": "Hexenal",
+    "severity": "medium",
+    "description": "Compuesto aldehído formado durante la oxidación de lípidos",
+    "health_effects": "Puede contribuir a sabores desagradables y potencial toxicidad",
+    "why_avoid": "Indica rancidez y daño oxidativo"
+},
+"jarabe de maíz alto en fructosa": {
+    "name": "Jarabe de Maíz Alto en Fructosa (JMAF)",
+    "severity": "high",
+    "description": "Edulcorante altamente procesado hecho de almidón de maíz",
+    "health_effects": "Vinculado a obesidad, diabetes y enfermedad del hígado graso",
+    "why_avoid": "Procesado diferente al azúcar, puede causar problemas metabólicos"
+},
+"jarabe de maíz de alta fructosa": {
+    "name": "Jarabe de Maíz de Alta Fructosa",
+    "severity": "high",
+    "description": "Edulcorante hecho de almidón de maíz",
+    "health_effects": "Vinculado a obesidad, diabetes y enfermedad del hígado graso",
+    "why_avoid": "Procesado diferente al azúcar, puede causar problemas metabólicos"
+},
+"hidroquinona": {
+    "name": "Hidroquinona",
+    "severity": "high",
+    "description": "Químico que puede formarse en ciertos alimentos durante el procesamiento",
+    "health_effects": "Posible carcinógeno, irritación cutánea y ocular",
+    "why_avoid": "Compuesto tóxico con potencial cancerígeno"
+},
+"sustancias clasificadas por la iarc": {
+    "name": "Sustancias Clasificadas por la IARC",
+    "severity": "high",
+    "description": "Sustancias clasificadas por la Agencia Internacional para la Investigación del Cáncer",
+    "health_effects": "Varios efectos cancerígenos dependiendo de la clasificación",
+    "why_avoid": "Reconocidas oficialmente como agentes causantes de cáncer"
+},
+"isatidina d": {
+    "name": "Isatidina",
+    "severity": "medium",
+    "description": "Compuesto alcaloide encontrado en ciertas plantas",
+    "health_effects": "Posible toxicidad hepática",
+    "why_avoid": "Puede causar daño hepático con exposición"
+},
+"isobutano": {
+    "name": "Isobutano",
+    "severity": "medium",
+    "description": "Gas propelente usado en productos alimenticios",
+    "health_effects": "Asfixiante en altas concentraciones, no destinado al consumo",
+    "why_avoid": "Gas industrial no destinado a la ingestión"
+},
+"lasiocarpina": {
+    "name": "Lasiocarpina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico encontrado en ciertas plantas",
+    "health_effects": "Hepatotóxico y cancerígeno",
+    "why_avoid": "Causa daño hepático severo y cáncer"
+},
+"plomo": {
+    "name": "Plomo",
+    "severity": "high",
+    "description": "Contaminante de metal pesado en alimentos",
+    "health_effects": "Neurotóxico, especialmente dañino para el desarrollo infantil",
+    "why_avoid": "No hay nivel seguro de exposición, causa daño neurológico permanente"
+},
+"sulfato de magnesio": {
+    "name": "Sulfato de Magnesio",
+    "severity": "medium",
+    "description": "Sal mineral usada como aditivo alimentario",
+    "health_effects": "Puede causar malestar digestivo en grandes cantidades",
+    "why_avoid": "Puede actuar como laxante y causar malestar gastrointestinal"
+},
+"malondialdehído": {
+    "name": "Malondialdehído",
+    "severity": "medium",
+    "description": "Compuesto formado durante la peroxidación lipídica",
+    "health_effects": "Indicador de estrés oxidativo, posible daño al ADN",
+    "why_avoid": "Indica rancidez y daño celular"
+},
+"maltodextrina": {
+    "name": "Maltodextrina",
+    "severity": "medium",
+    "description": "Derivado de almidón altamente procesado",
+    "health_effects": "Índice glucémico muy alto, puede alterar la flora intestinal",
+    "why_avoid": "Causa picos rápidos de azúcar en sangre, frecuentemente de maíz transgénico"
+},
+"mate": {
+    "name": "Mate",
+    "severity": "medium",
+    "description": "Bebida tradicional sudamericana",
+    "health_effects": "Puede aumentar el riesgo de cáncer cuando se consume muy caliente",
+    "why_avoid": "Consumo caliente vinculado a cáncer de esófago"
+},
+"meiq": {
+    "name": "MeIQ",
+    "severity": "high",
+    "description": "Amina heterocíclica formada durante la cocción",
+    "health_effects": "Mutagénica y cancerígena",
+    "why_avoid": "Potente mutágeno formado en carne cocinada"
+},
+"meiqx": {
+    "name": "MeIQx",
+    "severity": "high",
+    "description": "Amina heterocíclica producida durante la cocción a alta temperatura",
+    "health_effects": "Mutagénica, potencial carcinógeno",
+    "why_avoid": "Fuerte potencial cancerígeno"
+},
+"mercurio": {
+    "name": "Mercurio",
+    "severity": "high",
+    "description": "Contaminante de metal pesado, especialmente en mariscos",
+    "health_effects": "Neurotóxico, particularmente dañino para cerebros en desarrollo",
+    "why_avoid": "Potente neurotoxina que se bioacumula"
+},
+"metoxaleno": {
+    "name": "Metoxaleno",
+    "severity": "medium",
+    "description": "Compuesto natural que se vuelve tóxico con exposición a la luz",
+    "health_effects": "Reacciones fototóxicas, daño cutáneo",
+    "why_avoid": "Puede causar reacciones cutáneas severas con exposición UV"
+},
+"metil eugenol": {
+    "name": "Metil Eugenol",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en hierbas y especias",
+    "health_effects": "Posible carcinógeno, toxicidad hepática",
+    "why_avoid": "Puede causar daño hepático y aumentar el riesgo de cáncer"
+},
+"metil isobutil cetona": {
+    "name": "Metil Isobutil Cetona",
+    "severity": "medium",
+    "description": "Solvente industrial que puede contaminar alimentos",
+    "health_effects": "Efectos neurológicos, irritación respiratoria",
+    "why_avoid": "Químico industrial no destinado al consumo"
+},
+"metilazoximetanol": {
+    "name": "Metilazoximetanol",
+    "severity": "high",
+    "description": "Compuesto cancerígeno de plantas de cica",
+    "health_effects": "Potente carcinógeno y neurotoxina",
+    "why_avoid": "Compuesto natural altamente tóxico"
+},
+"diclorometano": {
+    "name": "Diclorometano",
+    "severity": "high",
+    "description": "Solvente que puede contaminar productos descafeinados",
+    "health_effects": "Probable carcinógeno humano, efectos en el sistema nervioso central",
+    "why_avoid": "Solvente industrial con potencial cancerígeno"
+},
+"monocrotalina": {
+    "name": "Monocrotalina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de ciertas plantas",
+    "health_effects": "Toxicidad severa hepática y pulmonar",
+    "why_avoid": "Alcaloide altamente tóxico que causa daño orgánico"
+},
+"glutamato monosódico": {
+    "name": "Glutamato Monosódico (GMS)",
+    "severity": "medium",
+    "description": "Potenciador de sabor y conservante",
+    "health_effects": "Puede causar dolores de cabeza, náuseas y dolor torácico en personas sensibles",
+    "why_avoid": "Puede desencadenar reacciones adversas en individuos sensibles"
+},
+"sabor natural": {
+    "name": "Sabor Natural",
+    "severity": "medium",
+    "description": "Compuestos de sabor derivados de fuentes naturales pero procesados químicamente",
+    "health_effects": "Puede contener auxiliares de procesamiento sintéticos y solventes",
+    "why_avoid": "A menudo altamente procesado a pesar de la etiqueta 'natural'"
+},
+"aroma natural": {
+    "name": "Aroma Natural",
+    "severity": "medium",
+    "description": "Compuestos aromáticos de fuentes naturales",
+    "health_effects": "Puede contener químicos de procesamiento y alérgenos",
+    "why_avoid": "Los métodos de procesamiento pueden introducir químicos no deseados"
+},
+"nitrosamidas": {
+    "name": "Nitrosamidas",
+    "severity": "high",
+    "description": "Compuestos cancerígenos que pueden formarse en carnes procesadas",
+    "health_effects": "Cancerígenos, particularmente vinculados a cáncer gástrico",
+    "why_avoid": "Se forman a partir de nitritos y nitratos en carnes curadas"
+},
+"nitrosaminas": {
+    "name": "Nitrosaminas",
+    "severity": "high",
+    "description": "Compuestos cancerígenos formados a partir de nitritos",
+    "health_effects": "Potentes carcinógenos que afectan múltiples órganos",
+    "why_avoid": "Se forman cuando los nitritos reaccionan con aminas durante la cocción"
+},
+"óxido nitroso": {
+    "name": "Óxido Nitroso",
+    "severity": "medium",
+    "description": "Gas usado como propelente en dispensadores de crema batida",
+    "health_effects": "Puede desplazar oxígeno, depleción de vitamina B12 con exposición crónica",
+    "why_avoid": "No destinado para consumo directo"
+},
+"n-metil-n-formilhidrazina d": {
+    "name": "N-Metil-N-formilhidrazina",
+    "severity": "high",
+    "description": "Compuesto cancerígeno encontrado en hongos",
+    "health_effects": "Cancerígeno, causa tumores hepáticos",
+    "why_avoid": "Potente carcinógeno que ocurre naturalmente en algunos hongos"
+},
+"compuestos n-nitroso": {
+    "name": "Compuestos N-Nitroso",
+    "severity": "high",
+    "description": "Grupo de compuestos cancerígenos",
+    "health_effects": "Altamente cancerígenos, toxicidad en múltiples órganos",
+    "why_avoid": "Potentes compuestos causantes de cáncer"
+},
+"n-nitrosodietanolamina": {
+    "name": "N-Nitrosodietanolamina",
+    "severity": "high",
+    "description": "Compuesto nitrosamina que puede formarse en alimentos",
+    "health_effects": "Cancerígeno, toxicidad hepática",
+    "why_avoid": "Compuesto cancerígeno que puede formarse durante el procesamiento"
+},
+"n-nitrosodimetilamina": {
+    "name": "N-Nitrosodimetilamina",
+    "severity": "high",
+    "description": "Potente nitrosamina cancerígena",
+    "health_effects": "Altamente cancerígena, daño hepático",
+    "why_avoid": "Una de las nitrosaminas carcinógenas más potentes"
+},
+"norbixina": {
+    "name": "Norbixina",
+    "severity": "medium",
+    "description": "Agente colorante natural derivado del achiote",
+    "health_effects": "Puede causar reacciones alérgicas en individuos sensibles",
+    "why_avoid": "Puede desencadenar alergias alimentarias y sensibilidades"
+},
+"nutrasweet": {
+    "name": "NutraSweet (Aspartamo)",
+    "severity": "medium",
+    "description": "Nombre comercial del edulcorante artificial aspartamo",
+    "health_effects": "Puede causar dolores de cabeza, cambios de humor y síntomas neurológicos",
+    "why_avoid": "Se descompone en metabolitos potencialmente dañinos"
+},
+"ocratoxina": {
+    "name": "Ocratoxina",
+    "severity": "high",
+    "description": "Micotoxina producida por mohos Aspergillus y Penicillium",
+    "health_effects": "Cancerígena, toxicidad renal",
+    "why_avoid": "Compuesto de moho tóxico que daña los riñones y puede causar cáncer"
+},
+"octafluorociclobutano": {
+    "name": "Octafluorociclobutano",
+    "severity": "medium",
+    "description": "Compuesto fluorado usado como propelente",
+    "health_effects": "Efectos respiratorios, persistencia ambiental",
+    "why_avoid": "Químico industrial con efectos a largo plazo desconocidos"
+},
+"olestra": {
+    "name": "Olestra",
+    "severity": "medium",
+    "description": "Sustituto sintético de grasa",
+    "health_effects": "Bloquea absorción de vitaminas liposolubles, problemas digestivos",
+    "why_avoid": "Causa deficiencias nutricionales y problemas gastrointestinales"
+},
+"naranja b": {
+    "name": "Naranja B",
+    "severity": "medium",
+    "description": "Colorante alimentario naranja sintético",
+    "health_effects": "Uso limitado debido a preocupaciones de seguridad",
+    "why_avoid": "Colorante artificial restringido con posibles riesgos para la salud"
+},
+"naranja": {
+    "name": "Naranja (Colorante Alimentario)",
+    "severity": "medium",
+    "description": "Colorantes alimentarios naranjas sintéticos",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Colorantes artificiales vinculados a problemas de comportamiento"
+},
+"p,p0diclorodifeniltricloroetano": {
+    "name": "p,p'-Diclorodifeniltricloroetano",
+    "severity": "high",
+    "description": "Compuesto pesticida DDT",
+    "health_effects": "Cancerígeno, disrupción endocrina, bioacumulación",
+    "why_avoid": "Contaminante ambiental persistente"
+},
+"habs": {
+    "name": "HAPs (Hidrocarburos Aromáticos Policíclicos)",
+    "severity": "high",
+    "description": "Compuestos cancerígenos formados durante el asado y ahumado",
+    "health_effects": "Múltiples carcinógenos que afectan varios órganos",
+    "why_avoid": "Se forman durante la cocción a alta temperatura y el ahumado"
+},
+"aceite de palma": {
+    "name": "Aceite de Palma",
+    "severity": "medium",
+    "description": "Aceite altamente procesado frecuentemente usado en alimentos procesados",
+    "health_effects": "Alto en grasas saturadas, puede contener contaminantes de procesamiento",
+    "why_avoid": "Preocupaciones ambientales y posibles contaminantes de procesamiento"
+},
+"parabenos": {
+    "name": "Parabenos",
+    "severity": "medium",
+    "description": "Conservantes que pueden migrar de envases",
+    "health_effects": "Disrupción endocrina, reacciones alérgicas",
+    "why_avoid": "Conservantes disruptores hormonales"
+},
+"paraquat": {
+    "name": "Paraquat",
+    "severity": "high",
+    "description": "Herbicida altamente tóxico que puede contaminar alimentos",
+    "health_effects": "Extremadamente tóxico, daño pulmonar, vinculado a enfermedad de Parkinson",
+    "why_avoid": "Uno de los pesticidas más tóxicos en uso"
+},
+"patulina": {
+    "name": "Patulina",
+    "severity": "high",
+    "description": "Micotoxina producida por moho Penicillium en frutas",
+    "health_effects": "Potencial cancerígeno, supresión del sistema inmunológico",
+    "why_avoid": "Compuesto de moho tóxico encontrado en frutas dañadas"
+},
+"pbc": {
+    "name": "PBCs (Compuestos Polibromados)",
+    "severity": "high",
+    "description": "Contaminantes orgánicos persistentes que se bioacumulan",
+    "health_effects": "Disrupción endocrina, toxicidad del desarrollo",
+    "why_avoid": "Contaminantes ambientales persistentes"
+},
+"aceite de maní": {
+    "name": "Aceite de Maní",
+    "severity": "medium",
+    "description": "Aceite extraído de maníes",
+    "health_effects": "Alto en grasas omega-6, alérgeno potencial, riesgo de contaminación con aflatoxinas",
+    "why_avoid": "Perfil inflamatorio de omega-6 y posible contaminación con micotoxinas"
+},
+"perclorato": {
+    "name": "Perclorato",
+    "severity": "high",
+    "description": "Químico que puede contaminar agua y alimentos",
+    "health_effects": "Disrupción tiroidea, efectos en el desarrollo",
+    "why_avoid": "Interfiere con la producción de hormonas tiroideas"
+},
+"sustancias perfluoroalquilo": {
+    "name": "Sustancias Perfluoroalquilo",
+    "severity": "high",
+    "description": "Químicos persistentes de envases de alimentos",
+    "health_effects": "Bioacumulación, efectos en el sistema inmunológico, riesgo de cáncer",
+    "why_avoid": "Químicos permanentes que persisten en el cuerpo y el ambiente"
+},
+"pfas": {
+    "name": "PFAS (Sustancias Per y Polifluoroalquilo)",
+    "severity": "high",
+    "description": "Químicos permanentes de envases y procesamiento de alimentos",
+    "health_effects": "Bioacumulación, cáncer, daño al sistema inmunológico",
+    "why_avoid": "Químicos persistentes que se acumulan en tejidos corporales"
+},
+"phip": {
+    "name": "PhIP (2-Amino-1-metil-6-fenilimidazo[4,5-b]piridina)",
+    "severity": "high",
+    "description": "Amina heterocíclica formada durante la cocción",
+    "health_effects": "Cancerígena, daño al ADN",
+    "why_avoid": "Potente mutágeno formado cuando la carne se cocina a altas temperaturas"
+},
+"ftalatos": {
+    "name": "Ftalatos",
+    "severity": "high",
+    "description": "Plastificantes que migran de envases de alimentos",
+    "health_effects": "Disrupción endocrina, toxicidad reproductiva y del desarrollo",
+    "why_avoid": "Químicos disruptores hormonales que afectan el desarrollo"
+},
+"plásticos": {
+    "name": "Aditivos Plásticos",
+    "severity": "medium",
+    "description": "Varios químicos de envases plásticos de alimentos",
+    "health_effects": "Disrupción endocrina, posibles efectos cancerígenos",
+    "why_avoid": "Migración química de envases a alimentos"
+},
+"poliamidas": {
+    "name": "Poliamidas",
+    "severity": "medium",
+    "description": "Polímeros sintéticos usados en envases de alimentos",
+    "health_effects": "Posible migración de aditivos químicos",
+    "why_avoid": "Puede liberar aditivos químicos a los alimentos"
+},
+"hidrocarburos aromáticos policíclicos": {
+    "name": "Hidrocarburos Aromáticos Policíclicos",
+    "severity": "high",
+    "description": "Compuestos cancerígenos formados durante el asado y ahumado",
+    "health_effects": "Múltiples carcinógenos, daño al ADN",
+    "why_avoid": "Se forman durante métodos de cocción a alta temperatura"
+},
+"poliesteres": {
+    "name": "Poliesteres",
+    "severity": "medium",
+    "description": "Polímeros sintéticos en envases de alimentos",
+    "health_effects": "Posible migración química a los alimentos",
+    "why_avoid": "Puede filtrar aditivos químicos"
+},
+"sustancias polifluoroalquilo": {
+    "name": "Sustancias Polifluoroalquilo",
+    "severity": "high",
+    "description": "Químicos fluorados persistentes",
+    "health_effects": "Bioacumulación, supresión inmunológica, riesgo de cáncer",
+    "why_avoid": "Químicos permanentes con graves impactos en la salud"
+},
+"aditivos poliméricos": {
+    "name": "Aditivos Poliméricos",
+    "severity": "medium",
+    "description": "Aditivos de molécula grande en procesamiento de alimentos",
+    "health_effects": "Posible descomposición en compuestos tóxicos más pequeños",
+    "why_avoid": "Puede degradarse en moléculas más pequeñas dañinas"
+},
+"poliolefinas": {
+    "name": "Poliolefinas",
+    "severity": "medium",
+    "description": "Materiales plásticos usados en envases de alimentos",
+    "health_effects": "Posible migración de aditivos y monómeros",
+    "why_avoid": "Migración química de envases plásticos"
+},
+"polisorbato 60": {
+    "name": "Polisorbato 60",
+    "severity": "medium",
+    "description": "Emulsificante sintético derivado del petróleo",
+    "health_effects": "Puede alterar la flora intestinal y causar problemas digestivos",
+    "why_avoid": "Emulsificante sintético que puede afectar la salud intestinal"
+},
+"poliestireno": {
+    "name": "Poliestireno",
+    "severity": "medium",
+    "description": "Material plástico usado en contenedores de alimentos",
+    "health_effects": "Posible lixiviación del monómero estireno",
+    "why_avoid": "El estireno es un posible carcinógeno humano"
+},
+"sorbato de potasio": {
+    "name": "Sorbato de Potasio",
+    "severity": "medium",
+    "description": "Conservante sintético para prevenir crecimiento de moho",
+    "health_effects": "Puede causar reacciones alérgicas e irritación cutánea",
+    "why_avoid": "Puede desencadenar respuestas alérgicas en personas sensibles"
+},
+"benzoato de potasio": {
+    "name": "Benzoato de Potasio",
+    "severity": "medium",
+    "description": "Conservante químico similar al benzoato de sodio",
+    "health_effects": "Puede formar benceno cuando se combina con vitamina C",
+    "why_avoid": "Potencial para formar benceno cancerígeno"
+},
+"bromato de potasio": {
+    "name": "Bromato de Potasio",
+    "severity": "high",
+    "description": "Químico usado para fortalecer la masa de pan",
+    "health_effects": "Probable carcinógeno humano, toxicidad renal y tiroidea",
+    "why_avoid": "Prohibido en muchos países debido al riesgo de cáncer"
+},
+"propelentes": {
+    "name": "Propelentes",
+    "severity": "medium",
+    "description": "Gases usados para dispensar productos alimenticios",
+    "health_effects": "No destinados al consumo, posibles efectos respiratorios",
+    "why_avoid": "Gases industriales no destinados a la ingestión"
+},
+"propano": {
+    "name": "Propano",
+    "severity": "medium",
+    "description": "Gas propelente usado en dispensadores de alimentos",
+    "health_effects": "Asfixiante en altas concentraciones",
+    "why_avoid": "Gas industrial no destinado al consumo"
+},
+"propelente": {
+    "name": "Propelente",
+    "severity": "medium",
+    "description": "Gases usados para dispensar productos alimenticios de contenedores",
+    "health_effects": "Varían según el gas específico, no destinados al consumo",
+    "why_avoid": "Químicos industriales no destinados a la ingestión"
+},
+"galato de propilo": {
+    "name": "Galato de Propilo",
+    "severity": "medium",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Puede causar reacciones alérgicas e irritación estomacal",
+    "why_avoid": "Alergeno potencial con efectos gastrointestinales"
+},
+"parabeno de propilo": {
+    "name": "Parabeno de Propilo",
+    "severity": "medium",
+    "description": "Conservante que puede migrar de envases",
+    "health_effects": "Disrupción endocrina, reacciones alérgicas",
+    "why_avoid": "Conservante disruptor hormonal"
+},
+"propileno": {
+    "name": "Propileno",
+    "severity": "medium",
+    "description": "Compuesto químico usado en procesamiento de alimentos",
+    "health_effects": "Posible irritación respiratoria y cutánea",
+    "why_avoid": "Químico industrial con datos de seguridad limitados"
+},
+"propilenglicol": {
+    "name": "Propilenglicol",
+    "severity": "medium",
+    "description": "Químico usado como humectante y solvente",
+    "health_effects": "Puede causar reacciones alérgicas e irritación cutánea",
+    "why_avoid": "Químico industrial usado en anticongelantes y cosméticos"
+},
+"ptaquilósido": {
+    "name": "Ptaquilósido",
+    "severity": "high",
+    "description": "Compuesto cancerígeno encontrado en helecho común",
+    "health_effects": "Altamente cancerígeno, daño al ADN",
+    "why_avoid": "Potente carcinógeno natural"
+},
+"piretroide": {
+    "name": "Piretroide",
+    "severity": "medium",
+    "description": "Insecticida sintético que puede contaminar alimentos",
+    "health_effects": "Efectos neurológicos, disrupción endocrina",
+    "why_avoid": "Residuos de pesticidas con propiedades neurotóxicas"
+},
+"alcaloides pirrolizidínicos": {
+    "name": "Alcaloides Pirrolizidínicos",
+    "severity": "high",
+    "description": "Toxinas naturales encontradas en ciertas plantas",
+    "health_effects": "Toxicidad hepática severa, cancerígenos",
+    "why_avoid": "Compuestos vegetales altamente tóxicos que causan daño orgánico"
+},
+"amarillo quinoleína": {
+    "name": "Amarillo Quinoleína",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar reacciones alérgicas e hiperactividad",
+    "why_avoid": "Colorante artificial vinculado a problemas de comportamiento"
+},
+"rojo #3": {
+    "name": "Rojo #3 (Eritrosina)",
+    "severity": "medium",
+    "description": "Colorante alimentario rojo sintético",
+    "health_effects": "Puede causar tumores tiroideos e hiperactividad",
+    "why_avoid": "Prohibido en cosméticos debido a preocupaciones de cáncer"
+},
+"rojo #40": {
+    "name": "Rojo #40 (Rojo Allura)",
+    "severity": "medium",
+    "description": "Colorante alimentario rojo sintético",
+    "health_effects": "Vinculado a hiperactividad en niños y reacciones alérgicas",
+    "why_avoid": "Hecho de derivados del petróleo, efectos conductuales"
+},
+"rojo 3": {
+    "name": "Rojo 3",
+    "severity": "medium",
+    "description": "Colorante alimentario rojo sintético",
+    "health_effects": "Posibles efectos tiroideos e hiperactividad",
+    "why_avoid": "Preocupaciones de seguridad llevaron a restricciones en algunos usos"
+},
+"rojo 40": {
+    "name": "Rojo 40",
+    "severity": "medium",
+    "description": "Colorante alimentario rojo sintético",
+    "health_effects": "Vinculado a hiperactividad en niños y reacciones alérgicas",
+    "why_avoid": "Hecho de derivados del petróleo"
+},
+"rojo": {
+    "name": "Rojo (Colorante Alimentario)",
+    "severity": "medium",
+    "description": "Colorantes alimentarios rojos sintéticos",
+    "health_effects": "Puede causar reacciones alérgicas y problemas de comportamiento",
+    "why_avoid": "Colorantes artificiales vinculados a hiperactividad"
+},
+"retronecina": {
+    "name": "Retronecina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico encontrado en ciertas plantas",
+    "health_effects": "Toxicidad hepática severa y cancerígena",
+    "why_avoid": "Alcaloide altamente tóxico que causa daño hepático"
+},
+"aceite de cártamo": {
+    "name": "Aceite de Cártamo",
+    "severity": "medium",
+    "description": "Aceite altamente procesado muy alto en ácidos grasos omega-6",
+    "health_effects": "Contenido extremadamente alto de omega-6 promueve inflamación",
+    "why_avoid": "Uno de los aceites más altos en omega-6, fuertemente proinflamatorio"
+},
+"safrol": {
+    "name": "Safrol",
+    "severity": "high",
+    "description": "Compuesto natural encontrado en sasafrás y otras plantas",
+    "health_effects": "Cancerígeno, prohibido en alimentos",
+    "why_avoid": "Carcinógeno conocido prohibido por la FDA"
+},
+"semicarbazida": {
+    "name": "Semicarbazida",
+    "severity": "high",
+    "description": "Químico que se forma por descomposición de la azodicarbonamida",
+    "health_effects": "Posible carcinógeno",
+    "why_avoid": "Se forma por descomposición de aditivo alimentario prohibido"
+},
+"senecifilina": {
+    "name": "Senecifilina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de plantas de hierba cana",
+    "health_effects": "Hepatotóxico y cancerígeno",
+    "why_avoid": "Alcaloide tóxico que causa daño hepático severo"
+},
+"senecio": {
+    "name": "Alcaloides de Senecio",
+    "severity": "high",
+    "description": "Alcaloides tóxicos de plantas Senecio",
+    "health_effects": "Toxicidad hepática severa y cáncer",
+    "why_avoid": "Compuestos vegetales altamente tóxicos"
+},
+"senecionina": {
+    "name": "Senecionina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico encontrado en hierba cana",
+    "health_effects": "Hepatotóxico y cancerígeno",
+    "why_avoid": "Causa daño hepático severo y cáncer"
+},
+"dióxido de silicio": {
+    "name": "Dióxido de Silicio",
+    "severity": "medium",
+    "description": "Antiaglomerante usado en alimentos procesados",
+    "health_effects": "Puede causar problemas respiratorios si se inhala, irritación digestiva",
+    "why_avoid": "Aditivo industrial con posibles preocupaciones de salud"
+},
+"pirofosfato ácido de sodio": {
+    "name": "Pirofosfato Ácido de Sodio",
+    "severity": "medium",
+    "description": "Agente leudante químico y conservante",
+    "health_effects": "Puede causar náuseas y malestar digestivo",
+    "why_avoid": "Aditivo químico sintético con estudios limitados a largo plazo"
+},
+"fosfato de aluminio y sodio": {
+    "name": "Fosfato de Aluminio y Sodio",
+    "severity": "high",
+    "description": "Agente leudante químico que contiene aluminio",
+    "health_effects": "Acumulación de aluminio, potencial neurotoxicidad",
+    "why_avoid": "Fuente de aluminio que puede acumularse en tejido cerebral"
+},
+"sulfato de aluminio y sodio": {
+    "name": "Sulfato de Aluminio y Sodio",
+    "severity": "high",
+    "description": "Aditivo químico que contiene aluminio",
+    "health_effects": "Exposición al aluminio, posibles efectos neurológicos",
+    "why_avoid": "Contiene aluminio que puede ser neurotóxico"
+},
+"benzoato de sodio": {
+    "name": "Benzoato de Sodio",
+    "severity": "medium",
+    "description": "Conservante químico para prevenir deterioro",
+    "health_effects": "Puede formar benceno (un carcinógeno) cuando se combina con vitamina C",
+    "why_avoid": "Potencial para formar compuestos dañinos bajo ciertas condiciones"
+},
+"bisulfito de sodio": {
+    "name": "Bisulfito de Sodio",
+    "severity": "medium",
+    "description": "Conservante químico y antioxidante",
+    "health_effects": "Puede causar reacciones alérgicas y ataques de asma",
+    "why_avoid": "Puede desencadenar respuestas alérgicas severas en individuos sensibles"
+},
+"caseinato de sodio": {
+    "name": "Caseinato de Sodio",
+    "severity": "medium",
+    "description": "Derivado de proteína láctea usado como emulsionante",
+    "health_effects": "Puede causar reacciones alérgicas en personas sensibles a lácteos",
+    "why_avoid": "Ingrediente lácteo oculto que puede desencadenar alergias"
+},
+"diacetato de sodio": {
+    "name": "Diacetato de Sodio",
+    "severity": "medium",
+    "description": "Conservante químico y agente saborizante",
+    "health_effects": "Puede causar irritación digestiva en individuos sensibles",
+    "why_avoid": "Aditivo sintético con posibles efectos gastrointestinales"
+},
+"eritorbato de sodio": {
+    "name": "Eritorbato de Sodio",
+    "severity": "medium",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Puede causar reacciones alérgicas y cálculos renales",
+    "why_avoid": "Químico sintético con posibles efectos adversos"
+},
+"hexametafosfato de sodio": {
+    "name": "Hexametafosfato de Sodio",
+    "severity": "medium",
+    "description": "Químico usado como emulsionante y secuestrante",
+    "health_effects": "Puede causar malestar digestivo y desequilibrios minerales",
+    "why_avoid": "Puede interferir con la absorción de minerales"
+},
+"metabisulfito de sodio": {
+    "name": "Metabisulfito de Sodio",
+    "severity": "medium",
+    "description": "Conservante químico y antioxidante",
+    "health_effects": "Puede causar reacciones alérgicas severas y asma",
+    "why_avoid": "Puede desencadenar reacciones potencialmente mortales en personas sensibles"
+},
+"nitrato de sodio": {
+    "name": "Nitrato de Sodio",
+    "severity": "high",
+    "description": "Conservante químico usado en carnes curadas",
+    "health_effects": "Se convierte en nitritos, forma nitrosaminas cancerígenas",
+    "why_avoid": "Precursor de nitrosaminas causantes de cáncer"
+},
+"nitrito de sodio": {
+    "name": "Nitrito de Sodio",
+    "severity": "high",
+    "description": "Conservante químico que mantiene el color de la carne",
+    "health_effects": "Forma nitrosaminas cancerígenas, riesgo de metahemoglobinemia",
+    "why_avoid": "Se combina con aminas para formar compuestos cancerígenos"
+},
+"fosfato de sodio": {
+    "name": "Fosfato de Sodio",
+    "severity": "medium",
+    "description": "Aditivo químico usado como emulsionante y regulador de pH",
+    "health_effects": "Puede causar problemas digestivos y desequilibrios minerales",
+    "why_avoid": "Puede interferir con la absorción de calcio y otros minerales"
+},
+"sulfito de sodio": {
+    "name": "Sulfito de Sodio",
+    "severity": "medium",
+    "description": "Conservante químico y antioxidante",
+    "health_effects": "Puede causar reacciones alérgicas y ataques de asma",
+    "why_avoid": "Puede desencadenar reacciones respiratorias severas en personas sensibles"
+},
+"ácido sórbico": {
+    "name": "Ácido Sórbico",
+    "severity": "medium",
+    "description": "Conservante químico para prevenir crecimiento de moho",
+    "health_effects": "Puede causar irritación cutánea y respiratoria",
+    "why_avoid": "Puede desencadenar reacciones alérgicas en individuos sensibles"
+},
+"sorbitol": {
+    "name": "Sorbitol",
+    "severity": "medium",
+    "description": "Alcohol de azúcar usado como edulcorante y humectante",
+    "health_effects": "Puede causar malestar digestivo, diarrea y gases",
+    "why_avoid": "Puede causar malestar gastrointestinal significativo"
+},
+"aceite de soja": {
+    "name": "Aceite de Soja",
+    "severity": "medium",
+    "description": "Aceite extraído de soja",
+    "health_effects": "Alto en grasas omega-6, puede promover inflamación",
+    "why_avoid": "Altamente procesado y frecuentemente de soja transgénica"
+},
+"lecitina de soja": {
+    "name": "Lecitina de Soja",
+    "severity": "medium",
+    "description": "Emulsionante derivado de soja",
+    "health_effects": "Generalmente seguro pero puede causar problemas digestivos en algunas personas",
+    "why_avoid": "Frecuentemente hecho de soja genéticamente modificada"
+},
+"splenda": {
+    "name": "Splenda (Sucralosa)",
+    "severity": "medium",
+    "description": "Nombre comercial del edulcorante artificial sucralosa",
+    "health_effects": "Puede alterar la flora intestinal y el metabolismo de glucosa",
+    "why_avoid": "Edulcorante sintético con potenciales efectos metabólicos"
+},
+"steviósido": {
+    "name": "Steviósido",
+    "severity": "medium",
+    "description": "Compuesto edulcorante natural de la planta stevia",
+    "health_effects": "Generalmente seguro pero las formas comerciales altamente procesadas pueden contener aditivos",
+    "why_avoid": "Los productos comerciales de stevia frecuentemente contienen otros aditivos"
+},
+"sucralosa": {
+    "name": "Sucralosa",
+    "severity": "medium",
+    "description": "Edulcorante artificial hecho por cloración de azúcar",
+    "health_effects": "Puede alterar la flora intestinal y afectar el metabolismo de glucosa",
+    "why_avoid": "Compuesto clorado sintético con efectos a largo plazo desconocidos"
+},
+"dióxido de azufre": {
+    "name": "Dióxido de Azufre",
+    "severity": "medium",
+    "description": "Conservante químico y antioxidante",
+    "health_effects": "Puede causar reacciones alérgicas y ataques de asma",
+    "why_avoid": "Puede desencadenar reacciones respiratorias severas"
+},
+"ácido sulfúrico": {
+    "name": "Ácido Sulfúrico",
+    "severity": "high",
+    "description": "Ácido fuerte usado en procesamiento de alimentos",
+    "health_effects": "Altamente corrosivo, puede causar quemaduras severas y daño respiratorio",
+    "why_avoid": "Químico industrial peligroso"
+},
+"aceite de girasol": {
+    "name": "Aceite de Girasol",
+    "severity": "medium",
+    "description": "Aceite extraído de semillas de girasol, frecuentemente altamente procesado",
+    "health_effects": "Muy alto en ácidos grasos omega-6, promueve inflamación",
+    "why_avoid": "Contenido extremadamente alto de omega-6 contribuye a condiciones inflamatorias"
+},
+"amarillo ocaso": {
+    "name": "Amarillo Ocaso",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar hiperactividad y reacciones alérgicas",
+    "why_avoid": "Colorante artificial vinculado a problemas de comportamiento en niños"
+},
+"sweet'n low": {
+    "name": "Sweet'N Low (Sacarina)",
+    "severity": "medium",
+    "description": "Nombre comercial del edulcorante artificial sacarina",
+    "health_effects": "Posible carcinógeno, sabor metálico amargo",
+    "why_avoid": "Estudios en animales mostraron mayor riesgo de cáncer"
+},
+"simfitina": {
+    "name": "Simfitina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico encontrado en consuelda",
+    "health_effects": "Hepatotóxico y cancerígeno",
+    "why_avoid": "Alcaloide tóxico que causa daño hepático y cáncer"
+},
+"tartrazina": {
+    "name": "Tartrazina (Amarillo #5)",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar hiperactividad, reacciones alérgicas y asma",
+    "why_avoid": "Vinculado a problemas de comportamiento y respuestas alérgicas"
+},
+"tbhq": {
+    "name": "TBHQ (Terbutilhidroquinona)",
+    "severity": "high",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Puede causar náuseas, vómitos y posibles efectos cancerígenos",
+    "why_avoid": "Derivado del petróleo con estudios de toxicidad preocupantes"
+},
+"terbutilhidroquinona": {
+    "name": "Terbutilhidroquinona",
+    "severity": "high",
+    "description": "Conservante antioxidante sintético derivado del petróleo",
+    "health_effects": "Puede causar tumores estomacales y daño al ADN",
+    "why_avoid": "Químico industrial con propiedades cancerígenas potenciales"
+},
+"dióxido de titanio": {
+    "name": "Dióxido de Titanio",
+    "severity": "medium",
+    "description": "Pigmento blanco usado para aclarar y blanquear alimentos",
+    "health_effects": "Puede causar respuestas inflamatorias e inmunes",
+    "why_avoid": "Posible carcinógeno cuando se inhala, efectos en el sistema inmunológico"
+},
+"grasas trans": {
+    "name": "Grasas Trans",
+    "severity": "high",
+    "description": "Grasas creadas artificialmente mediante hidrogenación",
+    "health_effects": "Aumenta el riesgo de enfermedades cardíacas, inflamación y colesterol malo",
+    "why_avoid": "No hay nivel seguro de consumo, prohibido en muchos países"
+},
+"trp-p-1": {
+    "name": "Trp-P-1",
+    "severity": "high",
+    "description": "Amina heterocíclica formada durante la pirólisis de proteínas",
+    "health_effects": "Mutagénica y cancerígena",
+    "why_avoid": "Potente mutágeno formado durante la cocción a alta temperatura"
+},
+"trp-p-2": {
+    "name": "Trp-P-2",
+    "severity": "high",
+    "description": "Amina heterocíclica producida durante la cocción",
+    "health_effects": "Altamente mutagénica y cancerígena",
+    "why_avoid": "Fuerte potencial cancerígeno"
+},
+"aceite vegetal": {
+    "name": "Aceite Vegetal",
+    "severity": "medium",
+    "description": "Término genérico para aceites vegetales altamente procesados",
+    "health_effects": "Usualmente altos en ácidos grasos omega-6 inflamatorios",
+    "why_avoid": "Etiquetado vago frecuentemente oculta aceites menos deseables"
+},
+"cloruro de vinilo": {
+    "name": "Cloruro de Vinilo",
+    "severity": "high",
+    "description": "Químico que puede migrar de envases de PVC",
+    "health_effects": "Carcinógeno humano conocido, daño hepático",
+    "why_avoid": "Potente carcinógeno que puede contaminar alimentos envasados"
+},
+"aceite mineral blanco": {
+    "name": "Aceite Mineral Blanco",
+    "severity": "medium",
+    "description": "Aceite derivado del petróleo usado como aditivo alimentario",
+    "health_effects": "Puede interferir con la absorción de vitaminas",
+    "why_avoid": "Producto petrolífero que puede bloquear la absorción de nutrientes"
+},
+"goma xantana": {
+    "name": "Goma Xantana",
+    "severity": "medium",
+    "description": "Polisacárido microbiano usado como espesante",
+    "health_effects": "Puede causar malestar digestivo y reacciones alérgicas",
+    "why_avoid": "Puede causar malestar gastrointestinal en individuos sensibles"
+},
+"xilitol": {
+    "name": "Xilitol",
+    "severity": "medium",
+    "description": "Alcohol de azúcar usado como edulcorante",
+    "health_effects": "Puede causar malestar digestivo, extremadamente tóxico para perros",
+    "why_avoid": "Puede causar malestar gastrointestinal significativo"
+},
+"amarillo #5": {
+    "name": "Amarillo #5 (Tartrazina)",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar hiperactividad, reacciones alérgicas y asma",
+    "why_avoid": "Vinculado a problemas de comportamiento y requiere etiquetas de advertencia en Europa"
+},
+"amarillo #6": {
+    "name": "Amarillo #6 (Amarillo Ocaso)",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar hiperactividad y reacciones alérgicas",
+    "why_avoid": "Hecho de derivados del petróleo, vinculado a problemas de conducta"
+},
+"amarillo 5": {
+    "name": "Amarillo 5",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Puede causar hiperactividad y reacciones alérgicas",
+    "why_avoid": "Colorante artificial con efectos conductuales y alergénicos"
+},
+"amarillo 6": {
+    "name": "Amarillo 6",
+    "severity": "medium",
+    "description": "Colorante alimentario amarillo sintético",
+    "health_effects": "Posibles efectos conductuales y alergénicos",
+    "why_avoid": "Hecho de petróleo, preocupaciones de seguridad"
+},
+"amarillo": {
+    "name": "Amarillo (Colorante Alimentario)",
+    "severity": "medium",
+    "description": "Colorantes alimentarios amarillos sintéticos",
+    "health_effects": "Puede causar hiperactividad y reacciones alérgicas",
+    "why_avoid": "Colorantes artificiales vinculados a problemas de comportamiento"
+},
+"zearalenona": {
+    "name": "Zearalenona",
+    "severity": "high",
+    "description": "Micotoxina con efectos estrogénicos producida por Fusarium",
+    "health_effects": "Disrupción endocrina, toxicidad reproductiva",
+    "why_avoid": "Potente compuesto similar al estrógeno de contaminación por moho"
+},
+"psoraleno": {
+    "name": "Psoraleno",
+    "severity": "medium",
+    "description": "Compuesto fototóxico natural encontrado en algunas plantas",
+    "health_effects": "Reacciones fototóxicas, sensibilidad cutánea a luz UV",
+    "why_avoid": "Puede causar reacciones cutáneas severas cuando se expone a la luz solar"
+},
+"pulegona": {
+    "name": "Pulegona",
+    "severity": "medium",
+    "description": "Compuesto natural encontrado en plantas de menta",
+    "health_effects": "Posible toxicidad hepática en altas dosis",
+    "why_avoid": "Puede causar daño hepático con consumo excesivo"
+},
+"pirrolizidina": {
+    "name": "Alcaloides Pirrolizidínicos",
+    "severity": "high",
+    "description": "Grupo de compuestos tóxicos encontrados en ciertas plantas",
+    "health_effects": "Daño hepático, potencial cancerígeno",
+    "why_avoid": "Altamente tóxico para el hígado incluso en pequeñas cantidades"
+},
+"quercetina": {
+    "name": "Quercetina",
+    "severity": "low",
+    "description": "Flavonoide vegetal natural con propiedades antioxidantes",
+    "health_effects": "Generalmente beneficiosa pero puede interactuar con algunos medicamentos",
+    "why_avoid": "Posibles interacciones medicamentosas en altas dosis"
+},
+"ractopamina": {
+    "name": "Ractopamina",
+    "severity": "high",
+    "description": "Promotor de crecimiento usado en producción ganadera",
+    "health_effects": "Posibles efectos cardiovasculares, prohibido en muchos países",
+    "why_avoid": "No aprobado para uso en alimentos humanos en muchos países"
+},
+"rbgh": {
+    "name": "rBGH (Hormona de Crecimiento Bovino Recombinante)",
+    "severity": "high",
+    "description": "Hormona de crecimiento sintética usada en vacas lecheras",
+    "health_effects": "Posible aumento de niveles de IGF-1, posible vínculo con cáncer",
+    "why_avoid": "Prohibido en muchos países debido a preocupaciones de salud"
+},
+"hormona de crecimiento bovino recombinante": {
+    "name": "Hormona de Crecimiento Bovino Recombinante",
+    "severity": "high",
+    "description": "Hormona genéticamente modificada para aumentar la producción de leche",
+    "health_effects": "Puede aumentar niveles de factores de crecimiento en la leche",
+    "why_avoid": "Controvertida debido a posibles impactos en la salud"
+},
+"rojo #2": {
+    "name": "Rojo #2 (Amaranto)",
+    "severity": "high",
+    "description": "Colorante alimentario rojo sintético",
+    "health_effects": "Prohibido en EE.UU. por preocupaciones de cáncer",
+    "why_avoid": "Demostrado causar cáncer en estudios con animales"
+},
+"rojo 2": {
+    "name": "Rojo 2",
+    "severity": "high",
+    "description": "Colorante alimentario rojo sintético (Amaranto)",
+    "health_effects": "Posible carcinógeno",
+    "why_avoid": "Prohibido en muchos países por preocupaciones de seguridad"
+},
+"retrorsina d": {
+    "name": "Retrorsina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de plantas de hierba cana",
+    "health_effects": "Toxicidad hepática severa, cancerígeno",
+    "why_avoid": "Compuesto vegetal altamente tóxico que causa daño hepático"
+},
+"aceite de salvado de arroz": {
+    "name": "Aceite de Salvado de Arroz",
+    "severity": "medium",
+    "description": "Aceite extraído del salvado de arroz",
+    "health_effects": "Puede contener trazas de arsénico del arroz",
+    "why_avoid": "Posible contaminación con metales pesados"
+},
+"ridelina": {
+    "name": "Ridelina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de plantas Senecio",
+    "health_effects": "Toxicidad hepática, cancerígeno",
+    "why_avoid": "Potente toxina hepática y carcinógeno"
+},
+"sacarina": {
+    "name": "Sacarina",
+    "severity": "medium",
+    "description": "Edulcorante artificial",
+    "health_effects": "Posible carcinógeno en altas dosis, sabor amargo",
+    "why_avoid": "Edulcorante artificial antiguo con preocupaciones de seguridad"
+},
+"cártamo": {
+    "name": "Cártamo",
+    "severity": "medium",
+    "description": "Fuente vegetal del aceite de cártamo",
+    "health_effects": "Alto contenido de omega-6 puede promover inflamación",
+    "why_avoid": "La forma altamente procesada puede ser inflamatoria"
+},
+"senkirquina d": {
+    "name": "Senkirquina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de la consuelda",
+    "health_effects": "Toxicidad hepática, cancerígeno",
+    "why_avoid": "Potente toxina hepática encontrada en algunas hierbas"
+},
+"aceite de sésamo": {
+    "name": "Aceite de Sésamo",
+    "severity": "medium",
+    "description": "Aceite extraído de semillas de sésamo",
+    "health_effects": "Alto contenido de omega-6, alérgeno potencial",
+    "why_avoid": "Puede ser inflamatorio en grandes cantidades"
+},
+"bisulfato de sodio": {
+    "name": "Bisulfato de Sodio",
+    "severity": "medium",
+    "description": "Acidulante y conservante",
+    "health_effects": "Puede causar irritación digestiva",
+    "why_avoid": "Ácido fuerte que puede irritar el tracto digestivo"
+},
+"carboximetilcelulosa de sodio": {
+    "name": "Carboximetilcelulosa de Sodio",
+    "severity": "medium",
+    "description": "Agente espesante sintético",
+    "health_effects": "Puede alterar la microbiota intestinal",
+    "why_avoid": "Aditivo artificial que puede afectar la salud intestinal"
+},
+"nitratos de sodio": {
+    "name": "Nitratos de Sodio",
+    "severity": "high",
+    "description": "Conservantes usados en carnes procesadas",
+    "health_effects": "Puede formar nitrosaminas cancerígenas",
+    "why_avoid": "Vinculado a mayor riesgo de cáncer"
+},
+"nitritos de sodio": {
+    "name": "Nitritos de Sodio",
+    "severity": "high",
+    "description": "Conservantes de carne que mantienen el color rosado",
+    "health_effects": "Forma nitrosaminas cancerígenas en el cuerpo",
+    "why_avoid": "Conocido por formar compuestos causantes de cáncer"
+},
+"sacarina sódica d": {
+    "name": "Sacarina Sódica",
+    "severity": "medium",
+    "description": "Forma salina del edulcorante artificial sacarina",
+    "health_effects": "Posible carcinógeno en altas dosis",
+    "why_avoid": "Edulcorante artificial con preocupaciones de seguridad"
+},
+"estireno": {
+    "name": "Estireno",
+    "severity": "high",
+    "description": "Químico que puede migrar de envases de poliestireno",
+    "health_effects": "Posible carcinógeno humano, efectos neurológicos",
+    "why_avoid": "Puede filtrarse de contenedores plásticos a los alimentos"
+},
+"sugartwin": {
+    "name": "SugarTwin (Sacarina)",
+    "severity": "medium",
+    "description": "Nombre comercial del edulcorante artificial sacarina",
+    "health_effects": "Posible carcinógeno, sabor amargo",
+    "why_avoid": "Edulcorante artificial con preocupaciones de seguridad"
+},
+"girasol": {
+    "name": "Girasol",
+    "severity": "medium",
+    "description": "Fuente de aceite de girasol",
+    "health_effects": "Alto contenido de omega-6 puede promover inflamación",
+    "why_avoid": "La forma altamente procesada puede ser inflamatoria"
+},
+"simfitina d": {
+    "name": "Simfitina",
+    "severity": "high",
+    "description": "Alcaloide pirrolizidínico de la consuelda",
+    "health_effects": "Toxicidad hepática, cancerígeno",
+    "why_avoid": "Potente toxina hepática encontrada en la consuelda"
+},
+"tcdd": {
+    "name": "TCDD (2,3,7,8-Tetraclorodibenzo-p-dioxina)",
+    "severity": "high",
+    "description": "Compuesto de dioxina más tóxico",
+    "health_effects": "Extremadamente tóxico, cancerígeno, disruptor endocrino",
+    "why_avoid": "Uno de los químicos más tóxicos conocidos"
+},
+"ter-butilhidroquinona": {
+    "name": "Ter-Butilhidroquinona (TBHQ)",
+    "severity": "high",
+    "description": "Conservante antioxidante sintético",
+    "health_effects": "Posible carcinógeno, efectos hepáticos",
+    "why_avoid": "Conservante derivado del petróleo con preocupaciones de seguridad"
+},
+"trans,trans-2,4-hexadienal": {
+    "name": "trans,trans-2,4-Hexadienal",
+    "severity": "medium",
+    "description": "Aldehído formado durante la oxidación de lípidos",
+    "health_effects": "Posible toxicidad en altos niveles",
+    "why_avoid": "Indica rancidez en aceites y grasas"
+},
+"tricloroetileno": {
+    "name": "Tricloroetileno",
+    "severity": "high",
+    "description": "Solvente industrial que puede contaminar alimentos",
+    "health_effects": "Cancerígeno, efectos neurológicos",
+    "why_avoid": "Químico industrial con graves riesgos para la salud"
+},
+"uretano": {
+    "name": "Uretano",
+    "severity": "high",
+    "description": "Químico que puede formarse durante la fermentación",
+    "health_effects": "Cancerígeno, posible daño orgánico",
+    "why_avoid": "Se forma naturalmente en algunos alimentos fermentados"
+},
+"vanillina": {
+    "name": "Vanillina",
+    "severity": "low",
+    "description": "Componente principal del extracto de vainilla",
+    "health_effects": "Generalmente segura pero las formas sintéticas pueden contener impurezas",
+    "why_avoid": "Las versiones artificiales pueden contener químicos no deseados"
+},
+"extracto de levadura": {
+    "name": "Extracto de Levadura",
+    "severity": "medium",
+    "description": "Potenciador de sabor que contiene glutamatos naturales",
+    "health_effects": "Puede causar reacciones en personas sensibles al MSG",
+    "why_avoid": "Contiene glutamatos libres similares al MSG"
+},
+"zearalenona d": {
+    "name": "Zearalenona",
+    "severity": "high",
+    "description": "Micotoxina con efectos estrogénicos",
+    "health_effects": "Disrupción endocrina, efectos reproductivos",
+    "why_avoid": "Potente compuesto similar al estrógeno proveniente de moho"
+},
+"α,β-aldehídos": {
+    "name": "α,β-Aldehídos",
+    "severity": "medium",
+    "description": "Productos de oxidación de ácidos grasos insaturados",
+    "health_effects": "Posible toxicidad en altos niveles",
+    "why_avoid": "Indicadores de rancidez y daño oxidativo"
+},
+"β-mirceno": {
+    "name": "β-Mirceno",
+    "severity": "low",
+    "description": "Terpeno natural encontrado en plantas",
+    "health_effects": "Generalmente seguro pero puede tener efectos sedantes",
+    "why_avoid": "Posibles interacciones medicamentosas en altas dosis"
+}
+}
+}

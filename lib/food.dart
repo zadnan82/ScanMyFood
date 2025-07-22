@@ -1,11 +1,12 @@
+// lib/food.dart - Complete Updated Version
 import 'dart:io';
 import 'dart:convert';
-import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scanmyfood/dbHelper/shared_prefs.dart';
+import 'package:scanmyfood/ProCameraScreen.dart';
+import 'services/language_service.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({Key? key}) : super(key: key);
@@ -21,12 +22,16 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
   late Animation<double> _pulseAnimation;
   late Animation<Offset> _slideAnimation;
 
+  final LanguageService _languageService = LanguageService.instance;
+
   @override
   void initState() {
     super.initState();
-    _loadSelectedLanguage();
-    _loadIngredientsFromJSON();
+    _initializeAnimations();
+    _initializeLanguageService();
+  }
 
+  void _initializeAnimations() {
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -65,6 +70,13 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
     _pulseController.repeat(reverse: true);
   }
 
+  Future<void> _initializeLanguageService() async {
+    await _languageService.initialize();
+    if (mounted) {
+      setState(() {}); // Refresh UI with loaded translations
+    }
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -72,12 +84,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  String resultEn = "No harmful ingredients detected!";
-  String resultSe = "Inga skadliga ingredienser hittades!";
-  String resultES = "¡No se detectaron ingredientes dañinos!";
-  String result = "";
-  bool starting = false;
-
+  // Scanning variables
   XFile? imageFile;
   int counter = 0;
   bool textScanning = false;
@@ -85,70 +92,27 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
   bool showExplanations = false;
   String message = "";
   List<String> words = [];
-  Map<String, dynamic> ingredientsData = {};
-  List<String> harmfulIngredients = [];
   String dangerousItemsDetected = "";
   Map<String, Map<String, dynamic>> detectedItems = {};
-
-  String textEn =
-      "Scan ingredient labels to detect harmful additives using our comprehensive database!";
-  String textSe =
-      "Skanna ingrediensetiketter för att upptäcka skadliga tillsatser med vår omfattande databas!";
-  String textEs =
-      "¡Escanea etiquetas de ingredientes para detectar aditivos dañinos usando nuestra base de datos integral!";
-  String warning1 = "";
-  String warning2 = "";
-  String ourList = "";
-  String textExplain = "";
-
-  // Load ingredients from JSON file
-  Future<void> _loadIngredientsFromJSON() async {
-    try {
-      String jsonString =
-          await rootBundle.loadString('assets/ingredients.json');
-      Map<String, dynamic> jsonData = json.decode(jsonString);
-
-      setState(() {
-        ingredientsData = jsonData['ingredients'];
-        harmfulIngredients = ingredientsData.keys.toList();
-      });
-    } catch (e) {
-      print('Error loading ingredients JSON: $e');
-      setState(() {
-        ingredientsData = {};
-        harmfulIngredients = [];
-      });
-    }
-  }
-
-  void _loadSelectedLanguage() async {
-    String warning1En = "Harmful ingredients found: ";
-    String warning1Se = "Skadliga ingredienser hittade: ";
-    String warning1Es = "Ingredientes dañinos encontrados: ";
-    String ourListEn = "Comprehensive Ingredient Database";
-    String ourListSe = "Omfattande Ingrediensdatabas";
-    String ourListEs = "Base de Datos Integral de Ingredientes";
-
-    if (SharedPrefs().mylanguage == 'English') {
-      warning1 = warning1En;
-      ourList = ourListEn;
-      textExplain = textEn;
-      result = resultEn;
-    } else if (SharedPrefs().mylanguage == 'Swedish') {
-      warning1 = warning1Se;
-      ourList = ourListSe;
-      textExplain = textSe;
-      result = resultSe;
-    } else if (SharedPrefs().mylanguage == 'Spanish') {
-      warning1 = warning1Es;
-      ourList = ourListEs;
-      textExplain = textEs;
-      result = resultES;
-    }
-  }
+  bool starting = false;
 
   String _fixCommonOCRMistakes(String text) {
     String fixed = text.toLowerCase();
+
+    // Add language-specific character fixes
+    switch (_languageService.currentLanguageCode) {
+      case 'sv':
+        fixed = fixed
+            .replaceAll('ä', 'a')
+            .replaceAll('ö', 'o')
+            .replaceAll('å', 'a');
+        break;
+      case 'es':
+        fixed = fixed.replaceAll('ñ', 'n').replaceAll('ü', 'u');
+        break;
+    }
+
+    // Common fixes for all languages
     fixed = fixed
         .replaceAll('š', 's')
         .replaceAll('ó', 'o')
@@ -158,6 +122,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
         .replaceAll('ù', 'u')
         .replaceAll('arficialflavor', 'artificial flavor')
         .replaceAll('artifical', 'artificial');
+
     return fixed;
   }
 
@@ -191,10 +156,16 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
       String fixedText = _fixCommonOCRMistakes(totalText);
       String cleanedText = fixedText.replaceAll(RegExp(r'[^\w\s]'), ' ');
 
-      // Enhanced ingredient detection logic (keeping your existing logic)
+      // Use language service to get current ingredients
+      final currentIngredients = _languageService.ingredients;
+      final harmfulIngredients = _languageService.harmfulIngredientKeys;
+
+      // Enhanced ingredient detection logic
       for (String ingredientKey in harmfulIngredients) {
-        String ingredientName =
-            ingredientsData[ingredientKey]['name'] ?? ingredientKey;
+        final ingredientData = currentIngredients[ingredientKey];
+        if (ingredientData == null) continue;
+
+        String ingredientName = ingredientData['name'] ?? ingredientKey;
         bool found = false;
         String lowerKey = ingredientKey.toLowerCase();
 
@@ -255,18 +226,23 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
         if (found && !detectedItems.containsKey(ingredientKey)) {
           warning = true;
           counter++;
-          detectedItems[ingredientKey] = ingredientsData[ingredientKey];
+          detectedItems[ingredientKey] =
+              Map<String, dynamic>.from(ingredientData);
           dangerousItemsDetected += " • $ingredientName\n";
         }
       }
 
       starting = true;
     } catch (e) {
-      message = "Error occurred while scanning: $e";
+      message = _languageService.translate(
+          "errors.scanningError", "Error occurred while scanning");
+      debugPrint('Scanning error: $e');
     } finally {
-      setState(() {
-        textScanning = false;
-      });
+      if (mounted) {
+        setState(() {
+          textScanning = false;
+        });
+      }
     }
   }
 
@@ -284,8 +260,10 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
       setState(() {
         textScanning = false;
         imageFile = null;
-        message = "Error occurred while scanning";
+        message = _languageService.translate(
+            "errors.imagePickerError", "Error occurred while selecting image");
       });
+      debugPrint('Image picker error: $e');
     }
   }
 
@@ -362,7 +340,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            '${details['severity']?.toString().toUpperCase() ?? 'MEDIUM'} RISK',
+                            _languageService.translate(
+                                'ingredientDetails.${details['severity'] ?? 'medium'}Risk',
+                                '${details['severity'] ?? 'MEDIUM'} RISK'),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -386,16 +366,24 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                   children: [
                     if (details['description'] != null) ...[
                       _buildDetailSection(
-                          'Description', details['description']),
+                          _languageService.translate(
+                              'ingredientDetails.description', 'Description'),
+                          details['description']),
                       const SizedBox(height: 24),
                     ],
                     if (details['health_effects'] != null) ...[
                       _buildDetailSection(
-                          'Health Effects', details['health_effects']),
+                          _languageService.translate(
+                              'ingredientDetails.healthEffects',
+                              'Health Effects'),
+                          details['health_effects']),
                       const SizedBox(height: 24),
                     ],
                     if (details['why_avoid'] != null) ...[
-                      _buildDetailSection('Why Avoid', details['why_avoid']),
+                      _buildDetailSection(
+                          _languageService.translate(
+                              'ingredientDetails.whyAvoid', 'Why Avoid'),
+                          details['why_avoid']),
                       const SizedBox(height: 24),
                     ],
                   ],
@@ -417,9 +405,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
-                    'Close',
-                    style: TextStyle(
+                  child: Text(
+                    _languageService.translate('common.close', 'Close'),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -537,7 +525,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Ingredient Scanner',
+                              _languageService.translate(
+                                  'scanner.title', 'Ingredient Scanner'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isTablet ? 32 : 26,
@@ -546,7 +535,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Detect harmful additives instantly',
+                              _languageService.translate('scanner.subtitle',
+                                  'Detect harmful additives instantly'),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontSize: isTablet ? 18 : 16,
@@ -604,7 +594,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  ourList,
+                                  _languageService.translate(
+                                      'scanner.comprehensiveDatabase',
+                                      'Comprehensive Ingredient Database'),
                                   style: TextStyle(
                                     fontSize: isTablet ? 18 : 16,
                                     fontWeight: FontWeight.bold,
@@ -613,7 +605,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Advanced ingredient detection system',
+                                  _languageService.translate(
+                                      'scanner.advancedDetection',
+                                      'Advanced ingredient detection system'),
                                   style: TextStyle(
                                     fontSize: isTablet ? 14 : 12,
                                     color: const Color(0xFF10B981),
@@ -657,7 +651,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Show detailed explanations',
+                              _languageService.translate(
+                                  'scanner.showDetailedExplanations',
+                                  'Show detailed explanations'),
                               style: TextStyle(
                                 fontSize: isTablet ? 16 : 14,
                                 fontWeight: FontWeight.w600,
@@ -725,7 +721,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            'Analyzing ingredients...',
+                            _languageService.translate('scanner.analyzing',
+                                'Analyzing ingredients...'),
                             style: TextStyle(
                               fontSize: isTablet ? 20 : 18,
                               fontWeight: FontWeight.bold,
@@ -734,7 +731,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Please wait while we scan your image',
+                            _languageService.translate('scanner.pleaseWait',
+                                'Please wait while we scan your image'),
                             style: TextStyle(
                               fontSize: isTablet ? 16 : 14,
                               color: const Color(0xFF64748B),
@@ -791,7 +789,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 24),
                           Text(
-                            'Ready to Scan',
+                            _languageService.translate(
+                                'scanner.readyToScan', 'Ready to Scan'),
                             style: TextStyle(
                               fontSize: isTablet ? 24 : 20,
                               fontWeight: FontWeight.bold,
@@ -800,7 +799,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            textExplain,
+                            _languageService.translate(
+                                'scanner.scanDescription',
+                                'Take a photo of any ingredient label to instantly detect harmful additives'),
                             style: TextStyle(
                               fontSize: isTablet ? 16 : 14,
                               color: const Color(0xFF64748B),
@@ -853,7 +854,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                         Expanded(
                           child: _buildCameraButton(
                             icon: Icons.photo_library,
-                            label: 'Gallery',
+                            label: _languageService.translate(
+                                'scanner.gallery', 'Gallery'),
                             onPressed: () => getImage(ImageSource.gallery),
                             isTablet: isTablet,
                           ),
@@ -862,7 +864,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                         Expanded(
                           child: _buildCameraButton(
                             icon: Icons.camera_alt,
-                            label: 'Camera',
+                            label: _languageService.translate(
+                                'scanner.camera', 'Camera'),
                             onPressed: () => getImage(ImageSource.camera),
                             isTablet: isTablet,
                             isPrimary: true,
@@ -921,7 +924,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Warning',
+                                      _languageService.translate(
+                                          'scanner.warning', 'Warning'),
                                       style: TextStyle(
                                         fontSize: isTablet ? 20 : 18,
                                         fontWeight: FontWeight.bold,
@@ -929,7 +933,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     Text(
-                                      '$counter harmful ingredients detected',
+                                      '$counter ${_languageService.translate('scanner.harmfulIngredientsFound', 'harmful ingredients detected')}',
                                       style: TextStyle(
                                         fontSize: isTablet ? 14 : 12,
                                         color: const Color(0xFF64748B),
@@ -1015,7 +1019,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                           if (showExplanations && detectedItems.isNotEmpty) ...[
                             const SizedBox(height: 12),
                             Text(
-                              'Tap ingredients for detailed information',
+                              _languageService.translate(
+                                  'scanner.tapForDetails',
+                                  'Tap ingredients for detailed information'),
                               style: TextStyle(
                                 fontSize: isTablet ? 14 : 12,
                                 color: const Color(0xFF64748B),
@@ -1068,7 +1074,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'All Clear!',
+                                  _languageService.translate(
+                                      'scanner.allClear', 'All Clear!'),
                                   style: TextStyle(
                                     fontSize: isTablet ? 20 : 18,
                                     fontWeight: FontWeight.bold,
@@ -1077,7 +1084,9 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  result,
+                                  _languageService.translate(
+                                      'scanner.noHarmfulIngredients',
+                                      'No harmful ingredients detected!'),
                                   style: TextStyle(
                                     fontSize: isTablet ? 16 : 14,
                                     color: const Color(0xFF64748B),

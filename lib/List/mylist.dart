@@ -1,30 +1,46 @@
+// lib/List/mylist.dart - Updated version
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scanmyfood/dbHelper/shared_prefs.dart';
+import 'package:scanmyfood/services/language_service.dart';
 
 class MyList extends StatefulWidget {
-  const MyList({super.key});
+  const MyList({Key? key}) : super(key: key);
 
   @override
-  MyListState createState() => MyListState();
+  State<MyList> createState() => _MyListState();
 }
 
-class MyListState extends State<MyList> with TickerProviderStateMixin {
+class _MyListState extends State<MyList> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late AnimationController _pulseController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _pulseAnimation;
   late Animation<Offset> _slideAnimation;
 
+  final LanguageService _languageService = LanguageService.instance;
+
+  XFile? imageFile;
+  bool textScanning = false;
+  bool warning = false;
+  bool hasScanned = false;
+  String message = "";
+  List<String> customIngredients = [];
+  List<String> detectedIngredients = [];
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
-    _loadSelectedLanguage();
+    _initializeAnimations();
+    _loadCustomList();
+  }
 
+  void _initializeAnimations() {
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
@@ -68,102 +84,113 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  XFile? imageFile;
-  int counter = 0;
-  bool textScanning = false;
-  bool warning = false;
-
-  String resultEn = "No items from your list detected!";
-  String resultSe = "Inga föremål från din lista upptäcktes!";
-  String resultES = "¡No se detectaron elementos de tu lista!";
-  String result = "";
-  bool starting = false;
-  String message = "";
-  List<String> words = [];
-  String dangerousItemsDetected = "";
-  String textEn =
-      "Use your personal blacklist to scan ingredient labels! If you haven't created one yet, go to the 'Create List' tab.";
-  String textSe =
-      "Använd din personliga svartlista för att skanna ingrediensetiketter! Om du inte har skapat en än, gå till fliken 'Skapa lista'.";
-  String textEs =
-      "¡Usa tu lista negra personal para escanear etiquetas de ingredientes! Si aún no has creado una, ve a la pestaña 'Crear Lista'.";
-
-  String warning1 = "";
-  String warning2 = "";
-  String yourList = "";
-  String textExplain = "";
-
-  void _loadSelectedLanguage() async {
-    String warning1En = "Items from your list found: ";
-    String warning1Se = "Objekt från din lista hittades: ";
-    String warning1Es = "Elementos de tu lista encontrados: ";
-    String yourListEn = "Your Personal List";
-    String yourListSe = "Din Personliga Lista";
-    String yourListEs = "Tu Lista Personal";
-
-    if (SharedPrefs().mylanguage == 'English') {
-      warning1 = warning1En;
-      yourList = yourListEn;
-      textExplain = textEn;
-      result = resultEn;
-    } else if (SharedPrefs().mylanguage == 'Swedish') {
-      warning1 = warning1Se;
-      yourList = yourListSe;
-      textExplain = textSe;
-      result = resultSe;
-    } else if (SharedPrefs().mylanguage == 'Spanish') {
-      warning1 = warning1Es;
-      yourList = yourListEs;
-      textExplain = textEs;
-      result = resultES;
+  Future<void> _loadCustomList() async {
+    setState(() => isLoading = true);
+    try {
+      final savedList = await SharedPrefs().getCustomIngredientsList();
+      setState(() {
+        customIngredients = savedList;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      debugPrint('Error loading custom list: $e');
     }
   }
 
-  void getRecognisedText(XFile image) async {
-    words = [];
-    dangerousItemsDetected = "";
-    counter = 0;
-    textScanning = false;
-    message = "";
+  String _fixCommonOCRMistakes(String text) {
+    String fixed = text.toLowerCase();
+
+    // Add language-specific character fixes
+    switch (_languageService.currentLanguageCode) {
+      case 'sv':
+        fixed = fixed
+            .replaceAll('ä', 'a')
+            .replaceAll('ö', 'o')
+            .replaceAll('å', 'a');
+        break;
+      case 'es':
+        fixed = fixed.replaceAll('ñ', 'n').replaceAll('ü', 'u');
+        break;
+    }
+
+    // Common fixes for all languages
+    fixed = fixed
+        .replaceAll('š', 's')
+        .replaceAll('ó', 'o')
+        .replaceAll('à', 'a')
+        .replaceAll('è', 'e')
+        .replaceAll('ì', 'i')
+        .replaceAll('ù', 'u');
+
+    return fixed;
+  }
+
+  Future<void> getRecognisedText(XFile image) async {
+    detectedIngredients = [];
     warning = false;
-    var totalText = "";
+    message = "";
+    String totalText = "";
 
-    final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = TextRecognizer();
-    final RecognizedText recognisedText =
-        await textDetector.processImage(inputImage);
-    await textDetector.close();
+    try {
+      final inputImage = InputImage.fromFilePath(image.path);
+      final textDetector = TextRecognizer();
+      final RecognizedText recognisedText =
+          await textDetector.processImage(inputImage);
+      await textDetector.close();
 
-    RegExp splitter = RegExp(r'[,\.\;\-/[\](){}<>!@#$%^&*+=|\~`/?\d]');
+      for (TextBlock block in recognisedText.blocks) {
+        for (TextLine line in block.lines) {
+          totalText = "$totalText ${line.text}";
+        }
+      }
 
-    for (TextBlock block in recognisedText.blocks) {
-      for (TextLine line in block.lines) {
-        String lineText = line.text;
-        totalText = totalText + " " + lineText;
+      String fixedText = _fixCommonOCRMistakes(totalText);
+      String cleanedText = fixedText.replaceAll(RegExp(r'[^\w\s]'), ' ');
+
+      // Check against custom ingredients list
+      for (String customIngredient in customIngredients) {
+        String lowerCustom = customIngredient.toLowerCase();
+
+        if (cleanedText.contains(lowerCustom)) {
+          bool found = false;
+
+          if (!lowerCustom.contains(' ') && !lowerCustom.contains('-')) {
+            List<String> cleanWords = cleanedText.split(RegExp(r'\s+'));
+            for (String word in cleanWords) {
+              String cleanWord = word.toLowerCase().trim();
+              cleanWord = cleanWord.replaceAll(RegExp(r'[^\w]'), '');
+              if (cleanWord == lowerCustom) {
+                found = true;
+                break;
+              }
+            }
+          } else {
+            found = true;
+          }
+
+          if (found && !detectedIngredients.contains(customIngredient)) {
+            warning = true;
+            detectedIngredients.add(customIngredient);
+          }
+        }
+      }
+
+      hasScanned = true;
+    } catch (e) {
+      message = _languageService.translate(
+          "errors.scanningError", "Error occurred while scanning");
+      debugPrint('Scanning error: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          textScanning = false;
+        });
       }
     }
-
-    words = totalText.split(splitter);
-
-    for (String word in words) {
-      String processedWord = word.toLowerCase().trim();
-      processedWord = processedWord.replaceAll(RegExp(r'\(\d+\%?\)'), '');
-      starting = true;
-
-      if (SharedPrefs().mylist.contains(processedWord)) {
-        warning = true;
-        counter++;
-        dangerousItemsDetected =
-            dangerousItemsDetected + " • " + processedWord + "\n";
-      }
-    }
-
-    totalText = "";
-    textScanning = false;
-    setState(() {});
   }
 
-  void getImage(ImageSource source) async {
+  Future<void> getImage(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage != null) {
@@ -171,14 +198,16 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
           textScanning = true;
           imageFile = pickedImage;
         });
-        getRecognisedText(pickedImage);
+        await getRecognisedText(pickedImage);
       }
     } catch (e) {
       setState(() {
         textScanning = false;
         imageFile = null;
-        message = "Error occurred while scanning";
+        message = _languageService.translate(
+            "errors.imagePickerError", "Error occurred while selecting image");
       });
+      debugPrint('Image picker error: $e');
     }
   }
 
@@ -202,18 +231,18 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                 SliverAppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  expandedHeight: isTablet ? 180 : 140,
+                  expandedHeight: isTablet ? 200 : 160,
                   floating: false,
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            const Color(0xFF6366F1),
-                            const Color(0xFF8B5CF6),
+                            Color(0xFF6366F1),
+                            Color(0xFF8B5CF6),
                           ],
                         ),
                       ),
@@ -223,14 +252,35 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(
-                              Icons.list_alt,
-                              color: Colors.white,
-                              size: isTablet ? 36 : 28,
+                            Row(
+                              children: [
+                                Container(
+                                  width: isTablet ? 40 : 32,
+                                  height: isTablet ? 40 : 32,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.asset(
+                                      'assets/app_logo.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Icon(
+                                  Icons.list_alt,
+                                  color: Colors.white,
+                                  size: isTablet ? 28 : 24,
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'My Personal List',
+                              _languageService.translate(
+                                  'myList.title', 'My Personal List'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isTablet ? 32 : 26,
@@ -239,7 +289,8 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Scan with your custom ingredient list',
+                              _languageService.translate('myList.subtitle',
+                                  'Scan with your custom ingredient list'),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontSize: isTablet ? 18 : 16,
@@ -252,319 +303,311 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                   ),
                 ),
 
-                // Personal List Display
+                // Personal List Info
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.all(isTablet ? 24 : 16),
                     child: Container(
                       padding: EdgeInsets.all(isTablet ? 24 : 20),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF10B981).withOpacity(0.1),
+                            const Color(0xFF059669).withOpacity(0.1),
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: const Color(0xFF6366F1).withOpacity(0.2),
+                          color: const Color(0xFF10B981).withOpacity(0.3),
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
                         ],
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color(0xFF6366F1).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  Icons.bookmark,
-                                  color: const Color(0xFF6366F1),
-                                  size: isTablet ? 24 : 20,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      yourList,
-                                      style: TextStyle(
-                                        fontSize: isTablet ? 20 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xFF0F172A),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${SharedPrefs().mylist.length} ingredients',
-                                      style: TextStyle(
-                                        fontSize: isTablet ? 14 : 12,
-                                        color: const Color(0xFF64748B),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF10B981).withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.bookmark,
+                              color: const Color(0xFF10B981),
+                              size: isTablet ? 28 : 24,
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          if (SharedPrefs().mylist.isNotEmpty &&
-                              SharedPrefs().mylist.first !=
-                                  "Your list is empty") ...[
-                            Container(
-                              constraints: BoxConstraints(
-                                maxHeight: screenHeight * 0.2,
-                              ),
-                              child: SingleChildScrollView(
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children:
-                                      SharedPrefs().mylist.map((ingredient) {
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 6,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF6366F1)
-                                            .withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                        border: Border.all(
-                                          color: const Color(0xFF6366F1)
-                                              .withOpacity(0.3),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        ingredient,
-                                        style: TextStyle(
-                                          fontSize: isTablet ? 14 : 12,
-                                          color: const Color(0xFF6366F1),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _languageService.translate(
+                                      'myList.personalList',
+                                      'Your Personal List'),
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 18 : 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF0F172A),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ] else ...[
-                            Container(
-                              padding: EdgeInsets.all(isTablet ? 24 : 16),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF1F5F9),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(0xFFE2E8F0),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${customIngredients.length} ${_languageService.translate('myList.ingredients', 'ingredients')}',
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 14 : 12,
+                                    color: const Color(0xFF10B981),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.playlist_add,
-                                    size: isTablet ? 48 : 40,
-                                    color: const Color(0xFF94A3B8),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'No custom list created yet',
-                                    style: TextStyle(
-                                      fontSize: isTablet ? 16 : 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xFF64748B),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Go to "Create List" to build your personal ingredient blacklist',
-                                    style: TextStyle(
-                                      fontSize: isTablet ? 14 : 12,
-                                      color: const Color(0xFF94A3B8),
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
 
-                // Instructions or Scanning Interface
-                if (textScanning) ...[
+                // Main Content
+                if (customIngredients.isEmpty) ...[
+                  // Empty State
                   SliverToBoxAdapter(
-                    child: Container(
-                      margin:
+                    child: Padding(
+                      padding:
                           EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 32 : 24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          ScaleTransition(
-                            scale: _pulseAnimation,
-                            child: Container(
-                              width: isTablet ? 80 : 60,
-                              height: isTablet ? 80 : 60,
+                      child: Container(
+                        padding: EdgeInsets.all(isTablet ? 40 : 32),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: isTablet ? 100 : 80,
+                              height: isTablet ? 100 : 80,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF6366F1),
-                                    const Color(0xFF8B5CF6),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(30),
+                                color: const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(50),
                               ),
                               child: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                                size: isTablet ? 40 : 30,
+                                Icons.list_alt,
+                                color: const Color(0xFF94A3B8),
+                                size: isTablet ? 50 : 40,
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Scanning for your ingredients...',
-                            style: TextStyle(
-                              fontSize: isTablet ? 20 : 18,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Checking against your personal list',
-                            style: TextStyle(
-                              fontSize: isTablet ? 16 : 14,
-                              color: const Color(0xFF64748B),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinearProgressIndicator(
-                            backgroundColor: const Color(0xFFE2E8F0),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              const Color(0xFF6366F1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else if (imageFile == null) ...[
-                  // Instructions
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 32 : 24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: isTablet ? 120 : 100,
-                            height: isTablet ? 120 : 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xFF6366F1).withOpacity(0.1),
-                                  const Color(0xFF8B5CF6).withOpacity(0.1),
-                                ],
+                            const SizedBox(height: 24),
+                            Text(
+                              _languageService.translate('myList.noCustomList',
+                                  'No custom list created yet'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 20 : 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF0F172A),
                               ),
-                              borderRadius: BorderRadius.circular(60),
                             ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: const Color(0xFF6366F1),
-                              size: isTablet ? 60 : 50,
+                            const SizedBox(height: 12),
+                            Text(
+                              _languageService.translate(
+                                  'myList.goToCreateList',
+                                  'Go to "Create List" to build your personal ingredient blacklist'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 16 : 14,
+                                color: const Color(0xFF64748B),
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            'Ready to Scan',
-                            style: TextStyle(
-                              fontSize: isTablet ? 24 : 20,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            textExplain,
-                            style: TextStyle(
-                              fontSize: isTablet ? 16 : 14,
-                              color: const Color(0xFF64748B),
-                              height: 1.5,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else ...[
-                  // Image Preview
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(
-                          File(imageFile!.path),
-                          height: isTablet ? 300 : 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
+                ] else ...[
+                  // Scanning Interface
+                  if (textScanning) ...[
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: isTablet ? 24 : 16),
+                        padding: EdgeInsets.all(isTablet ? 32 : 24),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            ScaleTransition(
+                              scale: _pulseAnimation,
+                              child: Container(
+                                width: isTablet ? 80 : 60,
+                                height: isTablet ? 80 : 60,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF6366F1),
+                                      Color(0xFF8B5CF6),
+                                    ],
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                ),
+                                child: Icon(
+                                  Icons.scanner,
+                                  color: Colors.white,
+                                  size: isTablet ? 40 : 30,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              _languageService.translate(
+                                  'myList.scanningForIngredients',
+                                  'Scanning for your ingredients...'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 20 : 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _languageService.translate(
+                                  'myList.checkingAgainstList',
+                                  'Checking against your personal list'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 16 : 14,
+                                color: const Color(0xFF64748B),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            const LinearProgressIndicator(
+                              backgroundColor: Color(0xFFE2E8F0),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Color(0xFF6366F1),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ] else if (imageFile == null) ...[
+                    // Welcome State
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: isTablet ? 24 : 16),
+                        padding: EdgeInsets.all(isTablet ? 32 : 24),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: isTablet ? 120 : 100,
+                              height: isTablet ? 120 : 100,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF6366F1).withOpacity(0.1),
+                                    const Color(0xFF8B5CF6).withOpacity(0.1),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(60),
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: const Color(0xFF6366F1),
+                                size: isTablet ? 60 : 50,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Text(
+                              _languageService.translate(
+                                  'scanner.readyToScan', 'Ready to Scan'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 24 : 20,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              _languageService.translate(
+                                  'myList.usePersonalBlacklist',
+                                  'Use your personal blacklist to scan ingredient labels! If you haven\'t created one yet, go to the \'Create List\' tab.'),
+                              style: TextStyle(
+                                fontSize: isTablet ? 16 : 14,
+                                color: const Color(0xFF64748B),
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    // Image Preview
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: isTablet ? 24 : 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.file(
+                            File(imageFile!.path),
+                            height: isTablet ? 300 : 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
 
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-                // Camera Controls
-                if (SharedPrefs().mylist.isNotEmpty &&
-                    SharedPrefs().mylist.first != "Your list is empty") ...[
+                  // Camera Controls
                   SliverToBoxAdapter(
                     child: Padding(
                       padding:
@@ -574,7 +617,8 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                           Expanded(
                             child: _buildCameraButton(
                               icon: Icons.photo_library,
-                              label: 'Gallery',
+                              label: _languageService.translate(
+                                  'scanner.gallery', 'Gallery'),
                               onPressed: () => getImage(ImageSource.gallery),
                               isTablet: isTablet,
                             ),
@@ -583,7 +627,8 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                           Expanded(
                             child: _buildCameraButton(
                               icon: Icons.camera_alt,
-                              label: 'Camera',
+                              label: _languageService.translate(
+                                  'scanner.camera', 'Camera'),
                               onPressed: () => getImage(ImageSource.camera),
                               isTablet: isTablet,
                               isPrimary: true,
@@ -593,46 +638,176 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                ],
 
-                // Results Section
-                if (warning) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFFEF4444).withOpacity(0.3),
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFEF4444).withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+                  // Results Section
+                  if (hasScanned) ...[
+                    if (warning) ...[
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: isTablet ? 24 : 16),
+                          padding: EdgeInsets.all(isTablet ? 24 : 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xFFEF4444).withOpacity(0.3),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFFEF4444).withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
                           ),
-                        ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFEF4444)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.warning,
+                                      color: const Color(0xFFEF4444),
+                                      size: isTablet ? 24 : 20,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _languageService.translate(
+                                              'myList.alert', 'Alert!'),
+                                          style: TextStyle(
+                                            fontSize: isTablet ? 20 : 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xFFEF4444),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${detectedIngredients.length} ${_languageService.translate('myList.ingredientsFromListDetected', 'ingredients from your list detected')}',
+                                          style: TextStyle(
+                                            fontSize: isTablet ? 14 : 12,
+                                            color: const Color(0xFF64748B),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                _languageService.translate(
+                                    'myList.itemsFromListFound',
+                                    'Items from your list found:'),
+                                style: TextStyle(
+                                  fontSize: isTablet ? 16 : 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF0F172A),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Container(
+                                constraints: BoxConstraints(
+                                  maxHeight: screenHeight * 0.3,
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children:
+                                        detectedIngredients.map((ingredient) {
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 8),
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFFEF2F2),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: const Color(0xFFEF4444)
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFFEF4444),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Text(
+                                                ingredient,
+                                                style: TextStyle(
+                                                  fontSize: isTablet ? 14 : 12,
+                                                  color:
+                                                      const Color(0xFF0F172A),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    ] else ...[
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: isTablet ? 24 : 16),
+                          padding: EdgeInsets.all(isTablet ? 24 : 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xFF10B981).withOpacity(0.3),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF10B981).withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Row(
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color:
-                                      const Color(0xFFEF4444).withOpacity(0.1),
+                                      const Color(0xFF10B981).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
-                                  Icons.warning,
-                                  color: const Color(0xFFEF4444),
+                                  Icons.check_circle,
+                                  color: const Color(0xFF10B981),
                                   size: isTablet ? 24 : 20,
                                 ),
                               ),
@@ -642,17 +817,21 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Alert!',
+                                      _languageService.translate(
+                                          'scanner.allClear', 'All Clear!'),
                                       style: TextStyle(
                                         fontSize: isTablet ? 20 : 18,
                                         fontWeight: FontWeight.bold,
-                                        color: const Color(0xFFEF4444),
+                                        color: const Color(0xFF10B981),
                                       ),
                                     ),
+                                    const SizedBox(height: 4),
                                     Text(
-                                      '$counter ingredients from your list detected',
+                                      _languageService.translate(
+                                          'myList.noItemsDetected',
+                                          'No items from your list detected!'),
                                       style: TextStyle(
-                                        fontSize: isTablet ? 14 : 12,
+                                        fontSize: isTablet ? 16 : 14,
                                         color: const Color(0xFF64748B),
                                       ),
                                     ),
@@ -661,107 +840,10 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(isTablet ? 16 : 12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFEF2F2),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: const Color(0xFFEF4444).withOpacity(0.2),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  warning1,
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 16 : 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFFEF4444),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  dangerousItemsDetected,
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 16 : 14,
-                                    color: const Color(0xFF0F172A),
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else if (starting && !warning) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFF10B981).withOpacity(0.3),
-                          width: 2,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF10B981).withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(
-                              Icons.check_circle,
-                              color: const Color(0xFF10B981),
-                              size: isTablet ? 24 : 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'All Clear!',
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 20 : 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF10B981),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  result,
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 16 : 14,
-                                    color: const Color(0xFF64748B),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                    ],
+                  ],
                 ],
 
                 // Error Message
@@ -821,10 +903,10 @@ class MyListState extends State<MyList> with TickerProviderStateMixin {
       height: isTablet ? 60 : 52,
       decoration: BoxDecoration(
         gradient: isPrimary
-            ? LinearGradient(
+            ? const LinearGradient(
                 colors: [
-                  const Color(0xFF6366F1),
-                  const Color(0xFF8B5CF6),
+                  Color(0xFF6366F1),
+                  Color(0xFF8B5CF6),
                 ],
               )
             : null,
