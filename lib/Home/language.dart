@@ -1,6 +1,6 @@
 // lib/Home/language.dart - Updated with proper navigation handling
 import 'package:flutter/material.dart';
-import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
+import 'package:circle_flags/circle_flags.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:scanmyfood/services/language_service.dart';
 

@@ -1,6 +1,6 @@
 // lib/Home/landingpage.dart - Updated version with Language Selector
+import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_circle_flags_svg/flutter_circle_flags_svg.dart';
 import 'package:scanmyfood/Home/LandingScannerPage.dart';
 import 'package:scanmyfood/Home/language.dart';
 import 'package:scanmyfood/Joining/signin.dart';
