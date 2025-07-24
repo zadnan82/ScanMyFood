@@ -1,10 +1,11 @@
-// lib/services/language_service.dart
+// lib/services/language_service.dart - Fixed version
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LanguageService {
+class LanguageService extends ChangeNotifier {
   static LanguageService? _instance;
   static LanguageService get instance => _instance ??= LanguageService._();
   LanguageService._();
@@ -12,6 +13,7 @@ class LanguageService {
   String _currentLanguage = 'English';
   Map<String, dynamic> _currentTranslations = {};
   Map<String, dynamic> _currentIngredients = {};
+  bool _isLoading = false;
 
   // Supported languages with their codes and ingredient file names
   static const Map<String, Map<String, String>> supportedLanguages = {
@@ -43,94 +45,155 @@ class LanguageService {
       supportedLanguages[_currentLanguage]?['flag'] ?? 'gb';
   Map<String, dynamic> get ingredients => _currentIngredients;
   List<String> get harmfulIngredientKeys => _currentIngredients.keys.toList();
+  bool get isLoading => _isLoading;
 
   // Initialize language service
   Future<void> initialize() async {
+    _isLoading = true;
+    notifyListeners();
+
     await _loadSavedLanguage();
     await _loadLanguageData();
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   // Load saved language from SharedPreferences
   Future<void> _loadSavedLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    _currentLanguage = prefs.getString('language') ?? 'English';
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _currentLanguage = prefs.getString('language') ?? 'English';
+      debugPrint('Loaded saved language: $_currentLanguage');
+    } catch (e) {
+      debugPrint('Error loading saved language: $e');
+      _currentLanguage = 'English';
+    }
   }
 
-  // Change language
+  // Change language with proper state management
   Future<void> changeLanguage(String language) async {
-    if (!supportedLanguages.containsKey(language)) return;
+    if (!supportedLanguages.containsKey(language) ||
+        _currentLanguage == language) {
+      return;
+    }
 
-    _currentLanguage = language;
+    _isLoading = true;
+    notifyListeners();
 
-    // Save to SharedPreferences
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+    try {
+      _currentLanguage = language;
 
-    // Load new language data
-    await _loadLanguageData();
+      // Save to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('language', language);
+      debugPrint('Language changed to: $language');
+
+      // Load new language data
+      await _loadLanguageData();
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error changing language: $e');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
   }
 
   // Load both ingredients and translations for current language
   Future<void> _loadLanguageData() async {
-    await Future.wait([
-      _loadIngredients(),
-      _loadTranslations(),
-    ]);
+    try {
+      await Future.wait([
+        _loadIngredients(),
+        _loadTranslations(),
+      ]);
+      debugPrint('Language data loaded successfully for $_currentLanguage');
+    } catch (e) {
+      debugPrint('Error loading language data: $e');
+      rethrow;
+    }
   }
 
-  // Load ingredients for current language
+  // Load ingredients for current language with better error handling
   Future<void> _loadIngredients() async {
     try {
       final ingredientsFile =
           supportedLanguages[_currentLanguage]?['ingredientsFile'];
-      if (ingredientsFile == null) return;
+      if (ingredientsFile == null) {
+        throw Exception('Ingredients file not found for $_currentLanguage');
+      }
 
+      debugPrint('Loading ingredients from: $ingredientsFile');
       final jsonString = await rootBundle.loadString(ingredientsFile);
       final jsonData = json.decode(jsonString);
-      _currentIngredients = jsonData['ingredients'] ?? {};
+
+      if (jsonData['ingredients'] == null) {
+        throw Exception('Invalid ingredients file format');
+      }
+
+      _currentIngredients = Map<String, dynamic>.from(jsonData['ingredients']);
+      debugPrint('Loaded ${_currentIngredients.length} ingredients');
     } catch (e) {
-      print('Error loading ingredients for $_currentLanguage: $e');
-      // Fallback to English
+      debugPrint('Error loading ingredients for $_currentLanguage: $e');
+
+      // Fallback to English if not already trying English
       if (_currentLanguage != 'English') {
         try {
+          debugPrint('Falling back to English ingredients...');
           final jsonString =
               await rootBundle.loadString('assets/ingredients_en.json');
           final jsonData = json.decode(jsonString);
-          _currentIngredients = jsonData['ingredients'] ?? {};
+          _currentIngredients =
+              Map<String, dynamic>.from(jsonData['ingredients'] ?? {});
+          debugPrint(
+              'Fallback: Loaded ${_currentIngredients.length} English ingredients');
         } catch (fallbackError) {
-          print('Error loading fallback ingredients: $fallbackError');
+          debugPrint('Error loading fallback ingredients: $fallbackError');
           _currentIngredients = {};
         }
+      } else {
+        _currentIngredients = {};
       }
     }
   }
 
-  // Load UI translations for current language
+  // Load UI translations for current language with better error handling
   Future<void> _loadTranslations() async {
     try {
       final translationsFile =
           supportedLanguages[_currentLanguage]?['translationsFile'];
-      if (translationsFile == null) return;
+      if (translationsFile == null) {
+        throw Exception('Translations file not found for $_currentLanguage');
+      }
 
+      debugPrint('Loading translations from: $translationsFile');
       final jsonString = await rootBundle.loadString(translationsFile);
       _currentTranslations = json.decode(jsonString);
+      debugPrint('Translations loaded successfully');
     } catch (e) {
-      print('Error loading translations for $_currentLanguage: $e');
-      // Fallback to English
+      debugPrint('Error loading translations for $_currentLanguage: $e');
+
+      // Fallback to English if not already trying English
       if (_currentLanguage != 'English') {
         try {
+          debugPrint('Falling back to English translations...');
           final jsonString =
               await rootBundle.loadString('assets/translations_en.json');
           _currentTranslations = json.decode(jsonString);
+          debugPrint('Fallback: English translations loaded');
         } catch (fallbackError) {
-          print('Error loading fallback translations: $fallbackError');
+          debugPrint('Error loading fallback translations: $fallbackError');
           _currentTranslations = {};
         }
+      } else {
+        _currentTranslations = {};
       }
     }
   }
 
-  // Get translated text
+  // Get translated text with better debugging
   String translate(String key, [String? fallback]) {
     final keys = key.split('.');
     dynamic current = _currentTranslations;
@@ -139,8 +202,9 @@ class LanguageService {
       if (current is Map<String, dynamic> && current.containsKey(k)) {
         current = current[k];
       } else {
-        return fallback ??
-            key; // Return fallback or key if translation not found
+        debugPrint(
+            'Translation not found for key: $key in language: $_currentLanguage');
+        return fallback ?? key;
       }
     }
 
@@ -187,9 +251,36 @@ class LanguageService {
     return ingredient?['severity'] ?? 'medium';
   }
 
-  // Reload current language data (useful for refreshing)
+  // Reload current language data
   Future<void> reload() async {
+    _isLoading = true;
+    notifyListeners();
+
     await _loadLanguageData();
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  // Dispose method for proper cleanup
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+
+// Provider widget for easy access
+class LanguageProvider extends StatelessWidget {
+  final Widget child;
+
+  const LanguageProvider({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<LanguageService>.value(
+      value: LanguageService.instance,
+      child: child,
+    );
   }
 }
 
@@ -198,4 +289,6 @@ extension BuildContextLanguageExtension on BuildContext {
   String tr(String key, [String? fallback]) {
     return LanguageService.instance.translate(key, fallback);
   }
+
+  LanguageService get languageService => LanguageService.instance;
 }

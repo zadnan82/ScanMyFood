@@ -1,11 +1,10 @@
-// lib/food.dart - Complete Updated Version
+// lib/food.dart - Simplified clean scanner page
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scanmyfood/ProCameraScreen.dart';
+import 'package:provider/provider.dart';
 import 'services/language_service.dart';
 
 class FoodPage extends StatefulWidget {
@@ -15,30 +14,20 @@ class FoodPage extends StatefulWidget {
   State<FoodPage> createState() => _FoodPageState();
 }
 
-class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
+class _FoodPageState extends State<FoodPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late AnimationController _pulseController;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _pulseAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  final LanguageService _languageService = LanguageService.instance;
 
   @override
   void initState() {
     super.initState();
     _initializeAnimations();
-    _initializeLanguageService();
   }
 
   void _initializeAnimations() {
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 
@@ -50,37 +39,12 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
       curve: Curves.easeOut,
     ));
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
-
-    _pulseAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.1,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
-
     _animationController.forward();
-    _pulseController.repeat(reverse: true);
-  }
-
-  Future<void> _initializeLanguageService() async {
-    await _languageService.initialize();
-    if (mounted) {
-      setState(() {}); // Refresh UI with loaded translations
-    }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
-    _pulseController.dispose();
     super.dispose();
   }
 
@@ -91,8 +55,6 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
   bool warning = false;
   bool showExplanations = false;
   String message = "";
-  List<String> words = [];
-  String dangerousItemsDetected = "";
   Map<String, Map<String, dynamic>> detectedItems = {};
   bool starting = false;
 
@@ -100,7 +62,8 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
     String fixed = text.toLowerCase();
 
     // Add language-specific character fixes
-    switch (_languageService.currentLanguageCode) {
+    final languageService = context.read<LanguageService>();
+    switch (languageService.currentLanguageCode) {
       case 'sv':
         fixed = fixed
             .replaceAll('ä', 'a')
@@ -127,14 +90,14 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
   }
 
   void getRecognisedText(XFile image) async {
-    words = [];
-    dangerousItemsDetected = "";
-    detectedItems = {};
-    counter = 0;
-    textScanning = false;
-    message = "";
-    warning = false;
-    var totalText = "";
+    setState(() {
+      detectedItems = {};
+      counter = 0;
+      textScanning = true;
+      message = "";
+      warning = false;
+      starting = false;
+    });
 
     try {
       final inputImage = InputImage.fromFilePath(image.path);
@@ -143,22 +106,20 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
           await textDetector.processImage(inputImage);
       await textDetector.close();
 
-      RegExp splitter = RegExp(r'[:,\.\;\-/[\](){}<>!@#$%^&*+=|\~`/?\d]');
-
+      String totalText = "";
       for (TextBlock block in recognisedText.blocks) {
         for (TextLine line in block.lines) {
-          String lineText = line.text;
-          totalText = totalText + " " + lineText;
+          totalText = "$totalText ${line.text}";
         }
       }
 
-      words = totalText.split(splitter);
       String fixedText = _fixCommonOCRMistakes(totalText);
       String cleanedText = fixedText.replaceAll(RegExp(r'[^\w\s]'), ' ');
 
       // Use language service to get current ingredients
-      final currentIngredients = _languageService.ingredients;
-      final harmfulIngredients = _languageService.harmfulIngredientKeys;
+      final languageService = context.read<LanguageService>();
+      final currentIngredients = languageService.ingredients;
+      final harmfulIngredients = languageService.harmfulIngredientKeys;
 
       // Enhanced ingredient detection logic
       for (String ingredientKey in harmfulIngredients) {
@@ -228,13 +189,13 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
           counter++;
           detectedItems[ingredientKey] =
               Map<String, dynamic>.from(ingredientData);
-          dangerousItemsDetected += " • $ingredientName\n";
         }
       }
 
       starting = true;
     } catch (e) {
-      message = _languageService.translate(
+      final languageService = context.read<LanguageService>();
+      message = languageService.translate(
           "errors.scanningError", "Error occurred while scanning");
       debugPrint('Scanning error: $e');
     } finally {
@@ -251,16 +212,15 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage != null) {
         setState(() {
-          textScanning = true;
           imageFile = pickedImage;
         });
         getRecognisedText(pickedImage);
       }
     } catch (e) {
+      final languageService = context.read<LanguageService>();
       setState(() {
-        textScanning = false;
         imageFile = null;
-        message = _languageService.translate(
+        message = languageService.translate(
             "errors.imagePickerError", "Error occurred while selecting image");
       });
       debugPrint('Image picker error: $e');
@@ -269,17 +229,19 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
 
   void _showIngredientDetails(
       String ingredientKey, Map<String, dynamic> details) {
+    final languageService = context.read<LanguageService>();
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.8,
+        height: MediaQuery.of(context).size.height * 0.7,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
         ),
         child: Column(
@@ -287,7 +249,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
             // Handle
             Container(
               margin: const EdgeInsets.only(top: 12),
-              width: 40,
+              width: 36,
               height: 4,
               decoration: BoxDecoration(
                 color: const Color(0xFFE2E8F0),
@@ -313,7 +275,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                       color: details['severity'] == 'high'
                           ? const Color(0xFFEF4444)
                           : const Color(0xFFF59E0B),
-                      size: 24,
+                      size: 20,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -324,7 +286,7 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                         Text(
                           details['name'] ?? ingredientKey,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF0F172A),
                           ),
@@ -340,12 +302,12 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            _languageService.translate(
+                            languageService.translate(
                                 'ingredientDetails.${details['severity'] ?? 'medium'}Risk',
                                 '${details['severity'] ?? 'MEDIUM'} RISK'),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -366,25 +328,25 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
                   children: [
                     if (details['description'] != null) ...[
                       _buildDetailSection(
-                          _languageService.translate(
+                          languageService.translate(
                               'ingredientDetails.description', 'Description'),
                           details['description']),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                     ],
                     if (details['health_effects'] != null) ...[
                       _buildDetailSection(
-                          _languageService.translate(
+                          languageService.translate(
                               'ingredientDetails.healthEffects',
                               'Health Effects'),
                           details['health_effects']),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                     ],
                     if (details['why_avoid'] != null) ...[
                       _buildDetailSection(
-                          _languageService.translate(
+                          languageService.translate(
                               'ingredientDetails.whyAvoid', 'Why Avoid'),
                           details['why_avoid']),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                     ],
                   ],
                 ),
@@ -396,23 +358,10 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(24),
               child: SizedBox(
                 width: double.infinity,
-                height: 52,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6366F1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    _languageService.translate('common.close', 'Close'),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child:
+                      Text(languageService.translate('common.close', 'Close')),
                 ),
               ),
             ),
@@ -429,25 +378,24 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Color(0xFF0F172A),
           ),
         ),
         const SizedBox(height: 8),
         Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: const Color(0xFFF8FAFC),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: const Color(0xFFE2E8F0),
-            ),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
           ),
           child: Text(
             content,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               color: Color(0xFF475569),
               height: 1.5,
             ),
@@ -461,756 +409,552 @@ class _FoodPageState extends State<FoodPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
-    final screenHeight = screenSize.height;
     final bool isTablet = screenWidth > 600;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Colors.white,
       body: FadeTransition(
         opacity: _fadeAnimation,
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                // Header
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  expandedHeight: isTablet ? 200 : 160,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            const Color(0xFF6366F1),
-                            const Color(0xFF8B5CF6),
-                          ],
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(isTablet ? 32 : 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: isTablet ? 40 : 32,
-                                  height: isTablet ? 40 : 32,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      'assets/app_logo.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Icon(
-                                  Icons.scanner,
-                                  color: Colors.white,
-                                  size: isTablet ? 28 : 24,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _languageService.translate(
-                                  'scanner.title', 'Ingredient Scanner'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: isTablet ? 32 : 26,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _languageService.translate('scanner.subtitle',
-                                  'Detect harmful additives instantly'),
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
-                                fontSize: isTablet ? 18 : 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Clean Header
+              Container(
+                padding: EdgeInsets.all(isTablet ? 24 : 20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xFFE2E8F0), width: 1),
                   ),
                 ),
-
-                // Database Info Card
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(isTablet ? 24 : 16),
-                    child: Container(
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
+                child: Row(
+                  children: [
+                    // Logo
+                    Container(
+                      width: isTablet ? 40 : 32,
+                      height: isTablet ? 40 : 32,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color(0xFF10B981).withOpacity(0.1),
-                            const Color(0xFF059669).withOpacity(0.1),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFF10B981).withOpacity(0.3),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              Icons.storage,
-                              color: const Color(0xFF10B981),
-                              size: isTablet ? 28 : 24,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _languageService.translate(
-                                      'scanner.comprehensiveDatabase',
-                                      'Comprehensive Ingredient Database'),
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 18 : 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF0F172A),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _languageService.translate(
-                                      'scanner.advancedDetection',
-                                      'Advanced ingredient detection system'),
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 14 : 12,
-                                    color: const Color(0xFF10B981),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                // Explanations Toggle
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                    child: Container(
-                      padding: EdgeInsets.all(isTablet ? 20 : 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.info_outline,
-                            color: const Color(0xFF6366F1),
-                            size: isTablet ? 24 : 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              _languageService.translate(
-                                  'scanner.showDetailedExplanations',
-                                  'Show detailed explanations'),
-                              style: TextStyle(
-                                fontSize: isTablet ? 16 : 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF0F172A),
-                              ),
-                            ),
-                          ),
-                          Switch(
-                            value: showExplanations,
-                            onChanged: (value) {
-                              setState(() {
-                                showExplanations = value;
-                              });
-                            },
-                            activeColor: const Color(0xFF6366F1),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-
-                // Scanning Interface
-                if (textScanning) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 32 : 24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          ScaleTransition(
-                            scale: _pulseAnimation,
-                            child: Container(
-                              width: isTablet ? 80 : 60,
-                              height: isTablet ? 80 : 60,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF6366F1),
-                                    const Color(0xFF8B5CF6),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Icon(
-                                Icons.scanner,
-                                color: Colors.white,
-                                size: isTablet ? 40 : 30,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            _languageService.translate('scanner.analyzing',
-                                'Analyzing ingredients...'),
-                            style: TextStyle(
-                              fontSize: isTablet ? 20 : 18,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _languageService.translate('scanner.pleaseWait',
-                                'Please wait while we scan your image'),
-                            style: TextStyle(
-                              fontSize: isTablet ? 16 : 14,
-                              color: const Color(0xFF64748B),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinearProgressIndicator(
-                            backgroundColor: const Color(0xFFE2E8F0),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              const Color(0xFF6366F1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else if (imageFile == null) ...[
-                  // Welcome Interface
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 32 : 24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: isTablet ? 120 : 100,
-                            height: isTablet ? 120 : 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xFF6366F1).withOpacity(0.1),
-                                  const Color(0xFF8B5CF6).withOpacity(0.1),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(60),
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: const Color(0xFF6366F1),
-                              size: isTablet ? 60 : 50,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            _languageService.translate(
-                                'scanner.readyToScan', 'Ready to Scan'),
-                            style: TextStyle(
-                              fontSize: isTablet ? 24 : 20,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _languageService.translate(
-                                'scanner.scanDescription',
-                                'Take a photo of any ingredient label to instantly detect harmful additives'),
-                            style: TextStyle(
-                              fontSize: isTablet ? 16 : 14,
-                              color: const Color(0xFF64748B),
-                              height: 1.5,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else ...[
-                  // Image Preview
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(
-                          File(imageFile!.path),
-                          height: isTablet ? 300 : 200,
-                          width: double.infinity,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          'assets/app_logo.png',
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  ),
-                ],
-
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-
-                // Camera Controls
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: _buildCameraButton(
-                            icon: Icons.photo_library,
-                            label: _languageService.translate(
-                                'scanner.gallery', 'Gallery'),
-                            onPressed: () => getImage(ImageSource.gallery),
-                            isTablet: isTablet,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildCameraButton(
-                            icon: Icons.camera_alt,
-                            label: _languageService.translate(
-                                'scanner.camera', 'Camera'),
-                            onPressed: () => getImage(ImageSource.camera),
-                            isTablet: isTablet,
-                            isPrimary: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-
-                // Results Section
-                if (warning) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFFEF4444).withOpacity(0.3),
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFEF4444).withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(width: 12),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color(0xFFEF4444).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
+                          Consumer<LanguageService>(
+                            builder: (context, languageService, child) {
+                              return Text(
+                                languageService.translate(
+                                    'scanner.title', 'Ingredient Scanner'),
+                                style: TextStyle(
+                                  color: const Color(0xFF0F172A),
+                                  fontSize: isTablet ? 20 : 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: Icon(
-                                  Icons.warning,
-                                  color: const Color(0xFFEF4444),
-                                  size: isTablet ? 24 : 20,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _languageService.translate(
-                                          'scanner.warning', 'Warning'),
-                                      style: TextStyle(
-                                        fontSize: isTablet ? 20 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xFFEF4444),
-                                      ),
-                                    ),
-                                    Text(
-                                      '$counter ${_languageService.translate('scanner.harmfulIngredientsFound', 'harmful ingredients detected')}',
-                                      style: TextStyle(
-                                        fontSize: isTablet ? 14 : 12,
-                                        color: const Color(0xFF64748B),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                          const SizedBox(height: 20),
-                          Container(
-                            constraints: BoxConstraints(
-                              maxHeight: screenHeight * 0.4,
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: detectedItems.entries.map((entry) {
-                                  String ingredientKey = entry.key;
-                                  Map<String, dynamic> details = entry.value;
-                                  String displayName =
-                                      details['name'] ?? ingredientKey;
-
-                                  return Container(
-                                    margin: const EdgeInsets.only(bottom: 12),
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFFEF2F2),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: const Color(0xFFEF4444)
-                                            .withOpacity(0.2),
-                                      ),
-                                    ),
-                                    child: InkWell(
-                                      onTap: showExplanations
-                                          ? () => _showIngredientDetails(
-                                              ingredientKey, details)
-                                          : null,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 8,
-                                            height: 8,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  details['severity'] == 'high'
-                                                      ? const Color(0xFFEF4444)
-                                                      : const Color(0xFFF59E0B),
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Expanded(
-                                            child: Text(
-                                              displayName,
-                                              style: TextStyle(
-                                                fontSize: isTablet ? 16 : 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF0F172A),
-                                                decoration: showExplanations
-                                                    ? TextDecoration.underline
-                                                    : TextDecoration.none,
-                                              ),
-                                            ),
-                                          ),
-                                          if (showExplanations) ...[
-                                            const SizedBox(width: 8),
-                                            Icon(
-                                              Icons.info_outline,
-                                              size: isTablet ? 20 : 16,
-                                              color: const Color(0xFF6366F1),
-                                            ),
-                                          ],
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                          if (showExplanations && detectedItems.isNotEmpty) ...[
-                            const SizedBox(height: 12),
-                            Text(
-                              _languageService.translate(
-                                  'scanner.tapForDetails',
-                                  'Tap ingredients for detailed information'),
-                              style: TextStyle(
-                                fontSize: isTablet ? 14 : 12,
-                                color: const Color(0xFF64748B),
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ] else if (starting && !warning) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 24 : 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFF10B981).withOpacity(0.3),
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF10B981).withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(
-                              Icons.check_circle,
-                              color: const Color(0xFF10B981),
-                              size: isTablet ? 24 : 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _languageService.translate(
-                                      'scanner.allClear', 'All Clear!'),
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 20 : 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF10B981),
-                                  ),
+                          Consumer<LanguageService>(
+                            builder: (context, languageService, child) {
+                              return Text(
+                                languageService.translate('scanner.subtitle',
+                                    'Detect harmful additives instantly'),
+                                style: TextStyle(
+                                  color: const Color(0xFF64748B),
+                                  fontSize: isTablet ? 14 : 12,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _languageService.translate(
-                                      'scanner.noHarmfulIngredients',
-                                      'No harmful ingredients detected!'),
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 16 : 14,
-                                    color: const Color(0xFF64748B),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              );
+                            },
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-
-                // Error Message
-                if (message.isNotEmpty) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: isTablet ? 24 : 16),
-                      padding: EdgeInsets.all(isTablet ? 20 : 16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFEF2F2),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFFEF4444).withOpacity(0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.error_outline,
-                            color: const Color(0xFFEF4444),
-                            size: isTablet ? 24 : 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              message,
-                              style: TextStyle(
-                                fontSize: isTablet ? 16 : 14,
-                                color: const Color(0xFFEF4444),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    // Show detailed explanations toggle
+                    Consumer<LanguageService>(
+                      builder: (context, languageService, child) {
+                        return Switch(
+                          value: showExplanations,
+                          onChanged: (value) {
+                            setState(() {
+                              showExplanations = value;
+                            });
+                          },
+                          activeColor: const Color(0xFF2563EB),
+                        );
+                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
 
-                const SliverToBoxAdapter(child: SizedBox(height: 100)),
-              ],
-            ),
+              // Main Content
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(isTablet ? 24 : 20),
+                  child: Column(
+                    children: [
+                      // Scanning Interface
+                      if (textScanning) ...[
+                        _buildScanningInterface(isTablet),
+                      ] else if (imageFile == null) ...[
+                        _buildWelcomeInterface(isTablet),
+                      ] else ...[
+                        _buildImagePreview(isTablet),
+                      ],
+
+                      const SizedBox(height: 24),
+
+                      // Camera Controls
+                      _buildCameraControls(isTablet),
+
+                      const SizedBox(height: 24),
+
+                      // Results
+                      if (warning) ...[
+                        _buildWarningResults(isTablet),
+                      ] else if (starting && !warning) ...[
+                        _buildAllClearResults(isTablet),
+                      ],
+
+                      // Error Message
+                      if (message.isNotEmpty) ...[
+                        _buildErrorMessage(isTablet),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCameraButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-    required bool isTablet,
-    bool isPrimary = false,
-  }) {
-    return Container(
-      height: isTablet ? 60 : 52,
-      decoration: BoxDecoration(
-        gradient: isPrimary
-            ? LinearGradient(
-                colors: [
-                  const Color(0xFF6366F1),
-                  const Color(0xFF8B5CF6),
-                ],
-              )
-            : null,
-        color: isPrimary ? null : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: isPrimary
-            ? null
-            : Border.all(
-                color: const Color(0xFF6366F1),
-                width: 2,
-              ),
-        boxShadow: [
-          BoxShadow(
-            color: isPrimary
-                ? const Color(0xFF6366F1).withOpacity(0.3)
-                : Colors.black.withOpacity(0.05),
-            blurRadius: isPrimary ? 15 : 10,
-            offset: Offset(0, isPrimary ? 8 : 2),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
+  Widget _buildScanningInterface(bool isTablet) {
+    return Consumer<LanguageService>(
+      builder: (context, languageService, child) {
+        return Container(
+          padding: EdgeInsets.all(isTablet ? 40 : 32),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF8FAFC),
             borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
           ),
+          child: Column(
+            children: [
+              Container(
+                width: isTablet ? 60 : 50,
+                height: isTablet ? 60 : 50,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2563EB),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: const Icon(
+                  Icons.scanner,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                languageService.translate(
+                    'scanner.analyzing', 'Analyzing ingredients...'),
+                style: TextStyle(
+                  fontSize: isTablet ? 18 : 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF0F172A),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                languageService.translate('scanner.pleaseWait',
+                    'Please wait while we scan your image'),
+                style: TextStyle(
+                  fontSize: isTablet ? 14 : 12,
+                  color: const Color(0xFF64748B),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              const LinearProgressIndicator(
+                backgroundColor: Color(0xFFE2E8F0),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2563EB)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildWelcomeInterface(bool isTablet) {
+    return Consumer<LanguageService>(
+      builder: (context, languageService, child) {
+        return Container(
+          padding: EdgeInsets.all(isTablet ? 40 : 32),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
+          ),
+          child: Column(
+            children: [
+              Container(
+                width: isTablet ? 80 : 70,
+                height: isTablet ? 80 : 70,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2563EB).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Icon(
+                  Icons.camera_alt,
+                  color: const Color(0xFF2563EB),
+                  size: isTablet ? 40 : 35,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                languageService.translate(
+                    'scanner.readyToScan', 'Ready to Scan'),
+                style: TextStyle(
+                  fontSize: isTablet ? 20 : 18,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0F172A),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                languageService.translate('scanner.scanDescription',
+                    'Take a photo of any ingredient label to instantly detect harmful additives'),
+                style: TextStyle(
+                  fontSize: isTablet ? 14 : 12,
+                  color: const Color(0xFF64748B),
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImagePreview(bool isTablet) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.file(
+          File(imageFile!.path),
+          height: isTablet ? 250 : 200,
+          width: double.infinity,
+          fit: BoxFit.cover,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    );
+  }
+
+  Widget _buildCameraControls(bool isTablet) {
+    return Consumer<LanguageService>(
+      builder: (context, languageService, child) {
+        return Row(
           children: [
-            Icon(
-              icon,
-              color: isPrimary ? Colors.white : const Color(0xFF6366F1),
-              size: isTablet ? 24 : 20,
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => getImage(ImageSource.gallery),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 14),
+                  side: const BorderSide(color: Color(0xFF2563EB)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.photo_library,
+                      color: Color(0xFF2563EB),
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      languageService.translate('scanner.gallery', 'Gallery'),
+                      style: const TextStyle(
+                        color: Color(0xFF2563EB),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isPrimary ? Colors.white : const Color(0xFF6366F1),
-                fontSize: isTablet ? 16 : 14,
-                fontWeight: FontWeight.bold,
+            const SizedBox(width: 16),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => getImage(ImageSource.camera),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 14),
+                  backgroundColor: const Color(0xFF2563EB),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      languageService.translate('scanner.camera', 'Camera'),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
-        ),
+        );
+      },
+    );
+  }
+
+  Widget _buildWarningResults(bool isTablet) {
+    return Consumer<LanguageService>(
+      builder: (context, languageService, child) {
+        return Container(
+          padding: EdgeInsets.all(isTablet ? 20 : 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+                color: const Color(0xFFEF4444).withOpacity(0.3), width: 2),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEF4444).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.warning,
+                      color: Color(0xFFEF4444),
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          languageService.translate(
+                              'scanner.warning', 'Warning'),
+                          style: TextStyle(
+                            fontSize: isTablet ? 18 : 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFFEF4444),
+                          ),
+                        ),
+                        Text(
+                          '$counter ${languageService.translate('scanner.harmfulIngredientsFound', 'harmful ingredients detected')}',
+                          style: TextStyle(
+                            fontSize: isTablet ? 12 : 11,
+                            color: const Color(0xFF64748B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ...detectedItems.entries.map((entry) {
+                String ingredientKey = entry.key;
+                Map<String, dynamic> details = entry.value;
+                String displayName = details['name'] ?? ingredientKey;
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF2F2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                        color: const Color(0xFFEF4444).withOpacity(0.2)),
+                  ),
+                  child: InkWell(
+                    onTap: showExplanations
+                        ? () => _showIngredientDetails(ingredientKey, details)
+                        : null,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: details['severity'] == 'high'
+                                ? const Color(0xFFEF4444)
+                                : const Color(0xFFF59E0B),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            displayName,
+                            style: TextStyle(
+                              fontSize: isTablet ? 14 : 13,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF0F172A),
+                              decoration: showExplanations
+                                  ? TextDecoration.underline
+                                  : TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                        if (showExplanations) ...[
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.info_outline,
+                            size: 16,
+                            color: Color(0xFF2563EB),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              if (showExplanations && detectedItems.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  languageService.translate('scanner.tapForDetails',
+                      'Tap ingredients for detailed information'),
+                  style: TextStyle(
+                    fontSize: isTablet ? 12 : 11,
+                    color: const Color(0xFF64748B),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAllClearResults(bool isTablet) {
+    return Consumer<LanguageService>(
+      builder: (context, languageService, child) {
+        return Container(
+          padding: EdgeInsets.all(isTablet ? 20 : 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+                color: const Color(0xFF10B981).withOpacity(0.3), width: 2),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF10B981).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.check_circle,
+                  color: Color(0xFF10B981),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      languageService.translate(
+                          'scanner.allClear', 'All Clear!'),
+                      style: TextStyle(
+                        fontSize: isTablet ? 18 : 16,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF10B981),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      languageService.translate('scanner.noHarmfulIngredients',
+                          'No harmful ingredients detected!'),
+                      style: TextStyle(
+                        fontSize: isTablet ? 14 : 12,
+                        color: const Color(0xFF64748B),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorMessage(bool isTablet) {
+    return Container(
+      padding: EdgeInsets.all(isTablet ? 16 : 14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFEF2F2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.error_outline,
+            color: Color(0xFFEF4444),
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                fontSize: isTablet ? 14 : 12,
+                color: const Color(0xFFEF4444),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

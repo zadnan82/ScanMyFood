@@ -1,6 +1,7 @@
-// lib/Home/home.dart - Updated with proper back button handling for iOS/Android
+// lib/Home/home.dart - Simplified clean navigation
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:scanmyfood/food.dart';
 import 'package:scanmyfood/List/createlist.dart';
 import 'package:scanmyfood/List/mylist.dart';
@@ -15,12 +16,10 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
-
-  final LanguageService _languageService = LanguageService.instance;
 
   // Pages for bottom navigation
   late List<Widget> _pages;
@@ -34,7 +33,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   void _initializeAnimations() {
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
 
@@ -92,6 +91,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future<bool> _showExitConfirmation() async {
+    final languageService = context.read<LanguageService>();
+
     return await showDialog<bool>(
           context: context,
           barrierDismissible: false,
@@ -102,33 +103,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               title: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.exit_to_app,
-                    color: const Color(0xFF6366F1),
-                    size: 24,
+                    color: Color(0xFF2563EB),
+                    size: 20,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    _languageService.translate('app.exitApp', 'Exit App'),
+                    languageService.translate('app.exitApp', 'Exit App'),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0F172A),
+                      fontSize: 16,
                     ),
                   ),
                 ],
               ),
               content: Text(
-                _languageService.translate('app.exitConfirmation',
+                languageService.translate('app.exitConfirmation',
                     'Are you sure you want to exit the app?'),
                 style: const TextStyle(
                   color: Color(0xFF64748B),
+                  fontSize: 14,
                 ),
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
                   child: Text(
-                    _languageService.translate('common.cancel', 'Cancel'),
+                    languageService.translate('common.cancel', 'Cancel'),
                     style: const TextStyle(
                       color: Color(0xFF64748B),
                       fontWeight: FontWeight.w600,
@@ -138,17 +141,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop(true);
-                    // Force close the app
                     SystemNavigator.pop();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6366F1),
+                    backgroundColor: const Color(0xFF2563EB),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: Text(
-                    _languageService.translate('common.exit', 'Exit'),
+                    languageService.translate('common.exit', 'Exit'),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -170,6 +172,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: FadeTransition(
           opacity: _fadeAnimation,
           child: IndexedStack(
@@ -178,148 +181,129 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ),
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 20,
-                offset: const Offset(0, -5),
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFFE2E8F0),
+                width: 1,
               ),
-            ],
+            ),
           ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: BottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: _onTabTapped,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.white,
-              selectedItemColor: const Color(0xFF6366F1),
-              unselectedItemColor: const Color(0xFF94A3B8),
-              selectedLabelStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: isTablet ? 14 : 12,
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: isTablet ? 12 : 10,
-              ),
-              iconSize: isTablet ? 28 : 24,
-              elevation: 0,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentIndex == 0
-                          ? const Color(0xFF6366F1).withOpacity(0.1)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      _currentIndex == 0
-                          ? Icons.scanner
-                          : Icons.scanner_outlined,
-                      color: _currentIndex == 0
-                          ? const Color(0xFF6366F1)
-                          : const Color(0xFF94A3B8),
-                    ),
+          child: SafeArea(
+            child: Consumer<LanguageService>(
+              builder: (context, languageService, child) {
+                return BottomNavigationBar(
+                  currentIndex: _currentIndex,
+                  onTap: _onTabTapped,
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Colors.white,
+                  selectedItemColor: const Color(0xFF2563EB),
+                  unselectedItemColor: const Color(0xFF94A3B8),
+                  selectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: isTablet ? 12 : 11,
                   ),
-                  label: _languageService.translate('navigation.scan', 'Scan'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentIndex == 1
-                          ? const Color(0xFF6366F1).withOpacity(0.1)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      _currentIndex == 1
-                          ? Icons.add_circle
-                          : Icons.add_circle_outline,
-                      color: _currentIndex == 1
-                          ? const Color(0xFF6366F1)
-                          : const Color(0xFF94A3B8),
-                    ),
+                  unselectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: isTablet ? 11 : 10,
                   ),
-                  label: _languageService.translate(
-                      'navigation.createList', 'Create List'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentIndex == 2
-                          ? const Color(0xFF6366F1).withOpacity(0.1)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
+                  iconSize: isTablet ? 24 : 22,
+                  elevation: 0,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _currentIndex == 0
+                              ? const Color(0xFF2563EB).withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          _currentIndex == 0
+                              ? Icons.scanner
+                              : Icons.scanner_outlined,
+                        ),
+                      ),
+                      label:
+                          languageService.translate('navigation.scan', 'Scan'),
                     ),
-                    child: Icon(
-                      _currentIndex == 2
-                          ? Icons.list_alt
-                          : Icons.list_alt_outlined,
-                      color: _currentIndex == 2
-                          ? const Color(0xFF6366F1)
-                          : const Color(0xFF94A3B8),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _currentIndex == 1
+                              ? const Color(0xFF2563EB).withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          _currentIndex == 1
+                              ? Icons.add_circle
+                              : Icons.add_circle_outline,
+                        ),
+                      ),
+                      label: languageService.translate(
+                          'navigation.createList', 'Create'),
                     ),
-                  ),
-                  label: _languageService.translate(
-                      'navigation.myList', 'My List'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentIndex == 3
-                          ? const Color(0xFF6366F1).withOpacity(0.1)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _currentIndex == 2
+                              ? const Color(0xFF2563EB).withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          _currentIndex == 2
+                              ? Icons.list_alt
+                              : Icons.list_alt_outlined,
+                        ),
+                      ),
+                      label: languageService.translate(
+                          'navigation.myList', 'My List'),
                     ),
-                    child: Icon(
-                      _currentIndex == 3
-                          ? Icons.language
-                          : Icons.language_outlined,
-                      color: _currentIndex == 3
-                          ? const Color(0xFF6366F1)
-                          : const Color(0xFF94A3B8),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _currentIndex == 3
+                              ? const Color(0xFF2563EB).withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          _currentIndex == 3
+                              ? Icons.language
+                              : Icons.language_outlined,
+                        ),
+                      ),
+                      label: languageService.translate(
+                          'navigation.language', 'Language'),
                     ),
-                  ),
-                  label: _languageService.translate(
-                      'navigation.language', 'Language'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentIndex == 4
-                          ? const Color(0xFF6366F1).withOpacity(0.1)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _currentIndex == 4
+                              ? const Color(0xFF2563EB).withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          _currentIndex == 4
+                              ? Icons.account_circle
+                              : Icons.account_circle_outlined,
+                        ),
+                      ),
+                      label: languageService.translate(
+                          'navigation.account', 'Account'),
                     ),
-                    child: Icon(
-                      _currentIndex == 4
-                          ? Icons.account_circle
-                          : Icons.account_circle_outlined,
-                      color: _currentIndex == 4
-                          ? const Color(0xFF6366F1)
-                          : const Color(0xFF94A3B8),
-                    ),
-                  ),
-                  label: _languageService.translate(
-                      'navigation.account', 'Account'),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ),
         ),
