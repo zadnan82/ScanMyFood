@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.3+4
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: '>=2.19.2 <4.0.0'  # Updated to allow Flutter 3.x
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,25 +31,23 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  image_picker: ^0.8.6+1 
-  cloud_firestore: ^4.8.2
-  firebase_core: ^2.14.0
-  flutter_circle_flags_svg: ^1.0.4
+  image_picker: ^1.1.2 
+  cloud_firestore: ^5.6.12
+  firebase_core: ^3.15.2
+  # Replacement for discontinued flutter_circle_flags_svg
   shared_preferences: ^2.0.17
-  google_mlkit_text_recognition: ^0.13.1
+  google_mlkit_text_recognition: ^0.15.0
   image: ^4.3.0
   fuzzywuzzy: ^1.1.6
-  camera: ^0.10.5+9
+  camera: ^0.11.2
   
-  firebase_auth: ^4.6.3
-  mongo_dart: ^0.9.1
+  firebase_auth: ^5.7.0
+  mongo_dart: ^0.10.5
   fluttertoast: ^8.2.2
-  realm: ^1.2.0
-  url_launcher: ^6.1.11
-  device_apps: ^2.2.0
-  external_app_launcher: ^3.1.0 
-
-
+  realm: ^20.1.1  # Updated from ^1.2.0
+  url_launcher: ^6.2.5  
+  provider: ^6.1.1  
+  circle_flags: ^3.0.0 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -58,7 +56,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.14.4
+  realm_generator: ^20.1.1  # Add this for realm code generation
 
 flutter_icons:
   android: true

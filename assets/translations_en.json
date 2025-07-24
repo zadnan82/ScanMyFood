@@ -24,13 +24,20 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "forgotPassword": "Forgot Password?",
+      "resetPassword": "Reset Password",
+      "resetPasswordConfirm": "Send password reset email to",
+      "sendReset": "Send Reset",
       "privacyPolicy": "Privacy Policy",
       "termsConditions": "I agree to the Terms and Conditions",
+      "iAgreeToThe": "I agree to the ",
+      "termsAndConditions": "Terms & Conditions",
+      "readPrivacyPolicy": "Read our Privacy Policy",
       "createNewAccount": "Create New Account",
-      "resetPasswordSent": "Password reset email sent!",
+      "resetPasswordSent": "Password reset email sent! Check your inbox and spam folder.",
       "accountCreated": "Account created successfully!",
       "signedOut": "Successfully signed out!",
-      "signInSuccess": "Successfully signed in!"
+      "signInSuccess": "Successfully signed in!",
+      "signUpFree": "Sign Up Free - Unlock Results"
     },
     "scanner": {
       "title": "Ingredient Scanner",
@@ -48,7 +55,33 @@
       "showDetailedExplanations": "Show detailed explanations",
       "tapForDetails": "Tap ingredients for detailed information",
       "comprehensiveDatabase": "Comprehensive Ingredient Database",
-      "advancedDetection": "Advanced ingredient detection system"
+      "advancedDetection": "Advanced ingredient detection system",
+      "tryScanner": "Try Our Scanner",
+      "freePreview": "Free preview - Sign up for full results",
+      "testFunction": "Test our text recognition",
+      "analyzingIngredients": "Analyzing ingredients...",
+      "checkingDatabase": "Checking our ingredient database",
+      "scanning": "Scanning text...",
+      "processing": "Processing your image",
+      "demoScanner": "Demo Scanner",
+      "tryTextRecognition": "Try our text recognition technology! Take a photo of any text and see how accurately we can read it.",
+      "detectedText": "Detected Text",
+      "scanComplete": "Text recognition complete",
+      "noText": "No text detected in the image",
+      "demoNote": "This is a demonstration of our text recognition technology. The full app includes ingredient analysis and health warnings.",
+      "freePreviewTitle": "Free Preview Scanner",
+      "warningFound": "Warning: Harmful Ingredients Found!",
+      "allClearTitle": "All Clear!",
+      "ingredientsAnalyzed": "ingredients analyzed",
+      "detectedIngredients": "Detected Ingredients:",
+      "harmful": "HARMFUL",
+      "unlockResults": "Unlock Full Results",
+      "signUpMessage": "Sign up to see detailed ingredient analysis, health warnings, and personalized recommendations",
+      "whatYouGet": "What you get with a free account:",
+      "harmfulDetection": "Harmful ingredient detection",
+      "healthWarnings": "Detailed health warnings",
+      "customLists": "Custom ingredient blacklists",
+      "multiLanguage": "Multi-language support"
     },
     "landing": {
       "tryScanner": "Try Our Scanner",
@@ -77,7 +110,15 @@
       "languageDescription": "Available in multiple languages",
       "customLists": "Custom Lists",
       "listsDescription": "Create personal ingredient blacklists",
-      "availableIn": "Available in multiple languages"
+      "availableIn": "Available in multiple languages",
+      "signUpFree": "Sign Up Free",
+      "sisterApp": "Also try our Cosmetics Checker!",
+      "sameLogin": "Use the same login for both apps",
+      "cosmeticsDescription": "Scan cosmetics and personal care products to detect harmful chemicals in makeup, skincare, and beauty products.",
+      "downloadFrom": "Download from",
+      "cosmeticsFeature1": "Makeup Scanner",
+      "cosmeticsFeature2": "Safety Ratings",
+      "cosmeticsFeature3": "Skincare Analysis"
     },
     "createList": {
       "title": "Create Custom List",
@@ -131,7 +172,8 @@
       "dangerZone": "Danger Zone",
       "deleteWarning": "Once you delete your account, there is no going back. Please be certain.",
       "deleteAccount": "Delete Account",
-      "accountDeleted": "Account deleted successfully"
+      "accountDeleted": "Account deleted successfully",
+      "legalInformation": "Legal Information"
     },
     "common": {
       "error": "Error",
@@ -182,6 +224,9 @@
       "signUpError": "An error occurred. Please try again",
       "resetPasswordError": "Failed to send reset email. Please try again",
       "signOutError": "Error signing out. Please try again",
-      "deleteAccountError": "Error deleting account. You may need to sign in again"
+      "deleteAccountError": "Error deleting account. You may need to sign in again",
+      "cantOpenStore": "Could not open app store",
+      "cantOpenLink": "Could not open link",
+      "tooManyRequests": "Too many reset attempts. Please try again later."
     }
   }
