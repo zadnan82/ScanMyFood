@@ -524,7 +524,7 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
                             return GestureDetector(
                               onTap: () async {
                                 final uri = Uri.parse(
-                                    'https://www.zadnan.com/food-privacy');
+                                    'https://portfolio-zainab-adnan.vercel.app/food-privacy');
                                 try {
                                   await launchUrl(uri,
                                       mode: LaunchMode.externalApplication);

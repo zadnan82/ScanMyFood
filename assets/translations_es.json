@@ -1,6 +1,6 @@
 {
     "app": {
-      "title": "Escáner de Ingredientes Alimenticios",
+      "title":  "Giggli Food Ingredients Scanner",
       "subtitle": "Verifica si tu comida tiene ingredientes dañinos"
     },
     "navigation": {

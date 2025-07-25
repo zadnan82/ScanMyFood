@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         builder: (context, languageService, child) {
           return MaterialApp(
             title: languageService.translate(
-                'app.title', 'Food Ingredient Scanner'),
+                'app.title', 'Giggli Food Ingredients Scanner'),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               // Clean, simplified color scheme
