@@ -485,7 +485,7 @@ class _SignOutState extends State<SignOut> with SingleTickerProviderStateMixin {
                             GestureDetector(
                               onTap: () async {
                                 final uri = Uri.parse(
-                                    'https://www.zadnan.com/food-privacy');
+                                    'https://portfolio-zainab-adnan.vercel.app/food-privacy');
                                 try {
                                   await launchUrl(uri,
                                       mode: LaunchMode.externalApplication);
@@ -549,7 +549,7 @@ class _SignOutState extends State<SignOut> with SingleTickerProviderStateMixin {
                             GestureDetector(
                               onTap: () async {
                                 final uri = Uri.parse(
-                                    'https://www.zadnan.com/food-terms');
+                                    'https://portfolio-zainab-adnan.vercel.app/food-terms');
                                 try {
                                   await launchUrl(uri,
                                       mode: LaunchMode.externalApplication);

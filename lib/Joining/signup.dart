@@ -585,7 +585,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                                     TapGestureRecognizer()
                                                       ..onTap = () async {
                                                         final uri = Uri.parse(
-                                                            'https://www.zadnan.com/food-terms');
+                                                            'https://portfolio-zainab-adnan.vercel.app/food-terms');
                                                         try {
                                                           await launchUrl(uri,
                                                               mode: LaunchMode
@@ -626,7 +626,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                   return GestureDetector(
                                     onTap: () async {
                                       final uri = Uri.parse(
-                                          'https://www.zadnan.com/food-privacy');
+                                          'https://portfolio-zainab-adnan.vercel.app/food-privacy');
                                       try {
                                         await launchUrl(uri,
                                             mode:
